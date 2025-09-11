@@ -20,8 +20,15 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    //Placeholder for JPA
+    //Placeholder for Mapstruct
+    compileOnly 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    //Placeholder for sql
+    annotationProcessor 'org.projectlombok:lombok'
+    //Placeholder for Mapstruct
 }
 
 tasks.named('test') {
