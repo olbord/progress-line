@@ -1,6 +1,9 @@
 package ee.taltech.veebirakenduseprojekt.controller;
 
 import lombok.*;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.*;
 
 @org.springframework.web.bind.annotation.RestController
 //Placeholder for @RequiredArgsConstructor
@@ -12,6 +15,12 @@ public class RestController {
         //this.gradeServicePlaceholder = gradeServicePlaceholder;
     }
 
-    //Placeholder for @PostMapping, @GetMapping...
+    //Client uses JSON to POST new comment
+    @PostMapping()
+    // Placeholder for response status
+    public String postComment(@RequestBody CommentDto comment) {
+        return comment.getComment();
+    }
+    //Placeholder for @GetMapping, @DeletaMapping, @UpdateMapping...
 
 }
