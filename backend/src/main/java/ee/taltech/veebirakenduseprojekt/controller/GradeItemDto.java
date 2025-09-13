@@ -2,6 +2,7 @@ package ee.taltech.veebirakenduseprojekt.controller;
 
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.*;
 
 @Data
@@ -11,6 +12,6 @@ public class GradeItemDto {
     private Long userId;
     private String itemName;
     private String itemType;
-    private Double grade;
+    private BigDecimal grade;
     private LocalDateTime gradeDateGraded;
 }
