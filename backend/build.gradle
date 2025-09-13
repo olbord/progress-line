@@ -21,16 +21,16 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    //Placeholder for Mapstruct
+    implementation 'org.liquibase:liquibase-core'
+    //Placeholder for Mapstruct implementation
     compileOnly 'org.projectlombok:lombok'
+    runtimeOnly 'org.postgresql:postgresql'
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
-    runtimeOnly 'org.postgresql:postgresql'
-
-    //Placeholder for sql
     annotationProcessor 'org.projectlombok:lombok'
-    //Placeholder for Mapstruct
+    //Placeholder for Mapstruct annotationProcessor
 }
 
 tasks.named('test') {
