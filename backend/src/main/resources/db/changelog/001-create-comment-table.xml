@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.15.xsd">
+
+    <changeSet id="2025-09-13 create comment table" author="KJ">
+        <sql>
+            CREATE TABLE comment (
+                id   BIGSERIAL PRIMARY KEY,
+                user_id      BIGINT NOT NULL,
+                date_time    TIMESTAMP NOT NULL,
+                type         TEXT NOT NULL,
+                comment      TEXT,
+                teacher_id   BIGINT
+                    --CONSTRAINT fk_comment_user
+                        --FOREIGN KEY (user_id) REFERENCES "user"(id)
+                        --ON DELETE CASCADE,
+                    --CONSTRAINT fk_comment_teacher
+                        --FOREIGN KEY (teacher_id) REFERENCES teacher(id)
+                        --ON DELETE SET NULL
+            );
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
