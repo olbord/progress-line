@@ -13,13 +13,13 @@
                 date_time    TIMESTAMP NOT NULL,
                 type         TEXT NOT NULL,
                 comment      TEXT,
-                teacher_id   BIGINT
-                    --CONSTRAINT fk_comment_user
-                        --FOREIGN KEY (user_id) REFERENCES "user"(id)
-                        --ON DELETE CASCADE,
-                    --CONSTRAINT fk_comment_teacher
-                        --FOREIGN KEY (teacher_id) REFERENCES teacher(id)
-                        --ON DELETE SET NULL
+                teacher_id   BIGINT,
+                CONSTRAINT fk_comment_user
+                    FOREIGN KEY (user_id) REFERENCES "user"(id)
+                    ON DELETE CASCADE,
+                CONSTRAINT fk_comment_teacher
+                    FOREIGN KEY (teacher_id) REFERENCES teacher(id)
+                    ON DELETE SET NULL
             );
         </sql>
     </changeSet>
