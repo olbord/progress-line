@@ -1,5 +1,6 @@
 package ee.taltech.veebirakenduseprojekt.controller;
 
+import ee.taltech.veebirakenduseprojekt.exception.*;
 import ee.taltech.veebirakenduseprojekt.repository.*;
 import lombok.*;
 import org.springframework.web.bind.annotation.*;
@@ -11,13 +12,9 @@ import java.util.*;
 //Placeholder for @RequiredArgsConstructor
 public class RestController {
 
-    //placeholder for bean private final gradeService gradeService;
-    private final CommentRepository commentRepository;
+    //placeholder for bean private final ... service
 
     public RestController(CommentRepository commentRepository) {
-        this.commentRepository = commentRepository;
-        //this.commentService = commentService
-        //this.gradeServicePlaceholder = gradeServicePlaceholder;
     }
 
     //Client uses JSON to POST new comment
@@ -27,11 +24,6 @@ public class RestController {
         return comment.getComment();
     }
 
-    @GetMapping("comments/{userId}")
-    public Comment getComments(@PathVariable Long id) {
-        Optional<Comment> comment = commentRepository.findById(id);
-        return comment.get();
-    }
     //Placeholder for @GetMapping, @DeletaMapping, @UpdateMapping...
 
 }

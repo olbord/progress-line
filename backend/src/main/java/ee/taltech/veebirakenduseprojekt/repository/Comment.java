@@ -14,6 +14,7 @@ public class Comment {
     private LocalDateTime date_time;
     private String Type;
     private String comment;
+    //@ManyToOne(fetch = FetchType.LAZY)
     private Long teacherId;
 
 }
