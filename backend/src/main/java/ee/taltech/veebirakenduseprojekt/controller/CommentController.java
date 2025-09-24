@@ -16,12 +16,11 @@ public class CommentController {
     }
 
     @GetMapping("comments/{id}")
-    public Comment getComments(@PathVariable Long id) {
+    public Comment getCommentById(@PathVariable Long id) {
         if(id < 0) {
-            //throw new ApplicationException("Kasutaja id peab olema positiivne arv");
+            //throw new ApplicationException("Kommentaari id peab olema positiivne arv");
         }
-        Optional<Comment> comment = commentRepository.findById(id);
-        return comment.get();
+        return commentRepository.findById(id).get();
     }
 
 }

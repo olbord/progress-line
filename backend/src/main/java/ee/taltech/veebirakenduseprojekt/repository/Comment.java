@@ -10,6 +10,7 @@ import java.time.*;
 public class Comment {
     @Id
     private Long id;
+    @Column(name="user_id")
     private Long user_id;
     private LocalDateTime date_time;
     private String Type;
