@@ -1,18 +1,19 @@
 package ee.taltech.veebirakenduseprojekt.repository;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.*;
-@Data
 @Entity
+@Getter @Setter
 @Table(name="comment")
 public class Comment {
     @Id
     private Long id;
     @Column(name="user_id")
-    private Long user_id;
-    private LocalDateTime date_time;
+    private Long userId;
+    private LocalDateTime dateTime;
     private String Type;
     private String comment;
     //@ManyToOne(fetch = FetchType.LAZY)
