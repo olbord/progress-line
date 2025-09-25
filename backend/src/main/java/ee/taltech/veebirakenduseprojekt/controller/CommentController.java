@@ -1,34 +1,42 @@
 package ee.taltech.veebirakenduseprojekt.controller;
 
-import ee.taltech.veebirakenduseprojekt.repository.*;
-import ee.taltech.veebirakenduseprojekt.service.*;
 import lombok.*;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.util.*;
+import ee.taltech.veebirakenduseprojekt.service.*;
+
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("api/comments")
 public class CommentController {
 
     private final CommentService commentService;
 
-    @GetMapping("/api/comments/{id}")
-    @ResponseStatus(HttpStatus.FOUND)
+    @GetMapping("{id}")
+    @ResponseStatus(HttpStatus.OK)
     public CommentDto getCommentById(@PathVariable Long id) {
         return commentService.getComment(id);
-        //new ResponseStatusException(HttpStatus.NOT_FOUND, "Comment was not found")
     }
 
+    @GetMapping("/student/{userId}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<CommentDto> getCommentsByUser(@PathVariable Long userId) {
+        return commentService.getCommentsByUser(userId);
+    }
 
-    //Client uses JSON to POST new comment
-    //@PostMapping()
-    //@ResponseStatus(Http.Status.CREATED)
-    // Placeholder for response status
-    //public String postComment(@RequestBody CommentDto comment) {
-    //return comment.getComment();
-    //}
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public CommentDto addComment(@RequestBody CommentDto dto) {
+        return commentService.addComment(dto);
+    }
+
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public CommentDto updateComment(@PathVariable Long id, @RequestBody CommentDto dto) {
+        return commentService.updateComment(id, dto);
+    }
 
 }
 

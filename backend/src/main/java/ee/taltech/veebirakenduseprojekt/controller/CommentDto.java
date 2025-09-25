@@ -1,7 +1,6 @@
 package ee.taltech.veebirakenduseprojekt.controller;
 
 import lombok.Data;
-
 import java.time.*;
 
 @Data

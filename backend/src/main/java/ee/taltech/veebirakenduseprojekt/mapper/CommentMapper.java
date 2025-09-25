@@ -9,4 +9,7 @@ public interface CommentMapper {
 
     @Mapping(source = "comment", target = "commentText")
     CommentDto mapToDto(Comment comment);
+
+    @Mapping(source = "commentText", target = "comment")
+    Comment mapToEntity(CommentDto dto);
 }
