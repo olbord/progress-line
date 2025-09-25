@@ -1,7 +1,6 @@
 package ee.taltech.veebirakenduseprojekt.controller;
 
-import lombok.*;
-
+import lombok.Data;
 import java.time.*;
 
 @Data
@@ -10,6 +9,6 @@ public class CommentDto {
     private Long userId;
     private LocalDateTime dateTime;
     private CommentType type;
-    private String comment;
+    private String commentText;
     private Long teacherId;
 }

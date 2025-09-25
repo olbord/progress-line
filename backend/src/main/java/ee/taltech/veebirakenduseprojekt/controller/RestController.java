@@ -17,12 +17,6 @@ public class RestController {
     public RestController(CommentRepository commentRepository) {
     }
 
-    //Client uses JSON to POST new comment
-    @PostMapping()
-    // Placeholder for response status
-    public String postComment(@RequestBody CommentDto comment) {
-        return comment.getComment();
-    }
 
     //Placeholder for @GetMapping, @DeletaMapping, @UpdateMapping...
 
