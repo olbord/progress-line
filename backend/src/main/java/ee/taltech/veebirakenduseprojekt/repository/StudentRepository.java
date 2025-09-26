@@ -10,7 +10,7 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 
     @Query(value = """
         SELECT * FROM "user" u
-        WHERE u.id NOT IN (SELECT n.user_id FROM no_declaration n)
+        WHERE u.id IN (SELECT n.user_id FROM no_declaration n)
         """, nativeQuery = true)
     List<Student> findAllWithoutDeclarations();
 
