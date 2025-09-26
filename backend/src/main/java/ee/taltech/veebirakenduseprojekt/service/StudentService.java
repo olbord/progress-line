@@ -14,15 +14,19 @@ public class StudentService {
     private final StudentRepository studentRepository;
     private final StudentMapper studentMapper;
 
-    public List<StudentDto> getAllStudentsWithStatuses() {
-        List<StudentDto> studentDtos = studentRepository.findAllWithComments()
+    public List<StudentDto> getAllStudentsWithoutDeclarations() {
+        //Business logic: find all
+        List<StudentDto> studentDtos = studentRepository.findAllWithoutDeclarations()
                 .stream()
-                .map(studentMapper::toDto)
+                .map(studentMapper::mapToDto)
                 .toList();
-
-        // TODO: calculate statuses based on students' percentiles
-        //  and dates of last added comment
-
         return studentDtos;
     }
+
+    public StudentDto getStudent(Long id) {
+        return studentRepository.findById(id)
+                .map(studentMapper::mapToDto)
+                .orElseThrow(() -> new RuntimeException("Student not found with id " + id));
+    }
+
 }

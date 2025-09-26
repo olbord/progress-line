@@ -10,12 +10,12 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface StudentMapper {
 
-    @Mapping(source = "id", target = "userId")
-    @Mapping(source = "firstName", target = "firstName")
-    @Mapping(source = "lastName", target = "lastName")
-    @Mapping(source = "email", target = "email")
-    @Mapping(source = "comments", target = "commentDateTimes")
-    StudentDto toDto(Student student);
+    //@Mapping(source = "id", target = "userId")
+    //@Mapping(source = "firstName", target = "firstName")
+    //@Mapping(source = "lastName", target = "lastName")
+    //@Mapping(source = "email", target = "email")
+    //@Mapping(source = "comments", target = "commentDateTimes")
+    StudentDto mapToDto(Student student);
 
     default List<LocalDateTime> mapComments(List<Comment> comments) {
         return comments.stream()
