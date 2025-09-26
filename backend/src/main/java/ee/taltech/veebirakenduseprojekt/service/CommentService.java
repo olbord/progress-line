@@ -19,8 +19,8 @@ public class CommentService {
         return commentMapper.mapToDto(comment);
     }
 
-    public List<CommentDto> getCommentsByUser(Long userId) {
-        return commentRepository.findByUserId(userId).stream()
+    public List<CommentDto> getCommentsByStudent_Id(Long studentId) {
+        return commentRepository.findByStudent_Id(studentId).stream()
                 .map(commentMapper::mapToDto)
                 .toList();
     }
