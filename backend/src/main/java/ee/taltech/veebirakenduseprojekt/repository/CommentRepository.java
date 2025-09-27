@@ -2,9 +2,8 @@ package ee.taltech.veebirakenduseprojekt.repository;
 
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.*;
-
 import java.util.*;
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long> {
-    List<Comment> findByUserId(Long userId);
+    List<Comment> findByStudentId(Long studentId);
 }

@@ -15,15 +15,18 @@ public class CommentService {
     private final CommentMapper commentMapper;
 
     public CommentDto getComment(Long id) {
-        Comment comment = commentRepository.findById(id).get();
-        return commentMapper.mapToDto(comment);
+        return commentRepository.findById(id)
+                .map(commentMapper::mapToDto)
+                .orElseThrow(() -> new RuntimeException("Comment not found with id " + id));
     }
 
-    public List<CommentDto> getCommentsByUser(Long userId) {
-        return commentRepository.findByUserId(userId).stream()
+    public List<CommentDto> getCommentsByStudentId(Long studentId) {
+        return commentRepository.findByStudentId(studentId).stream()
                 .map(commentMapper::mapToDto)
                 .toList();
     }
+
+
 
     public CommentDto addComment(CommentDto dto) {
         Comment entity = commentMapper.mapToEntity(dto);

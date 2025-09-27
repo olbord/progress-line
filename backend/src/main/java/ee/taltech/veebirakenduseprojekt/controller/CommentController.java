@@ -20,10 +20,10 @@ public class CommentController {
         return commentService.getComment(id);
     }
 
-    @GetMapping("/student/{userId}")
+    @GetMapping("/students/{studentId}")
     @ResponseStatus(HttpStatus.OK)
-    public List<CommentDto> getCommentsByUser(@PathVariable Long userId) {
-        return commentService.getCommentsByUser(userId);
+    public List<CommentDto> getCommentsByStudent(@PathVariable Long studentId) {
+        return commentService.getCommentsByStudentId(studentId);
     }
 
     @PostMapping
