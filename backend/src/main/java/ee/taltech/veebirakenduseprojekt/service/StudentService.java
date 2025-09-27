@@ -15,7 +15,7 @@ public class StudentService {
     private final StudentMapper studentMapper;
 
     public List<StudentDto> getAllStudentsWithoutDeclarations() {
-        //Business logic: find all
+        //Business logic: find all students without declaration and show them in a different view
         List<StudentDto> studentDtos = studentRepository.findAllWithoutDeclarations()
                 .stream()
                 .map(studentMapper::mapToDto)
