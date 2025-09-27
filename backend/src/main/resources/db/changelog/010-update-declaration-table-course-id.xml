@@ -1,0 +1,19 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.15.xsd">
+
+    <changeSet id="2025-09-28-add-course-to-declaration" author="KJ">
+        <sql>
+            ALTER TABLE declaration
+                ADD COLUMN course_id BIGINT;
+
+            ALTER TABLE declaration
+                ADD CONSTRAINT fk_declaration_course
+                    FOREIGN KEY (course_id) REFERENCES course(id)
+                        ON DELETE CASCADE;
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

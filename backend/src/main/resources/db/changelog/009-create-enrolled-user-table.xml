@@ -1,0 +1,27 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.15.xsd">
+
+    <changeSet id="2025-09-28-create-enrolled-user-table" author="KJ">
+        <sql>
+            CREATE TABLE enrolled_user (
+                                           id                BIGSERIAL PRIMARY KEY,
+                                           course_id         BIGINT NOT NULL,
+                                           user_id           BIGINT NOT NULL,
+                                           last_updated      TIMESTAMP,
+                                           last_course_access TIMESTAMP,
+
+                                           CONSTRAINT fk_enrolled_user_course
+                                               FOREIGN KEY (course_id) REFERENCES course(id)
+                                                   ON DELETE CASCADE,
+
+                                           CONSTRAINT fk_enrolled_user_user
+                                               FOREIGN KEY (user_id) REFERENCES "user"(id)
+                                                   ON DELETE CASCADE
+            );
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

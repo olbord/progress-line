@@ -1,0 +1,71 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.15.xsd">
+
+    <changeSet id="2025-09-27-update-comment-teacher-fk" author="KJ">
+        <sql>
+            ALTER TABLE comment
+            DROP CONSTRAINT fk_comment_teacher;
+
+            ALTER TABLE comment
+                ADD CONSTRAINT fk_comment_teacher
+                    FOREIGN KEY (teacher_id) REFERENCES "user"(id)
+                        ON DELETE SET NULL;
+        </sql>
+    </changeSet>
+
+    <changeSet id="2025-09-28-create-course-table" author="KJ">
+        <sql>
+            CREATE TABLE course (
+                                    id                   BIGINT PRIMARY KEY,
+                                    last_updated         TIMESTAMP,
+                                    short_name           TEXT,
+                                    full_name            TEXT,
+                                    display_name         TEXT,
+                                    enrolled_user_count  INTEGER,
+                                    visible              BOOLEAN,
+                                    language             TEXT,
+                                    category_id          INTEGER,
+                                    is_completed         BOOLEAN,
+                                    start_date           TIMESTAMP,
+                                    end_date             TIMESTAMP
+            );
+        </sql>
+    </changeSet>
+
+    <changeSet id="2025-09-28-replace-teacher-with-user-role" author="KJ">
+        <sql>
+            -- Drop old table if it exists
+            DROP TABLE IF EXISTS teacher CASCADE;
+
+            -- Create new user_role table
+            CREATE TABLE user_role (
+                                       id         BIGSERIAL PRIMARY KEY,
+                                       role_id    BIGINT NOT NULL,
+                                       user_id    BIGINT NOT NULL,
+                                       course_id  BIGINT NOT NULL,
+                                       name       TEXT,
+                                       short_name TEXT,
+
+                                       CONSTRAINT fk_user_role_user
+                                           FOREIGN KEY (user_id) REFERENCES "user"(id)
+                                               ON DELETE CASCADE,
+                                       CONSTRAINT fk_user_role_course
+                                           FOREIGN KEY (course_id) REFERENCES "course"(id)
+                                               ON DELETE SET NULL
+            );
+        </sql>
+    </changeSet>
+
+    <changeSet id="2025-09-28-add-grade-item-course-fk" author="KJ">
+        <sql>
+            ALTER TABLE grade_item
+                ADD CONSTRAINT fk_grade_item_course
+                    FOREIGN KEY (course_id) REFERENCES course(id)
+                        ON DELETE CASCADE;
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
