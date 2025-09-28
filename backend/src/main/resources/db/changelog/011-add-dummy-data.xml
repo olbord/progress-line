@@ -1,0 +1,88 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.15.xsd">
+
+    <changeSet id="2025-09-28-clear-and-add-dummy-data" author="KJ">
+        <sql>
+            TRUNCATE TABLE comment RESTART IDENTITY CASCADE;
+            TRUNCATE TABLE declaration RESTART IDENTITY CASCADE;
+            TRUNCATE TABLE enrolled_user RESTART IDENTITY CASCADE;
+            TRUNCATE TABLE grade_item RESTART IDENTITY CASCADE;
+            TRUNCATE TABLE user_role RESTART IDENTITY CASCADE;
+            TRUNCATE TABLE "user" RESTART IDENTITY CASCADE;
+            TRUNCATE TABLE course RESTART IDENTITY CASCADE;
+
+            INSERT INTO "user" (first_name, last_name, email)
+            VALUES ('Tauno', 'Tudeng', 'tautu@taltech.ee')
+                ON CONFLICT DO NOTHING;
+
+            INSERT INTO "user" (first_name, last_name, email)
+            VALUES ('Dagmar', 'Deklaratsioonita', 'dagmar.ilmadeklaratsioonita.tudeng@gmail.com')
+                ON CONFLICT DO NOTHING;
+
+            INSERT INTO "user" (first_name, last_name, email)
+            VALUES ('Kadi', 'Jairus', 'kadi.jairus@taltech.ee')
+                ON CONFLICT DO NOTHING;
+
+            INSERT INTO course (id, last_updated, short_name, full_name, display_name, enrolled_user_count, visible, category_id, is_completed, start_date, end_date)
+            VALUES (35065, '2025-09-27 19:52:39', 'ITI0102-2025', 'ITI0102 Programmeerimise algkursus (2025/2026)', 'ITI0102-2025', 511, true, 1927,false,'2025-08-31 19:52:39','2026-01-31 19:54:58')
+                ON CONFLICT DO NOTHING;
+
+            INSERT INTO enrolled_user (course_id, user_id, last_updated, last_course_access)
+            VALUES (35065, 1, '2025-09-27 20:04:03', '2025-09-27 20:04:06')
+                ON CONFLICT DO NOTHING;
+
+            INSERT INTO enrolled_user (course_id, user_id, last_updated, last_course_access)
+            VALUES (35065, 2, '2025-09-27 20:04:19', '2025-09-27 20:04:22')
+                ON CONFLICT DO NOTHING;
+
+            INSERT INTO enrolled_user (course_id, user_id, last_updated, last_course_access)
+            VALUES (35065, 3, '2025-09-27 20:04:34', '2025-09-27 20:04:36')
+                ON CONFLICT DO NOTHING;
+
+            INSERT INTO user_role (role_id, user_id, course_id, name, short_name)
+            VALUES (5, 1, 35065, 'Õppija/Student', 'student')
+                ON CONFLICT DO NOTHING;
+
+            INSERT INTO user_role (role_id, user_id, course_id, name, short_name)
+            VALUES (3, 3, 35065, 'Õpetaja/Teacher', 'editingteacher')
+                ON CONFLICT DO NOTHING;
+
+            INSERT INTO user_role (role_id, user_id, course_id, name, short_name)
+            VALUES (5, 2, 35065, 'Õppija/Student', 'student')
+                ON CONFLICT DO NOTHING;
+
+            INSERT INTO grade_item (gradeitem_id, course_id, user_id, created_at, item_name, item_type, item_module, grade)
+            VALUES (159069, 35065, 1, '2025-09-27 20:06:49', 'EX/ex00_hello - Tests', 'mod', 'charon', 5)
+                ON CONFLICT DO NOTHING;
+
+            INSERT INTO grade_item (gradeitem_id, course_id, user_id, created_at, item_name, item_type, item_module, grade)
+            VALUES (144520, 35065, 2, '2025-09-27 20:09:19', 'Küsimustik 1.1 - arv (2p)', 'mod', 'quiz', 2)
+                ON CONFLICT DO NOTHING;
+
+            INSERT INTO grade_item (gradeitem_id, course_id, user_id, created_at, item_name, item_type, item_module, grade)
+            VALUES (147402, 35065, 1, '2025-09-27 20:10:16', 'PR/pr01_introduction - Tests', 'mod', 'charon', 5)
+                ON CONFLICT DO NOTHING;
+
+            INSERT INTO grade_item (gradeitem_id, course_id, user_id, created_at, item_name, item_type, item_module, grade)
+            VALUES (146788, 35065, 1, '2025-09-27 20:11:14', 'EX/ex01_beginning - Hello', 'mod', 'charon', 3)
+                ON CONFLICT DO NOTHING;
+
+            INSERT INTO comment (user_id, date_time, type, comment, teacher_id)
+            VALUES (1, '2025-09-24 15:00:00', 'EMAIL', 'Meeldetuletus. Parandatud kuupäev.', 1)
+                ON CONFLICT DO NOTHING;
+
+            INSERT INTO comment (user_id, date_time, type, comment, teacher_id)
+            VALUES (1, '2025-09-27 14:45:00', 'EMAIL', 'Teine meeldetuletus.', 3)
+                ON CONFLICT DO NOTHING;
+
+            INSERT INTO declaration (user_id, date_time, course_id)
+            VALUES (1, '2025-09-27 08:47:59', 35065)
+                ON CONFLICT DO NOTHING;
+
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

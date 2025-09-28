@@ -15,5 +15,6 @@
     <include file="/db/changelog/008-update-comment-table-teacher-id-from-user-table.xml"/>
     <include file="/db/changelog/009-create-enrolled-user-table.xml"/>
     <include file="/db/changelog/010-update-declaration-table-course-id.xml"/>
+    <include file="/db/changelog/011-add-dummy-data.xml"/>
 
 </databaseChangeLog>
