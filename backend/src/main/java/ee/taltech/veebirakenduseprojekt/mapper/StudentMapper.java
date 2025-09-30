@@ -10,7 +10,7 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface StudentMapper {
 
-    //@Mapping(source = "id", target = "userId")
+    @Mapping(source = "id", target = "userId")
     //@Mapping(source = "firstName", target = "firstName")
     //@Mapping(source = "lastName", target = "lastName")
     //@Mapping(source = "email", target = "email")
