@@ -1,9 +1,8 @@
 # Progress Line
 
 ## Description
-Progress Line is a Java web application designed to visualize student academic progress. 
-It allows users to view individual student "progress lines," 
-which graphically represent the cumulative points gained throughout a course over time.
+Progress Line is a Java web application designed to visualize and support student academic progress. 
+It enables to view individual student progress lines and document interventions (like sending an email reminder). 
 
 ## Features
 * **Interactive Progress Graphs:** 
@@ -16,16 +15,46 @@ which graphically represent the cumulative points gained throughout a course ove
 
   This includes actions such as:
   * **Email Reminders:** Recording when a reminder email was sent to a student.
-  * **Study Group Assignment:** Documenting the addition of a student to a study help group.
+  * **Sending email using template:** Sending email including students data.
   * **Custom Interventions:** The ability to add other relevant notes or actions taken to support student progress.
-
-## Installation
-
-## Usage
 
 ## Technologies Used
 *   **Frontend:** Vue, JavaScript
-*   **Backend:** JPA,
-*   **Database:** PostgreSQL, Liquibase
+*   **Backend:** JPA, Liquibase, Lombok, SpringBoot, Gradle
+*   **Database:** PostgreSQL
 *   **Deployment:** Docker
-*   Gradle, SpringBoot, Lombok
+
+## Project setup in IntelliJ
+
+### Frontend
+
+* **Start the project in terminal:**
+* npm install
+* Compile and Hot-Reload for Development:
+* npm run dev
+* Compile and Minify for Production:
+* npm run build
+
+* **Recommended Browser Setup**
+Chromium-based browsers (Chrome, Edge, Brave, etc.):
+- Vue.js devtools
+- Turn on Custom Object Formatter in Chrome DevTools
+Firefox:
+- Vue.js devtools
+- Turn on Custom Object Formatter in Firefox DevTools
+- Customize configuration
+- See Vite Configuration Reference.
+
+### Backend
+
+* **Docker Desktop:** install and open.
+* **Open IntelliJ**: backend as project directory.
+* **Activate docker:** Command in terminal window: docker compose up
+* **IntelliJ Database:** add new source postgreSQL.
+* **Build:** run build.gradle
+* **Run application:** run VeebirakenduseProjektApplication.java
+
+## Usage
+
+* During development use for frontend http://localhost:5173/
+* Backend uses localhost:5433 for SQL Database and 8080 for requests
