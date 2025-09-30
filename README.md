@@ -19,8 +19,8 @@ It enables to view individual student progress lines and document interventions 
   * **Custom Interventions:** The ability to add other relevant notes or actions taken to support student progress.
 
 ## Technologies Used
-*   **Frontend:** Vue, JavaScript
-*   **Backend:** JPA, Liquibase, Lombok, SpringBoot, Gradle
+*   **Frontend:** Vue, JavaScript, Vite
+*   **Backend:** JPA, Liquibase, Lombok, SpringBoot, Gradle, Axios
 *   **Database:** PostgreSQL
 *   **Deployment:** Docker
 
