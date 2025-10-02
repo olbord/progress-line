@@ -28,12 +28,9 @@ It enables to view individual student progress lines and document interventions 
 
 ### Frontend
 
-* **Start the project in terminal:**
-* npm install
-* Compile and Hot-Reload for Development:
+* **Start the project:**
+* npm install (if needed)
 * npm run dev
-* Compile and Minify for Production:
-* npm run build
 
 * **Recommended Browser Setup**
 Chromium-based browsers (Chrome, Edge, Brave, etc.):
