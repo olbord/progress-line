@@ -1,9 +1,8 @@
 <script setup>
-import TheWelcome from '../components/TheWelcome.vue'
 </script>
 
 <template>
   <main>
-    <TheWelcome />
+    Tudengite individuaalse edenemise jälgimise ja toetamise rakendus
   </main>
 </template>
