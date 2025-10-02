@@ -1,12 +1,13 @@
 package ee.taltech.veebirakenduseprojekt.repository;
 
 import jakarta.persistence.*;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "inactive")
+@Getter
 @Setter
 public class Inactive {
 
