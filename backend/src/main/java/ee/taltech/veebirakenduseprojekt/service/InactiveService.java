@@ -1,0 +1,37 @@
+package ee.taltech.veebirakenduseprojekt.service;
+
+import ee.taltech.veebirakenduseprojekt.repository.Inactive;
+import ee.taltech.veebirakenduseprojekt.repository.InactiveRepository;
+import ee.taltech.veebirakenduseprojekt.repository.Student;
+import ee.taltech.veebirakenduseprojekt.repository.StudentRepository;
+import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+
+@Service
+@RequiredArgsConstructor
+public class InactiveService {
+
+    private final InactiveRepository inactiveRepository;
+    private final StudentRepository studentRepository;
+
+    public Inactive addInactive(Long studentId) {
+
+        Student student = studentRepository.findWithDeclarationById(studentId)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Student not found or has not declared the course."
+                ));
+
+        if (inactiveRepository.existsByStudentId(studentId)) {
+            throw new IllegalStateException("Student is already marked as inactive.");
+        }
+
+        Inactive inactive = new Inactive();
+        inactive.setStudent(student);
+        inactive.setDateTime(LocalDateTime.now());
+
+        return inactiveRepository.save(inactive);
+    }
+}
