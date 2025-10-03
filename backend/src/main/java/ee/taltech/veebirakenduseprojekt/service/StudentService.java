@@ -29,4 +29,19 @@ public class StudentService {
                 .orElseThrow(() -> new RuntimeException("Student not found with id " + id));
     }
 
+    public List<StudentDto> getAllStudentsWithDeclarations() {
+        List<StudentDto> studentDtos = studentRepository.findStudentsWithDeclaration()
+                .stream()
+                .map(studentMapper::mapToDto)
+                .toList();
+        return studentDtos;
+    }
+
+    public List<StudentDto> getAllInactiveStudents() {
+        List<StudentDto> studentDtos = studentRepository.findAllInactive()
+                .stream()
+                .map(studentMapper::mapToDto)
+                .toList();
+        return studentDtos;
+    }
 }

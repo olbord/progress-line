@@ -24,6 +24,16 @@ public class StudentController {
         return studentService.getAllStudentsWithoutDeclarations();
     }
 
+    @GetMapping("/with_declarations")
+    public List<StudentDto> getAllStudentsWithDeclarations() {
+        return studentService.getAllStudentsWithDeclarations();
+    }
+
+    @GetMapping("/inactive")
+    public List<StudentDto> getAllInactiveStudents() {
+        return studentService.getAllInactiveStudents();
+    }
+
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public StudentDto getStudent(@PathVariable Long id) {

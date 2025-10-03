@@ -39,4 +39,14 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
           AND u.id = :studentId
         """, nativeQuery = true)
     Optional<Student> findWithDeclarationById(@Param("studentId") Long studentId);
+
+    @Query(value = """
+    SELECT u.*
+    FROM "user" u
+    JOIN user_role r ON u.id = r.user_id
+    JOIN inactive i ON u.id = i.user_id
+    WHERE r.course_id = 35065
+      AND r.role_id = 5
+    """, nativeQuery = true)
+    List<Student> findAllInactive();
 }
