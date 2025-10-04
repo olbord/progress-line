@@ -21,17 +21,17 @@ public class StudentController {
     @GetMapping("/no-declarations")
     @ResponseStatus(HttpStatus.OK)
     public List<StudentDto> getStudentsWithoutDeclarations() {
-        return studentService.getAllStudentsWithoutDeclarations();
+        return studentService.getAllStudentsWithoutDeclaration();
     }
 
     @GetMapping("/with-declarations")
     public List<StudentDto> getAllActiveStudentsWithDeclarations() {
-        return studentService.getAllActiveStudentsWithDeclarations();
+        return studentService.getAllActiveStudentsWithDeclaration();
     }
 
     @GetMapping("/inactive")
     public List<StudentDto> getAllInactiveStudents() {
-        return studentService.getAllInactiveStudents();
+        return studentService.getAllInactiveStudentsWithDeclaration();
     }
 
     @GetMapping("/{id:[0-9]+}")

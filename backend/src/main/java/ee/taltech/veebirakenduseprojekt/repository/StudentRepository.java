@@ -15,7 +15,7 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
         WHERE u.id NOT IN (SELECT d.user_id FROM declaration d WHERE course_id = 35065)
         AND u.id IN (SELECT r.user_id FROM user_role r WHERE course_id = 35065 AND role_id = 5)
         """, nativeQuery = true)
-    List<Student> findAllWithoutDeclarations();
+    List<Student> findAllWithoutDeclaration();
 
     @Query(value = """
         SELECT u.*
@@ -27,7 +27,7 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
           AND d.course_id = 35065
           AND u.id NOT IN (SELECT i.user_id FROM inactive i)
         """, nativeQuery = true)
-    List<Student> findActiveStudentsWithDeclaration();
+    List<Student> findAllActiveWithDeclaration();
 
     @Query(value = """
         SELECT u.*
@@ -51,5 +51,5 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
       AND r.role_id = 5
       AND d.course_id = 35065
     """, nativeQuery = true)
-    List<Student> findAllInactive();
+    List<Student> findAllInactiveWithDeclaration();
 }
