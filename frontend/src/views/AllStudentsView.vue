@@ -1,6 +1,6 @@
 <template>
-  <div class="p-6">
-    <h1 class="text-2xl font-bold mb-4">Kõik tudengid</h1>
+  <div class="container container--medium">
+    <h1>Kõik tudengid</h1>
 
     <StudentList title="Aktiivsed" :students="studentsWithDeclaration" />
     <StudentList title="Mitteaktiivsed" :students="inactiveStudents" />

@@ -15,7 +15,7 @@
         <textarea
             id="comment-text"
             v-model="newComment.commentText"
-            placeholder="Kirjuta siia kommentaar..."
+            placeholder="Täpsusta, mis põhjusel tudengiga kontakteerusid."
             rows="6"
             required
         ></textarea>

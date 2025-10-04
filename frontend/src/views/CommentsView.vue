@@ -16,7 +16,8 @@ onMounted(() => {fetchStudent()})
 </script>
 
 <template>
-  <div class="comments-container">
+  <main class="container container--narrow">
+  <div class="student-info-card">
     <h1>Lisa kommentaar</h1>
 
     <div v-if="user.userId">
@@ -30,21 +31,16 @@ onMounted(() => {fetchStudent()})
         </tr>
         </tbody>
       </table>
-      <p>Täpsusta allpool, kuidas tudengiga kontakteerusid ja mis põhjusel.</p>
       <CommentForm :studentId="parseInt(user.userId)" />
     </div>
     <div v-else>
       <p>Laen tudengi andmeid...</p>
     </div>
   </div>
+  </main>
 </template>
 
 <style scoped>
-.comments-container {
-  padding: 20px;
-  max-width: 700px;
-  margin: 0 auto;
-}
 
 table {
   width: 100%;
