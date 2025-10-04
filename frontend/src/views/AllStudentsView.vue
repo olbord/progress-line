@@ -2,9 +2,9 @@
   <div class="p-6">
     <h1 class="text-2xl font-bold mb-4">Kõik tudengid</h1>
 
-    <StudentList title="Aktiivsed deklaratsiooniga tudengid" :students="studentsWithDeclaration" />
-    <StudentList title="Mitteaktiivsed deklaratsiooniga tudengid" :students="inactiveStudents" />
-    <StudentList title="Ilma deklaratsioonita tudengid" :students="studentsWithoutDeclaration" />
+    <StudentList title="Aktiivsed" :students="studentsWithDeclaration" />
+    <StudentList title="Mitteaktiivsed" :students="inactiveStudents" />
+    <StudentList title="Ilma deklaratsioonita" :students="studentsWithoutDeclaration" />
   </div>
 </template>
 
