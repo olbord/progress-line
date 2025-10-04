@@ -26,10 +26,6 @@
             VALUES ('Kadi', 'Jairus', 'kadi.jairus@taltech.ee')
                 ON CONFLICT DO NOTHING;
 
-            INSERT INTO "user" (first_name, last_name, email)
-            VALUES ('Kolia', 'Deklaratsiooniga', 'nikest@taltech.ee')
-                ON CONFLICT DO NOTHING;
-
             INSERT INTO course (id, last_updated, short_name, full_name, display_name, enrolled_user_count, visible, category_id, is_completed, start_date, end_date)
             VALUES (35065, '2025-09-27 19:52:39', 'ITI0102-2025', 'ITI0102 Programmeerimise algkursus (2025/2026)', 'ITI0102-2025', 511, true, 1927,false,'2025-08-31 19:52:39','2026-01-31 19:54:58')
                 ON CONFLICT DO NOTHING;
@@ -46,10 +42,6 @@
             VALUES (35065, 3, '2025-09-27 20:04:34', '2025-09-27 20:04:36')
                 ON CONFLICT DO NOTHING;
 
-            INSERT INTO enrolled_user (course_id, user_id, last_updated, last_course_access)
-            VALUES (35065, 4, '2025-09-27 20:04:55', '2025-09-27 20:04:55')
-                ON CONFLICT DO NOTHING;
-
             INSERT INTO user_role (role_id, user_id, course_id, name, short_name)
             VALUES (5, 1, 35065, 'Õppija/Student', 'student')
                 ON CONFLICT DO NOTHING;
@@ -60,10 +52,6 @@
 
             INSERT INTO user_role (role_id, user_id, course_id, name, short_name)
             VALUES (5, 2, 35065, 'Õppija/Student', 'student')
-                ON CONFLICT DO NOTHING;
-
-            INSERT INTO user_role (role_id, user_id, course_id, name, short_name)
-            VALUES (5, 4, 35065, 'Õppija/Student', 'student')
                 ON CONFLICT DO NOTHING;
 
             INSERT INTO grade_item (gradeitem_id, course_id, user_id, created_at, item_name, item_type, item_module, grade)
@@ -92,14 +80,6 @@
 
             INSERT INTO declaration (user_id, date_time, course_id)
             VALUES (1, '2025-09-27 08:47:59', 35065)
-                ON CONFLICT DO NOTHING;
-
-            INSERT INTO declaration (user_id, date_time, course_id)
-            VALUES (4, '2025-09-27 09:01:01', 35065)
-                ON CONFLICT DO NOTHING;
-
-            INSERT INTO inactive (user_id, date_time, course_id)
-            VALUES (1, '2025-09-27 08:47:59')
                 ON CONFLICT DO NOTHING;
 
         </sql>
