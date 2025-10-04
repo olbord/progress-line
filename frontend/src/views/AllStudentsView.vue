@@ -3,7 +3,7 @@
     <h1 class="text-2xl font-bold mb-4">Kõik tudengid</h1>
 
     <StudentList title="Aktiivsed deklaratsiooniga tudengid" :students="studentsWithDeclaration" />
-    <StudentList title="Mitteaktiivsed tudengid" :students="inactiveStudents" />
+    <StudentList title="Mitteaktiivsed deklaratsiooniga tudengid" :students="inactiveStudents" />
     <StudentList title="Ilma deklaratsioonita tudengid" :students="studentsWithoutDeclaration" />
   </div>
 </template>
