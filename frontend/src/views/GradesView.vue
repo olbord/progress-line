@@ -1,20 +1,20 @@
 <template>
-  <div class="grades">
-    <h2>Tudengi hinded</h2>
+  <div class="container container--medium">
+    <h1>Tudengi hinded</h1>
 
-    <div class="search-box">
+    <div class="horizontal-group">
       <input
           v-model="studentIdInput"
           type="number"
           placeholder="Sisesta tudengi ID"
       />
-      <button @click="fetchGrades">Otsi hinded</button>
+      <button @click="fetchGrades" class="btn btn--primary">Otsi hinded</button>
     </div>
 
     <div v-if="loading">Laen hinded...</div>
-    <div v-else-if="error" class="error">{{ error }}</div>
+    <div v-else-if="error" class="message message--error">{{ error }}</div>
 
-    <table v-else-if="grades.length > 0">
+    <table v-else-if="grades.length > 0" class="data-table">
       <thead>
       <tr>
         <th>Kursuse ID</th>
@@ -41,6 +41,7 @@
 
 <script setup>
 import { ref } from 'vue'
+import apiClient from "@/services/api.js";
 
 const studentIdInput = ref('')
 const grades = ref([])
@@ -56,11 +57,10 @@ async function fetchGrades() {
   error.value = null
   grades.value = []
   try {
-    const res = await fetch(`http://localhost:5173/api/grades/students/${studentIdInput.value}`)
-    if (!res.ok) throw new Error('Viga andmete laadimisel')
-    grades.value = await res.json()
+    const response = await apiClient.get(`/grades/students/${studentIdInput.value}`)
+    grades.value = response.data
   } catch (err) {
-    error.value = err.message
+    error.value = 'Viga andmete laadimisel'
   } finally {
     loading.value = false
   }
