@@ -14,6 +14,7 @@ import { RouterLink, RouterView } from 'vue-router'
         <RouterLink to="/">Algusesse</RouterLink>
         <RouterLink to="/about">Info</RouterLink>
         <RouterLink to="/comments">Lisa kommentaar</RouterLink>
+        <RouterLink to="/students">Kõik tudengid</RouterLink>
       </nav>
     </div>
   </header>
