@@ -22,15 +22,15 @@ onMounted(() => {fetchStudent()})
     <div v-if="user.userId">
       <table>
         <tbody>
-          <tr>
-            <td><h2>{{ user.firstName }} {{ user.lastName }}</h2></td>
-          </tr>
-          <tr>
-            <td>{{ user.email }}</td>
-          </tr>
+        <tr>
+          <td><h2>{{ user.firstName }} {{ user.lastName }}</h2></td>
+        </tr>
+        <tr>
+          <td>{{ user.email }}</td>
+        </tr>
         </tbody>
       </table>
-    <p>Täpsusta allpool, kuidas tudengiga kontakteerusid ja mis põhjusel.</p>
+      <p>Täpsusta allpool, kuidas tudengiga kontakteerusid ja mis põhjusel.</p>
       <CommentForm :studentId="parseInt(user.userId)" />
     </div>
     <div v-else>
@@ -51,3 +51,4 @@ table {
   margin-bottom: 1rem;
 }
 </style>
+

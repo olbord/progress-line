@@ -11,8 +11,8 @@ const router = createRouter({
       component: HomeView,
     },
     {
-      path: '/comments',
-      name: 'comments',
+      path: '/comment/students/:id',
+      name: 'students',
       component: CommentsView,
     },
     {
@@ -27,4 +27,3 @@ const router = createRouter({
 })
 
 export default router
-
