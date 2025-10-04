@@ -13,7 +13,7 @@ const router = createRouter({
     },
     {
       path: '/comment/students/:id',
-      name: 'students',
+      name: 'students comments',
       component: CommentsView,
     },
     {
