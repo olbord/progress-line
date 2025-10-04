@@ -44,7 +44,7 @@ public class StudentController {
     public ResponseEntity<String> markInactive(@PathVariable Long id) {
         try {
             inactiveService.addInactive(id);
-            return ResponseEntity.ok("Student marked as inactive successfully.");
+            return ResponseEntity.status(HttpStatus.CREATED).body("Student marked as inactive successfully.");
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (IllegalStateException e) {
