@@ -1,35 +1,114 @@
-@import './base.css';
 
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  font-weight: normal;
+:root {
+    --taltech-dark-blue: #342b60;
+    --taltech-light-blue: #4dbed2;
+    --taltech-magenta: #e4067e;
+    --taltech-white: #ffffff;
+    --taltech-light-grey: #f4f7f9;
+    --taltech-dark-grey: #9396b0;
+    --color-background: var(--taltech-light-grey);
+    --color-surface: var(--taltech-white);
+    --color-text: var(--taltech-dark-grey);
+    --color-heading: var(--taltech-dark-blue);
+    --color-link: var(--taltech-magenta);
+    --color-link-hover: var(--taltech-dark-blue);
+    --color-primary: var(--taltech-dark-blue);
+    --color-success: var(--taltech-light-blue);
+    --color-error: var(--taltech-magenta);
+    --color-border: #eef2f5;
 }
 
-a,
-.green {
-  text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  transition: 0.4s;
-  padding: 3px;
+body {
+    background-color: var(--color-background);
+    color: var(--color-text);
+    font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    line-height: 1.6;
 }
 
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
+h1, h2, h3 {
+    color: var(--color-heading);
+    font-weight: 600;
 }
 
-@media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-  }
+a {
+    color: var(--color-link);
+    transition: color 0.2s;
+}
+a:hover {
+    color: var(--color-link-hover);
+}
 
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  }
+
+/* Button */
+.btn {
+    display: inline-block;
+    padding: 0.85rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+    transition: filter 0.2s;
+}
+.btn:hover {
+    filter: brightness(115%);
+}
+
+/* Button (Modifier) */
+.btn--primary {
+    background-color: var(--color-primary);
+    color: var(--taltech-white);
+}
+
+.message {
+    margin-top: 1rem;
+    text-align: center;
+    font-weight: bold;
+    padding: 0.75rem;
+    border-radius: 4px;
+}
+
+.message--success {
+    color: var(--color-success);
+
+}
+.message--error {
+    color: var(--color-error);
+}
+
+
+/* Comment form */
+.comment-form {
+    margin-top: 2rem;
+    padding: 2rem;
+    border-radius: 8px;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* Form */
+.comment-form__group {
+    margin-bottom: 1.5rem;
+}
+
+/* Labels inside form */
+.comment-form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--color-heading);
+}
+
+/* Inside form */
+.comment-form select,
+.comment-form textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    font-size: 1rem;
+    background-color: var(--taltech-white);
+    color: var(--color-text);
 }
