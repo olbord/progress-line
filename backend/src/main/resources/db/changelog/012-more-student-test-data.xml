@@ -1,0 +1,48 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.15.xsd">
+
+    <changeSet id="2025-10-04-more-student-test-data" author="NK">
+        <sql>
+            INSERT INTO "user" (first_name, last_name, email)
+            VALUES ('Nikolai', 'Kester', 'nikest@taltech.ee')
+                ON CONFLICT DO NOTHING;
+
+            INSERT INTO enrolled_user (course_id, user_id, last_updated, last_course_access)
+            VALUES (35065, 4, '2025-09-27 20:04:55', '2025-09-27 20:04:55')
+                ON CONFLICT DO NOTHING;
+
+            INSERT INTO user_role (role_id, user_id, course_id, name, short_name)
+            VALUES (5, 4, 35065, 'Õppija/Student', 'student')
+                ON CONFLICT DO NOTHING;
+
+            INSERT INTO declaration (user_id, date_time, course_id)
+            VALUES (4, '2025-09-27 09:01:01', 35065)
+                ON CONFLICT DO NOTHING;
+
+            INSERT INTO inactive (user_id, date_time)
+            VALUES (4, '2025-09-27 08:47:59')
+                ON CONFLICT DO NOTHING;
+
+            INSERT INTO "user" (first_name, last_name, email)
+            VALUES ('Mitteaktiivne', 'Deklaratsioonita', 'test@test.ee')
+                ON CONFLICT DO NOTHING;
+
+            INSERT INTO enrolled_user (course_id, user_id, last_updated, last_course_access)
+            VALUES (35065, 5, '2025-09-27 20:04:55', '2025-09-27 20:04:55')
+                ON CONFLICT DO NOTHING;
+
+            INSERT INTO user_role (role_id, user_id, course_id, name, short_name)
+            VALUES (5, 5, 35065, 'Õppija/Student', 'student')
+                ON CONFLICT DO NOTHING;
+
+            INSERT INTO inactive (user_id, date_time)
+            VALUES (5, '2025-09-27 08:47:59')
+                ON CONFLICT DO NOTHING;
+
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

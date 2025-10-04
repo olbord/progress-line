@@ -1,0 +1,69 @@
+<template>
+  <div class="comment-form">
+    <form @submit.prevent="submitComment">
+      <div class="comment-form__group">
+        <label for="comment-type">Kontakteerumise viis</label>
+        <select id="comment-type" v-model="newComment.type">
+          <option v-for="type in commentTypes" :key="type" :value="type">
+            {{ type }}
+          </option>
+        </select>
+      </div>
+
+      <div class="comment-form__group">
+        <label for="comment-text">Kommentaar</label>
+        <textarea
+            id="comment-text"
+            v-model="newComment.commentText"
+            placeholder="Kirjuta siia kommentaar..."
+            rows="6"
+            required
+        ></textarea>
+      </div>
+
+      <button type="submit" class="btn btn--primary">Salvesta kommentaar</button>
+    </form>
+
+    <p v-if="successMessage" class="message message--success">{{ successMessage }}</p>
+    <p v-if="errorMessage" class="message message--error">{{ errorMessage }}</p>
+  </div>
+</template>
+
+<script setup>
+import { ref } from 'vue';
+import apiClient from '@/services/api';
+
+const props = defineProps({
+  studentId: {
+    type: Number,
+    required: true
+  }
+});
+
+const commentTypes = ['EMAIL', 'DISCORD', 'STUDY_GROUP', 'CONSULTATION', 'OTHER'];
+const successMessage = ref('');
+const errorMessage = ref('');
+const newComment = ref({
+  commentText: '',
+  type: 'EMAIL',
+  userId: props.studentId,
+  teacherId: 1
+});
+
+async function submitComment() {
+  successMessage.value = '';
+  errorMessage.value = '';
+  if (!newComment.value.commentText.trim()) {
+    errorMessage.value = 'Kommentaar ei saa olla tühi.';
+    return;
+  }
+  try {
+    await apiClient.post("/comments", newComment.value);
+    successMessage.value = 'Kommentaar on edukalt salvestatud!';
+    newComment.value.commentText = '';
+  } catch (error) {
+    console.error('Error submitting comment:', error);
+    errorMessage.value = 'Kommentaari salvestamine ebaõnnestus. Palun proovi uuesti.';
+  }
+}
+</script>

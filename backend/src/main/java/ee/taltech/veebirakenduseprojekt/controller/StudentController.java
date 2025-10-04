@@ -18,13 +18,23 @@ public class StudentController {
     private final StudentService studentService;
     private final InactiveService inactiveService;
 
-    @GetMapping("/no_declarations")
+    @GetMapping("/no-declarations")
     @ResponseStatus(HttpStatus.OK)
     public List<StudentDto> getStudentsWithoutDeclarations() {
-        return studentService.getAllStudentsWithoutDeclarations();
+        return studentService.getAllStudentsWithoutDeclaration();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/with-declarations")
+    public List<StudentDto> getAllActiveStudentsWithDeclarations() {
+        return studentService.getAllActiveStudentsWithDeclaration();
+    }
+
+    @GetMapping("/inactive")
+    public List<StudentDto> getAllInactiveStudents() {
+        return studentService.getAllInactiveStudentsWithDeclaration();
+    }
+
+    @GetMapping("/{id:[0-9]+}")
     @ResponseStatus(HttpStatus.OK)
     public StudentDto getStudent(@PathVariable Long id) {
         return studentService.getStudent(id);
