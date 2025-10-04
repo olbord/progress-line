@@ -80,14 +80,14 @@ input {
 }
 button {
   padding: 0.4rem 0.8rem;
-  background: #4caf50;
+  background: #e4067e;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
 }
 button:hover {
-  background: #45a049;
+  background: #c9056f;
 }
 .error {
   color: red;
