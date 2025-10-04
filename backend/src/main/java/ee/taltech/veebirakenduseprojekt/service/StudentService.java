@@ -14,9 +14,9 @@ public class StudentService {
     private final StudentRepository studentRepository;
     private final StudentMapper studentMapper;
 
-    public List<StudentDto> getAllStudentsWithoutDeclarations() {
+    public List<StudentDto> getAllStudentsWithoutDeclaration() {
         //Business logic: find all students without declaration and show them in a different view
-        List<StudentDto> studentDtos = studentRepository.findAllWithoutDeclarations()
+        List<StudentDto> studentDtos = studentRepository.findAllWithoutDeclaration()
                 .stream()
                 .map(studentMapper::mapToDto)
                 .toList();
@@ -29,4 +29,19 @@ public class StudentService {
                 .orElseThrow(() -> new RuntimeException("Student not found with id " + id));
     }
 
+    public List<StudentDto> getAllActiveStudentsWithDeclaration() {
+        List<StudentDto> studentDtos = studentRepository.findAllActiveWithDeclaration()
+                .stream()
+                .map(studentMapper::mapToDto)
+                .toList();
+        return studentDtos;
+    }
+
+    public List<StudentDto> getAllInactiveStudentsWithDeclaration() {
+        List<StudentDto> studentDtos = studentRepository.findAllInactiveWithDeclaration()
+                .stream()
+                .map(studentMapper::mapToDto)
+                .toList();
+        return studentDtos;
+    }
 }
