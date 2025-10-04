@@ -25,8 +25,8 @@ public class StudentController {
     }
 
     @GetMapping("/with-declarations")
-    public List<StudentDto> getAllStudentsWithDeclarations() {
-        return studentService.getAllStudentsWithDeclarations();
+    public List<StudentDto> getAllActiveStudentsWithDeclarations() {
+        return studentService.getAllActiveStudentsWithDeclarations();
     }
 
     @GetMapping("/inactive")

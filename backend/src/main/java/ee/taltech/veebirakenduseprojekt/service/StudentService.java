@@ -29,8 +29,8 @@ public class StudentService {
                 .orElseThrow(() -> new RuntimeException("Student not found with id " + id));
     }
 
-    public List<StudentDto> getAllStudentsWithDeclarations() {
-        List<StudentDto> studentDtos = studentRepository.findStudentsWithDeclaration()
+    public List<StudentDto> getAllActiveStudentsWithDeclarations() {
+        List<StudentDto> studentDtos = studentRepository.findActiveStudentsWithDeclaration()
                 .stream()
                 .map(studentMapper::mapToDto)
                 .toList();

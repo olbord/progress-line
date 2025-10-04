@@ -25,8 +25,9 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
         WHERE r.course_id = 35065
           AND r.role_id = 5
           AND d.course_id = 35065
+          AND u.id NOT IN (SELECT i.user_id FROM inactive i)
         """, nativeQuery = true)
-    List<Student> findStudentsWithDeclaration();
+    List<Student> findActiveStudentsWithDeclaration();
 
     @Query(value = """
         SELECT u.*
