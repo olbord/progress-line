@@ -29,8 +29,24 @@ It enables to view individual student progress lines and document interventions 
 ### Frontend
 
 * **Start the project:**
-* npm install (if needed)
-* npm run dev
+* go to frontend folder:
+```sh
+cd frontend
+```
+* Installing Project Dependencies (if needed):
+```sh
+npm install
+```
+* Launching the dev server
+```sh
+npm run dev
+```
+* For production build
+```sh
+npm run build
+```
+The production-ready files will be generated in the dist/ folder.
+
 
 * **Recommended Browser Setup**
 Chromium-based browsers (Chrome, Edge, Brave, etc.):
@@ -44,11 +60,19 @@ Firefox:
 
 ### Backend
 
-* **Docker Desktop:** install and open.
+* **Docker Desktop:** install and open it.
 * **Open IntelliJ**: backend as project directory.
-* **Activate docker:** Command in terminal window: docker compose up
-* **IntelliJ Database:** add new source postgreSQL.
-* **Build:** run build.gradle
+* **Activate docker:** Command in terminal window:
+```sh
+docker compose up
+```
+* **IntelliJ Database:** add a new PostgreSQL data source to connect to your Docker database.
+* **For production build:** Paste sensitive information in application.properties and build a project by running a
+command:
+```sh
+.\gradlew build
+```
+The executable JAR file will be generated in the backend/build/libs/ directory.
 * **Run application:** run VeebirakenduseProjektApplication.java
 
 ## Usage
