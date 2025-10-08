@@ -1,5 +1,6 @@
 package ee.taltech.veebirakenduseprojekt.repository;
 
+import ee.taltech.veebirakenduseprojekt.controller.*;
 import jakarta.persistence.*;
 import jakarta.persistence.Table;
 import lombok.Getter;
@@ -10,7 +11,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter @Setter
-@Table(name = "comment")
+@Table(name = "\"comment\"")
 public class Comment {
 
     @Id
@@ -20,11 +21,16 @@ public class Comment {
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
     private LocalDateTime dateTime;
-    private String type;
-    private String comment;
+    @Enumerated(EnumType.STRING)
+    private CommentType type;
+    @Column(name = "\"comment\"")
+    private String commentText;
+
+    //@ManyToOne(fetch = FetchType.LAZY)
+    //@JoinColumn(name = "user_id", nullable = false)
     private Long teacherId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false, insertable = false, updatable = false)
     private Student student;
 }
