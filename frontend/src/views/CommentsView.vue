@@ -20,7 +20,7 @@ onMounted(() => {fetchStudent()})
   <div class="student-info-card">
     <h1>Lisa kommentaar</h1>
 
-    <div v-if="user.userId">
+    <div v-if="user.id">
       <table>
         <tbody>
         <tr>
@@ -31,7 +31,7 @@ onMounted(() => {fetchStudent()})
         </tr>
         </tbody>
       </table>
-      <CommentForm :studentId="parseInt(user.userId)" />
+      <CommentForm :studentId="parseInt(user.id)" />
     </div>
     <div v-else>
       <p>Laen tudengi andmeid...</p>
