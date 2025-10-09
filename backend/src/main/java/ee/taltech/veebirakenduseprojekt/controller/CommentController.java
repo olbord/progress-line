@@ -16,25 +16,25 @@ public class CommentController {
 
     @GetMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
-    public CommentDto getCommentById(@PathVariable Long id) {
+    public CommentResponseDto getCommentById(@PathVariable Long id) {
         return commentService.getComment(id);
     }
 
     @GetMapping("/students/{studentId}")
     @ResponseStatus(HttpStatus.OK)
-    public List<CommentDto> getCommentsByStudent(@PathVariable Long studentId) {
+    public List<CommentResponseDto> getCommentsByStudent(@PathVariable Long studentId) {
         return commentService.getCommentsByStudentId(studentId);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CommentDto addComment(@RequestBody CommentDto dto) {
+    public CommentResponseDto addComment(@RequestBody CommentRequestDto dto) {
         return commentService.addComment(dto);
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public CommentDto updateComment(@PathVariable Long id, @RequestBody CommentDto dto) {
+    public CommentResponseDto updateComment(@PathVariable Long id, @RequestBody CommentRequestDto dto) {
         return commentService.updateComment(id, dto);
     }
 
