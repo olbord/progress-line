@@ -4,10 +4,12 @@ import ee.taltech.veebirakenduseprojekt.controller.*;
 import jakarta.persistence.*;
 import jakarta.persistence.Table;
 import lombok.*;
+import lombok.extern.slf4j.*;
 import org.hibernate.annotations.*;
 
 import java.time.LocalDateTime;
 
+@Slf4j
 @Entity
 @Getter @Setter
 @Table(name = "\"comment\"")

@@ -20,6 +20,13 @@ public class CommentService {
     private final StudentRepository studentRepository;
     private final StudentMapper studentMapper;
 
+    public List<CommentResponseDto> getAllComments() {
+        List<Comment> comments = commentRepository.findAll();
+        return comments.stream()
+                .map(comment -> commentMapper.mapToResponseDto(comment))
+                .toList();
+    }
+
     public CommentResponseDto getComment(Long id) {
         log.debug("Getting comment with id " + id);
         Comment comment = commentRepository.findById(id)

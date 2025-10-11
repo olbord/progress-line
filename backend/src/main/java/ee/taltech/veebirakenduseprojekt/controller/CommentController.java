@@ -14,6 +14,12 @@ public class CommentController {
 
     private final CommentService commentService;
 
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public List<CommentResponseDto> getAllComments() {
+        return commentService.getAllComments();
+    }
+
     @GetMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
     public CommentResponseDto getCommentById(@PathVariable Long id) {
