@@ -4,11 +4,11 @@ import lombok.Data;
 import java.time.*;
 
 @Data
-public class CommentDto {
+public class CommentResponseDto {
     private Long id;
-    private Long userId;
     private LocalDateTime dateTime;
     private CommentType type;
     private String commentText;
     private Long teacherId;
+    private StudentDto student;
 }

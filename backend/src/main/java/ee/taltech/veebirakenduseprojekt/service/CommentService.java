@@ -1,47 +1,72 @@
 package ee.taltech.veebirakenduseprojekt.service;
 
 import java.util.*;
+
+import ee.taltech.veebirakenduseprojekt.exception.*;
+import jakarta.transaction.*;
 import lombok.*;
+import lombok.extern.slf4j.*;
 import org.springframework.stereotype.*;
 import ee.taltech.veebirakenduseprojekt.controller.*;
 import ee.taltech.veebirakenduseprojekt.mapper.*;
 import ee.taltech.veebirakenduseprojekt.repository.*;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class CommentService {
 
     private final CommentRepository commentRepository;
     private final CommentMapper commentMapper;
+    private final StudentRepository studentRepository;
+    private final StudentMapper studentMapper;
 
-    public CommentDto getComment(Long id) {
-        return commentRepository.findById(id)
-                .map(commentMapper::mapToDto)
-                .orElseThrow(() -> new RuntimeException("Comment not found with id " + id));
-    }
-
-    public List<CommentDto> getCommentsByStudentId(Long studentId) {
-        return commentRepository.findByStudentId(studentId).stream()
-                .map(commentMapper::mapToDto)
+    public List<CommentResponseDto> getAllComments() {
+        List<Comment> comments = commentRepository.findAllWithStudents();
+        return comments.stream()
+                .map(comment -> commentMapper.mapToResponseDto(comment))
                 .toList();
     }
 
-
-
-    public CommentDto addComment(CommentDto dto) {
-        Comment entity = commentMapper.mapToEntity(dto);
-        Comment saved = commentRepository.save(entity);
-        return commentMapper.mapToDto(saved);
+    @Transactional
+    public CommentResponseDto getComment(Long id) {
+        log.debug("Getting comment with id " + id);
+        Comment comment = commentRepository.findById(id)
+                .orElseThrow(() -> new ApplicationException("Comment not found for student with id " + id));
+                return commentMapper.mapToResponseDto(comment);
     }
 
-    public CommentDto updateComment(Long id, CommentDto dto) {
+    public List<CommentResponseDto> getCommentsByStudentId(Long studentId) {
+        log.debug("Getting comments of student with id " + studentId);
+        if (!studentRepository.existsById(studentId)) {
+            throw new ApplicationException("Student not found with id " + studentId);
+        }
+        return commentRepository.findByStudentId(studentId).stream()
+                .map(commentMapper::mapToResponseDto)
+                .toList();
+    }
+
+    public CommentResponseDto addComment(CommentRequestDto dto) {
+        Long studentId = dto.getStudentId();
+        if (studentId == null) {
+            throw new ApplicationException("Student ID cannot be null for a new comment");
+        }
+        Student student = studentMapper.studentIdToEntity(studentId, studentRepository);
+        Comment entity = commentMapper.mapToEntity(dto, studentRepository, studentMapper);
+        if (entity.getStudent() == null) {
+            throw new ApplicationException("Student information is required for a comment.");
+        }
+        entity.setStudent(student);
+        Comment savedComment = commentRepository.save(entity);
+        return commentMapper.mapToResponseDto(savedComment);
+    }
+
+    public CommentResponseDto updateComment(Long id, CommentRequestDto dto) {
         Comment existing = commentRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Comment not found with id " + id));
-        existing.setComment(dto.getCommentText());
-        existing.setType(String.valueOf(dto.getType()));
-        existing.setDateTime(dto.getDateTime());
+                .orElseThrow(() -> new ApplicationException("Comment not found with id " + id));
+        commentMapper.updateEntity(dto, existing, studentMapper);
         Comment updated = commentRepository.save(existing);
-        return commentMapper.mapToDto(updated);
+        return commentMapper.mapToResponseDto(updated);
     }
 
 }

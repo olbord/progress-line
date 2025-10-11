@@ -1,26 +1,46 @@
 package ee.taltech.veebirakenduseprojekt.mapper;
 
 import ee.taltech.veebirakenduseprojekt.controller.StudentDto;
-import ee.taltech.veebirakenduseprojekt.repository.Comment;
-import ee.taltech.veebirakenduseprojekt.repository.Student;
+import ee.taltech.veebirakenduseprojekt.exception.*;
+import ee.taltech.veebirakenduseprojekt.repository.*;
 import org.mapstruct.*;
+import org.springframework.beans.factory.annotation.*;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface StudentMapper {
 
-    @Mapping(source = "id", target = "userId")
-    //@Mapping(source = "firstName", target = "firstName")
-    //@Mapping(source = "lastName", target = "lastName")
-    //@Mapping(source = "email", target = "email")
-    //@Mapping(source = "comments", target = "commentDateTimes")
+
     StudentDto mapToDto(Student student);
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "comments", ignore = true)
+    Student mapToEntity(StudentDto dto);
 
     default List<LocalDateTime> mapComments(List<Comment> comments) {
         return comments.stream()
                 .map(Comment::getDateTime)
                 .toList();
+    }
+
+    @Named("studentDtoToEntityFromCommentDto")
+    default Student studentDtoToEntityFromCommentDto(StudentDto studentDto, @Context StudentRepository studentRepository) {
+        if (studentDto == null) {
+            return null;
+        }
+        return studentRepository.findById(studentDto.getId())
+                .orElseThrow(() -> new ApplicationException("Student not found with ID: " + studentDto.getId()));
+    }
+
+    @Named("studentIdToEntity")
+    default Student studentIdToEntity(Long studentId, @Context StudentRepository studentRepository) {
+        if (studentId == null) {
+            return null;
+        }
+        return studentRepository.findById(studentId)
+                .orElseThrow(() -> new ApplicationException("Student not found with ID: " + studentId));
     }
 }
 

@@ -1,16 +1,18 @@
 package ee.taltech.veebirakenduseprojekt.repository;
 
+import ee.taltech.veebirakenduseprojekt.controller.*;
 import jakarta.persistence.*;
 import jakarta.persistence.Table;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import lombok.extern.slf4j.*;
 import org.hibernate.annotations.*;
 
 import java.time.LocalDateTime;
 
+@Slf4j
 @Entity
 @Getter @Setter
-@Table(name = "comment")
+@Table(name = "\"comment\"")
 public class Comment {
 
     @Id
@@ -20,11 +22,15 @@ public class Comment {
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
     private LocalDateTime dateTime;
-    private String type;
-    private String comment;
+    @Enumerated(EnumType.STRING)
+    private CommentType type;
+    @Column(name = "\"comment\"")
+    private String commentText;
+
     private Long teacherId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
+    @EqualsAndHashCode.Exclude
     private Student student;
 }

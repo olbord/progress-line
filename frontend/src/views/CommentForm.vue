@@ -46,7 +46,7 @@ const errorMessage = ref('');
 const newComment = ref({
   commentText: '',
   type: 'EMAIL',
-  userId: props.studentId,
+  studentId: props.studentId,
   teacherId: 1
 });
 
