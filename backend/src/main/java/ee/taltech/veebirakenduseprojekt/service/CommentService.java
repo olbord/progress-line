@@ -3,6 +3,7 @@ package ee.taltech.veebirakenduseprojekt.service;
 import java.util.*;
 
 import ee.taltech.veebirakenduseprojekt.exception.*;
+import jakarta.transaction.*;
 import lombok.*;
 import lombok.extern.slf4j.*;
 import org.springframework.stereotype.*;
@@ -21,12 +22,13 @@ public class CommentService {
     private final StudentMapper studentMapper;
 
     public List<CommentResponseDto> getAllComments() {
-        List<Comment> comments = commentRepository.findAll();
+        List<Comment> comments = commentRepository.findAllWithStudents();
         return comments.stream()
                 .map(comment -> commentMapper.mapToResponseDto(comment))
                 .toList();
     }
 
+    @Transactional
     public CommentResponseDto getComment(Long id) {
         log.debug("Getting comment with id " + id);
         Comment comment = commentRepository.findById(id)
