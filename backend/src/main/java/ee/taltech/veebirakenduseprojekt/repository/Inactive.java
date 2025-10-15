@@ -16,6 +16,7 @@ public class Inactive {
     private long id;
 
 
+    // TODO: inactive table should have a column "course_id"
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private Student student;
