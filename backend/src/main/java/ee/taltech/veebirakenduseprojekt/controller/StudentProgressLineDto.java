@@ -5,7 +5,7 @@ import lombok.*;
 import java.util.*;
 
 @Data
-public class StudentProgressLineChartDto {
+public class StudentProgressLineDto {
     private Long studentId;
     private String firstName;
     private String lastName;
