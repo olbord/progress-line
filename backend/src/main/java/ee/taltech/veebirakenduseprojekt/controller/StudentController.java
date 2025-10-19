@@ -52,4 +52,12 @@ public class StudentController {
         }
     }
 
+    @GetMapping("/grades-by-name")
+    public ResponseEntity<StudentDto> getStudentGradesByName(
+            @RequestParam String firstName,
+            @RequestParam String lastName
+    ) {
+        StudentDto studentDto = studentService.getStudentWithGradesByName(firstName, lastName);
+        return ResponseEntity.ok(studentDto);
+    }
 }

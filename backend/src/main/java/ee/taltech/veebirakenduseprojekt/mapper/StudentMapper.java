@@ -4,12 +4,10 @@ import ee.taltech.veebirakenduseprojekt.controller.StudentDto;
 import ee.taltech.veebirakenduseprojekt.exception.*;
 import ee.taltech.veebirakenduseprojekt.repository.*;
 import org.mapstruct.*;
-import org.springframework.beans.factory.annotation.*;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, uses = {GradeItemMapper.class})
 public interface StudentMapper {
 
 

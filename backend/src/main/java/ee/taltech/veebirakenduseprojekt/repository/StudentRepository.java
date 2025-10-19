@@ -52,4 +52,12 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
       AND d.course_id = 35065
     """, nativeQuery = true)
     List<Student> findAllInactiveWithDeclaration();
+
+    @Query(value = """
+     SELECT s
+     FROM Student s
+     WHERE s.firstName = :firstName
+          AND s.lastName = :lastName""")
+    Optional<Student> findByFirstNameAndLastName(@Param("firstName") String firstName,
+                                                 @Param("lastName") String lastName);
 }
