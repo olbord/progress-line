@@ -36,10 +36,6 @@ public class GradeItemService {
 
             studentChart.setStudentId(userId);
 
-            //Placeholder for student name
-            //studentChart.setFirstName("Eesnimi" + userId.toString());
-            //studentChart.setLastName("Perenimi" + userId.toString());
-
             studentChart.setFirstName(userGrades.get(0).getStudent().getFirstName());
             studentChart.setLastName(userGrades.get(0).getStudent().getLastName());
 
