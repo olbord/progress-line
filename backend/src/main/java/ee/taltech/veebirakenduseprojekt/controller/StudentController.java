@@ -57,7 +57,6 @@ public class StudentController {
             @RequestParam String firstName,
             @RequestParam String lastName
     ) {
-        StudentDto studentDto = studentService.getStudentWithGradesByName(firstName, lastName);
-        return ResponseEntity.ok(studentDto);
+        return ResponseEntity.ok(studentService.getStudentWithGrades(firstName, lastName));
     }
 }

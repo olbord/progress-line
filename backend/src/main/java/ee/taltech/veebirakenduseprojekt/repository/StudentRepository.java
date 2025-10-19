@@ -54,10 +54,12 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     List<Student> findAllInactiveWithDeclaration();
 
     @Query(value = """
-     SELECT s
-     FROM Student s
-     WHERE s.firstName = :firstName
-          AND s.lastName = :lastName""")
+    SELECT s
+    FROM Student s
+    LEFT JOIN FETCH s.grades
+    WHERE s.firstName = :firstName
+        AND s.lastName = :lastName
+    """)
     Optional<Student> findByFirstNameAndLastName(@Param("firstName") String firstName,
-                                                 @Param("lastName") String lastName);
+                                           @Param("lastName") String lastName);
 }
