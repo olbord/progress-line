@@ -23,16 +23,15 @@ import Chart from 'chart.js/auto';
 import 'chartjs-adapter-date-fns';
 import { et } from 'date-fns/locale';
 
-// --- 1. Reaktiivsed muutujad ---
-const chartCanvas = ref(null); // See seotakse <canvas> elemendiga template'is
-let chartInstance = null; // Hoiame siin viidet graafikule, et seda hiljem uuendada
-const isLoading = ref(true); // Alguses on laadimise seisund tõene
-const error = ref(null);     // Vigade hoidmiseks
+const chartCanvas = ref(null);
+let chartInstance = null;
+const isLoading = ref(true);
+const error = ref(null);
 
 // TODO: get courseId from path/login data
 const courseId = 35065;
 
-// --- 2. Andmete toomise funktsioon ---
+// Get data for graph
 async function fetchAndRenderChart() {
   isLoading.value = true;
   error.value = null;
@@ -47,20 +46,16 @@ async function fetchAndRenderChart() {
   }
 }
 
-// --- 3. Graafiku joonistamise funktsioon ---
+// Draw graph
 function renderChart(apiData) {
-  // --- KONTROLLPUNKT 1: Kas funktsioon käivitub ja mis andmed sisse tulevad? ---
   console.log("3. Alustan graafiku joonistamist nende andmetega:", apiData);
 
   if (!chartCanvas.value) {
     console.error("VIGA: Canvas element ei ole leitav! 'ref' ei tööta.");
     return;
   }
-  // --- KONTROLLPUNKT 2: Kas canvas element on olemas? ---
-  console.log("Canvas element leitud:", chartCanvas.value);
 
-
-  // Lisame kaitse tühjade andmete vastu, mis võib ka olla probleem
+  // No data handeled
   if (!apiData || apiData.length === 0) {
     console.warn("Andmed on tühjad, graafikut ei joonistata.");
     error.value = "Sellel kursusel ei leitud tudengite andmeid.";
@@ -68,14 +63,12 @@ function renderChart(apiData) {
   }
 
   const datasets = apiData.map((student, index) => {
-    // ... (värvide loogika jääb samaks)
     const colors = ['#e4067e', '#4dbed2', '#342b60', '#f2b700', '#9396b0'];
     const color = colors[index % colors.length];
 
-    // Veendu, et andmepunktid on olemas ja on massiiv
     if (!student.dataPoints || !Array.isArray(student.dataPoints)) {
       console.error("VIGA: Tudengi objektil puuduvad või on vales formaadis 'dataPoints'", student);
-      return null; // Tagastame nulli, et vältida edasisi vigu
+      return null;
     }
 
     return {
@@ -86,31 +79,21 @@ function renderChart(apiData) {
       fill: false,
       tension: 0.1
     };
-  }).filter(Boolean); // Eemaldame kõik 'null' väärtused, kui mõnel tudengil olid vigased andmed
+  }).filter(Boolean); //null removed
 
-  // --- KONTROLLPUNKT 3: Kuidas näevad välja Chart.js jaoks teisendatud andmed? ---
-  console.log("4. Teisendasin andmed 'datasets' formaati:", datasets);
-
-  // ... (chartData ja chartOptions jäävad samaks)
   const chartData = { datasets };
   const chartOptions = {
-    // Teeb graafiku responsiivseks, et see kohanduks konteineri suurusega
     responsive: true,
-
-    // Oluline! See luba graafikul täita konteineri kõrgus ja laius,
-    // ignoreerides Chart.js'i vaikimisi kuvasuhet.
     maintainAspectRatio: false,
-
-    // Pluginad on lisamoodulid, mis kontrollivad nt pealkirju ja legende
     plugins: {
       legend: {
         display: false,
       },
       title: {
         display: true,
-        text: 'Tudengite õpikõverad', // Graafiku pealkiri
+        text: 'Tudengite õpikõverad',
         font: {
-          size: 18 // Suurem fondi suurus pealkirjale
+          size: 18
         }
       },
       // Index shows values on hover
@@ -120,47 +103,35 @@ function renderChart(apiData) {
       }
     },
 
-    // 'scales' objekt kontrollib X- ja Y-telgede seadeid
+    // 'scales' controls X- and Y-axis conf
     scales: {
-      // X-telje (horisontaalne) konfiguratsioon
       x: {
-        // KÕIGE OLULISEM: anname teada, et see on ajatelg
         type: 'time',
-
-        // Seaded, mis on spetsiifilised ajateljele
         time: {
-          // Mis ühikutes kuvatakse telje jaotusi (nt 'day', 'week', 'month')
           unit: 'day',
-
-          // Kuidas kuvatakse kuupäeva formaati tooltip'is (kui hiirega peale minna)
+          // Hover format
           tooltipFormat: 'dd.MM.yyyy HH:mm',
-
-          // Kuidas kuvatakse kuupäeva formaati telje peal
+          // Axis format
           displayFormats: {
             day: 'dd.MM.yyyy'
           }
         },
 
-        // See on see osa, mis paneb Eesti lokaadi tööle!
         adapters: {
           date: {
-            locale: et // Siin kasutame imporditud 'et' muutujat
+            locale: et
           }
         },
 
-        // Telje enda pealkiri
         title: {
           display: true,
           text: 'Kuupäev'
         }
       },
 
-      // Y-telje (vertikaalne) konfiguratsioon
       y: {
-        // Tagab, et telg algab alati nullist
         beginAtZero: true,
 
-        // Telje pealkiri
         title: {
           display: true,
           text: 'Kumulatiivne punktisumma'
@@ -170,10 +141,6 @@ function renderChart(apiData) {
   };
 
   try {
-    // --- KONTROLLPUNKT 4: Proovin luua graafikut ---
-    console.log("5. Loon uue Chart objekti.");
-
-    // Kui graafik on juba olemas, hävitame vana enne uue joonistamist
     if (chartInstance) {
       chartInstance.destroy();
     }
@@ -190,8 +157,6 @@ function renderChart(apiData) {
   }
 }
 
-// --- 4. Elutsükli konks ---
-// See funktsioon käivitub automaatselt, kui komponent lehele laetakse
 onMounted(() => {
   fetchAndRenderChart();
 });
@@ -208,5 +173,3 @@ onMounted(() => {
   padding: 2rem 0;
 }
 </style>
-
-  
