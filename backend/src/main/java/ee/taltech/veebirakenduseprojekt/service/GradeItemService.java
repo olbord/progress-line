@@ -36,12 +36,8 @@ public class GradeItemService {
 
             studentChart.setStudentId(userId);
 
-            //TODO: Placeholder for student name
-            studentChart.setFirstName("Eesnimi" + userId.toString());
-            studentChart.setLastName("Perenimi" + userId.toString());
-
-            //studentChart.setFirstName(userGrades.get(0).getUser().getFirstName());
-            //studentChart.setLastName(userGrades.get(0).getUser().getLastName());
+            studentChart.setFirstName(userGrades.get(0).getStudent().getFirstName());
+            studentChart.setLastName(userGrades.get(0).getStudent().getLastName());
 
             List<GradeDataPointDto> dataPoints = new ArrayList<>();
             BigDecimal cumulativeScore = BigDecimal.ZERO;
