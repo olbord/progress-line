@@ -13,7 +13,7 @@ public class Inactive {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
 
     // TODO: inactive table should have a column "course_id"
