@@ -23,4 +23,8 @@ public class Inactive {
 
     @Column(name = "date_time", nullable = false)
     private LocalDateTime dateTime;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "course_id")
+    private Course course;
 }

@@ -1,18 +1,22 @@
 package ee.taltech.veebirakenduseprojekt.repository;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.Setter;
+
+import java.util.Set;
 
 @Entity
-@Table(name = "course")
 @Getter
-@Setter
 public class Course {
     @Id
     private Long id;
 
+    @OneToMany(mappedBy = "course")
+    private Set<Inactive> inactives;
 
+    @OneToMany(mappedBy = "course")
+    private Set<Declaration> declarations;
+
+    @OneToMany(mappedBy = "course")
+    private Set<MoodleEnrollment> enrolledUsers;
 }
