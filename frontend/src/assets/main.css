@@ -176,6 +176,8 @@ a:hover {
 
 /* For horizontal element aligning */
 .horizontal-group {
+    flex-grow: 1;
+    width: 100%;
     display: flex;
     align-items: center;
     gap: 0.75rem;
