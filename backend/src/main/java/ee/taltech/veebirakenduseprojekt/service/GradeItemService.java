@@ -4,12 +4,14 @@ import ee.taltech.veebirakenduseprojekt.controller.*;
 import ee.taltech.veebirakenduseprojekt.mapper.GradeItemMapper;
 import ee.taltech.veebirakenduseprojekt.repository.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.*;
 import java.util.*;
 import java.util.stream.*;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class GradeItemService {
@@ -18,7 +20,7 @@ public class GradeItemService {
     private final GradeItemMapper gradeItemMapper;
 
     public List<GradeItemDto> getAllStudentGradesByStudentId(Long studentId) {
-        return gradeItemRepository.findAllByUserId(studentId).stream()
+        return gradeItemRepository.findAllByStudentId(studentId).stream()
                 .map(gradeItemMapper::mapToDto)
                 .toList();
     }
