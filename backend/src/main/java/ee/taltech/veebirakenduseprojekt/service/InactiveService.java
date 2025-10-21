@@ -17,9 +17,9 @@ public class InactiveService {
     private final InactiveRepository inactiveRepository;
     private final StudentRepository studentRepository;
 
-    public Inactive addInactive(Long studentId) {
+    public Inactive addInactive(Long courseId, Long studentId) {
 
-        Student student = studentRepository.findWithDeclarationById(studentId)
+        Student student = studentRepository.findWithDeclarationByCourseAndId(courseId, studentId)
                 .orElseThrow(() -> new EntityNotFoundException(
                         "Student not found or has not declared the course."
                 ));
