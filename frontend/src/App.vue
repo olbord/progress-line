@@ -16,6 +16,7 @@ import { RouterLink, RouterView } from 'vue-router'
         <RouterLink to="/students">Kõik tudengid</RouterLink>
         <RouterLink to="/grades">Vaata tudengi hindeid</RouterLink>
         <RouterLink to="/comment/students/1">Lisa kommentaar</RouterLink>
+        <RouterLink to="/course-analytics">Kursuse analüüs</RouterLink>
       </nav>
     </div>
   </header>
