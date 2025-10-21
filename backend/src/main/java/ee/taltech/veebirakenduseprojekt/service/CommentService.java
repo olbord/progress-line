@@ -36,16 +36,6 @@ public class CommentService {
                 return commentMapper.mapToResponseDto(comment);
     }
 
-    public List<CommentResponseDto> getCommentsByStudentId(Long studentId) {
-        log.debug("Getting comments of student with id " + studentId);
-        if (!studentRepository.existsById(studentId)) {
-            throw new ApplicationException("Student not found with id " + studentId);
-        }
-        return commentRepository.findByStudentId(studentId).stream()
-                .map(commentMapper::mapToResponseDto)
-                .toList();
-    }
-
     public CommentResponseDto addComment(CommentRequestDto dto) {
         Long studentId = dto.getStudentId();
         if (studentId == null) {

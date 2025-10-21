@@ -26,12 +26,6 @@ public class CommentController {
         return commentService.getComment(id);
     }
 
-    @GetMapping("/students/{studentId}")
-    @ResponseStatus(HttpStatus.OK)
-    public List<CommentResponseDto> getCommentsByStudent(@PathVariable Long studentId) {
-        return commentService.getCommentsByStudentId(studentId);
-    }
-
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public CommentResponseDto addComment(@RequestBody CommentRequestDto dto) {
@@ -43,6 +37,5 @@ public class CommentController {
     public CommentResponseDto updateComment(@PathVariable Long id, @RequestBody CommentRequestDto dto) {
         return commentService.updateComment(id, dto);
     }
-
 }
 
