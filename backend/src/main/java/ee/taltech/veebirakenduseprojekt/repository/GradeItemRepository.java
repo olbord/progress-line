@@ -8,7 +8,7 @@ import java.util.List;
 
 @Repository
 public interface GradeItemRepository extends JpaRepository<GradeItem, Long> {
-    List<GradeItem> findAllByUserId(Long userId);
+    List<GradeItem> findAllByStudentId(Long studentId);
 
     @Query(value = "SELECT g.*, u.first_name, u.last_name FROM grade_item g " +
             "LEFT JOIN \"user\" u ON u.id = g.user_id " +
