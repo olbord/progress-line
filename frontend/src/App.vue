@@ -13,7 +13,7 @@ import { RouterLink, RouterView } from 'vue-router'
       <nav>
         <RouterLink to="/">Algusesse</RouterLink>
         <RouterLink to="/about">Info</RouterLink>
-        <RouterLink to="/courses/35065/students">Konkreetne kursus</RouterLink>
+        <RouterLink to="/courses">Kursused</RouterLink>
         <RouterLink to="/grades">Vaata tudengi hindeid</RouterLink>
         <RouterLink to="/courses/35065/students/1">Lisa kommentaar</RouterLink>
         <RouterLink to="/course-analytics">Kursuse analüüs</RouterLink>

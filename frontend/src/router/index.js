@@ -4,6 +4,7 @@ import CommentsView from '../views/CommentsView.vue'
 import CourseView from "../views/CourseView.vue";
 import GradesView from "@/views/GradesView.vue";
 import CourseAnalyticsView from "@/views/CourseAnalyticsView.vue";
+import AllCoursesView from "@/views/AllCoursesView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -17,6 +18,11 @@ const router = createRouter({
       path: '/courses/:courseId/students/:studentId',
       name: 'students comments',
       component: CommentsView,
+    },
+    {
+      path: '/courses',
+      name: 'courses',
+      component: AllCoursesView,
     },
     {
       path: '/courses/:courseId/students',
