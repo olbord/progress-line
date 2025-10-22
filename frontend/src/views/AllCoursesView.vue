@@ -34,18 +34,18 @@ onMounted(() => {
 
 <template>
   <div>
-    <h2>All Courses</h2>
+    <h2>Minu kursused</h2>
 
     <div>
       <input
           type="text"
           v-model="searchQuery"
-          placeholder="Search by short or full name"
+          placeholder="Otsi kursuse nimi järgi"
       />
-      <button @click="handleSearch">Search</button>
+      <button @click="handleSearch">Otsi</button>
     </div>
 
-    <div v-if="loading">Loading...</div>
+    <div v-if="loading">Laadimine...</div>
     <div v-else-if="error">{{ error }}</div>
     <div v-else>
       <ul v-if="courses.length > 0">
@@ -55,7 +55,7 @@ onMounted(() => {
             :course="course"
         />
       </ul>
-      <p v-else>No courses found.</p>
+      <p v-else>Ei leitud sobivaid kursusi.</p>
     </div>
   </div>
 </template>
