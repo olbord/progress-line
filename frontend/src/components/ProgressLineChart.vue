@@ -113,7 +113,7 @@ function renderChart(apiData) {
           dataset.borderColor = '#342b60';
           dataset.borderWidth = 2;
         }
-      });
+      }
 
       chart.update('none');
     },
