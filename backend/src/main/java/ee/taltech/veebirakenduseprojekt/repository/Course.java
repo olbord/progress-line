@@ -14,7 +14,14 @@ import java.util.Set;
 public class Course {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "short_name", nullable = false)
+    private String shortName;
+
+    @Column(name = "full_name", nullable = false)
+    private String fullName;
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Declaration> declarations = new HashSet<>();

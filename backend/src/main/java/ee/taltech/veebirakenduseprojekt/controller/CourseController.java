@@ -1,5 +1,6 @@
 package ee.taltech.veebirakenduseprojekt.controller;
 
+import ee.taltech.veebirakenduseprojekt.repository.Course;
 import ee.taltech.veebirakenduseprojekt.service.CourseService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.*;
@@ -15,6 +16,15 @@ import java.util.List;
 public class CourseController {
 
     private final CourseService courseService;
+
+
+    // --- course endpoints ---
+
+    @PostMapping
+    public List<CourseDto> getCourses(@RequestBody(required = false) CourseSearchRequest searchRequest) {
+        return courseService.getCourses(searchRequest);
+    }
+
 
     // --- student endpoints ---
 

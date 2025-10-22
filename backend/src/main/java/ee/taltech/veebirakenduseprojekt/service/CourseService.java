@@ -1,12 +1,11 @@
 package ee.taltech.veebirakenduseprojekt.service;
 
 import ee.taltech.veebirakenduseprojekt.controller.CommentResponseDto;
+import ee.taltech.veebirakenduseprojekt.controller.CourseDto;
+import ee.taltech.veebirakenduseprojekt.controller.CourseSearchRequest;
 import ee.taltech.veebirakenduseprojekt.controller.StudentDto;
-import ee.taltech.veebirakenduseprojekt.exception.ApplicationException;
-import ee.taltech.veebirakenduseprojekt.mapper.CommentMapper;
-import ee.taltech.veebirakenduseprojekt.repository.CommentRepository;
+import ee.taltech.veebirakenduseprojekt.mapper.CourseMapper;
 import ee.taltech.veebirakenduseprojekt.repository.CourseRepository;
-import ee.taltech.veebirakenduseprojekt.repository.StudentRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +22,15 @@ public class CourseService {
     private final StudentService studentService;
     private final InactiveService inactiveService;
     private final CommentService commentService;
+    private final CourseMapper courseMapper;
+
+    public List<CourseDto> getCourses(CourseSearchRequest searchRequest) {
+        String query = (searchRequest != null && searchRequest.getQuery() != null)
+                ? searchRequest.getQuery().trim()
+                : null;
+
+        return courseMapper.toDtoList(courseRepository.searchCourses(query));
+    }
 
     public List<StudentDto> getAllActiveStudentsWithDeclarations(Long courseId) {
         validateCourseExists(courseId);
