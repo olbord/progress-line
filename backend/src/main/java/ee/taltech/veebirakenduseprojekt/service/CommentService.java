@@ -20,6 +20,7 @@ public class CommentService {
     private final CommentMapper commentMapper;
     private final StudentRepository studentRepository;
     private final StudentMapper studentMapper;
+    private final CourseRepository courseRepository;
 
     public List<CommentResponseDto> getAllComments() {
         List<Comment> comments = commentRepository.findAllWithStudents();
@@ -42,7 +43,7 @@ public class CommentService {
             throw new ApplicationException("Student ID cannot be null for a new comment");
         }
         Student student = studentMapper.studentIdToEntity(studentId, studentRepository);
-        Comment entity = commentMapper.mapToEntity(dto, studentRepository, studentMapper);
+        Comment entity = commentMapper.mapToEntity(dto, studentRepository, studentMapper, courseRepository);
         if (entity.getStudent() == null) {
             throw new ApplicationException("Student information is required for a comment.");
         }
@@ -54,7 +55,8 @@ public class CommentService {
     public CommentResponseDto updateComment(Long id, CommentRequestDto dto) {
         Comment existing = commentRepository.findById(id)
                 .orElseThrow(() -> new ApplicationException("Comment not found with id " + id));
-        commentMapper.updateEntity(dto, existing, studentMapper);
+        // TODO: only update the comment when teacherId is actually an id of a user with the role of a teacher
+        commentMapper.updateEntity(dto, existing, studentRepository, studentMapper, courseRepository);
         Comment updated = commentRepository.save(existing);
         return commentMapper.mapToResponseDto(updated);
     }

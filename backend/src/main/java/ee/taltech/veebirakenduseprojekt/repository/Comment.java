@@ -27,6 +27,10 @@ public class Comment {
     @Column(name = "\"comment\"")
     private String commentText;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "course_id", nullable = false)
+    private Course course;
+
     private Long teacherId;
 
     @ManyToOne(fetch = FetchType.LAZY)

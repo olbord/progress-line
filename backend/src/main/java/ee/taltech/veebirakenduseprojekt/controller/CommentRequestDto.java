@@ -8,4 +8,5 @@ public class CommentRequestDto {
     private CommentType type;
     private String commentText;
     private Long teacherId;
+    private Long courseId;
 }
