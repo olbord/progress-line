@@ -20,11 +20,9 @@ import java.util.List;
 public class CourseService {
 
     private final CourseRepository courseRepository;
-    private final StudentRepository studentRepository;
-    private final CommentRepository commentRepository;
-    private final CommentMapper commentMapper;
     private final StudentService studentService;
     private final InactiveService inactiveService;
+    private final CommentService commentService;
 
     public List<StudentDto> getAllActiveStudentsWithDeclarations(Long courseId) {
         validateCourseExists(courseId);
@@ -52,15 +50,8 @@ public class CourseService {
         }
     }
 
-    public List<CommentResponseDto> getCommentsByCourseIdAndStudentId(Long courseId, Long studentId) {
+    public List<CommentResponseDto> getCommentsByStudentId(Long courseId, Long studentId) {
         validateCourseExists(courseId);
-        log.debug("Getting comments of student with id " + studentId);
-        if (!studentRepository.existsById(studentId)) {
-            throw new ApplicationException("Student not found with id " + studentId);
-        }
-        return commentRepository.findByStudentIdAndCourseId(courseId, studentId)
-                .stream()
-                .map(commentMapper::mapToResponseDto)
-                .toList();
+        return commentService.getCommentsByCourseIdAndStudentId(courseId, studentId);
     }
 }

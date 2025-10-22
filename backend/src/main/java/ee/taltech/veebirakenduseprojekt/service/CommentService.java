@@ -59,4 +59,14 @@ public class CommentService {
         return commentMapper.mapToResponseDto(updated);
     }
 
+    public List<CommentResponseDto> getCommentsByCourseIdAndStudentId(Long courseId, Long studentId) {
+        log.debug("Getting comments of student with id " + studentId);
+        if (!studentRepository.existsById(studentId)) {
+            throw new ApplicationException("Student not found with id " + studentId);
+        }
+        return commentRepository.findByStudentIdAndCourseId(courseId, studentId)
+                .stream()
+                .map(commentMapper::mapToResponseDto)
+                .toList();
+    }
 }

@@ -57,6 +57,6 @@ public class CourseController {
     @GetMapping("/{courseId}/students/{studentId}")
     @ResponseStatus(HttpStatus.OK)
     public List<CommentResponseDto> getCommentsByStudent(@PathVariable Long courseId, @PathVariable Long studentId) {
-        return courseService.getCommentsByCourseIdAndStudentId(courseId, studentId);
+        return courseService.getCommentsByStudentId(courseId, studentId);
     }
 }
