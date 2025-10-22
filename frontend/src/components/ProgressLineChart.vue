@@ -1,6 +1,5 @@
 <template>
   <div class="container container--wide">
-    <h2></h2>
 
     <div v-if="isLoading" class="message">
       Laen graafiku andmeid...
@@ -17,18 +16,21 @@
 </template>
 
 <script setup>
+import { useRouter } from 'vue-router';
 import { ref, onMounted, nextTick } from 'vue';
 import axios from 'axios';
 import Chart from 'chart.js/auto';
 import 'chartjs-adapter-date-fns';
 import { et } from 'date-fns/locale';
 
+const router = useRouter();
+let apiStudentData = [];
 const chartCanvas = ref(null);
 let chartInstance = null;
 const isLoading = ref(true);
 const error = ref(null);
 
-// TODO: get courseId from path/login data
+// TO_FIX: get courseId from path/login data
 const courseId = 35065;
 
 // Get data for graph
@@ -37,20 +39,21 @@ async function fetchAndRenderChart() {
   error.value = null;
   try {
     const response = await axios.get(`/api/grades/courses/${courseId}/grades/progress-lines`);
+    apiStudentData = response.data;
     isLoading.value = false;
     await nextTick();
-    renderChart(response.data);
+    renderChart(apiStudentData);
   } catch (err) {
-    error.value = "Andmete toomine ebaõnnestus.";
+    console.error("Viga andmete laadimisel:", err);
+    error.value = "Andmete laadimine ebaõnnestus. Proovi uuesti!";
     isLoading.value = false;
   }
 }
 
 // Draw graph
 function renderChart(apiData) {
-  console.log("3. Alustan graafiku joonistamist nende andmetega:", apiData);
 
-  if (!chartCanvas.value) {
+  if (!chartCanvas.value || !apiData || apiData.length === 0) {
     console.error("VIGA: Canvas element ei ole leitav! 'ref' ei tööta.");
     return;
   }
@@ -62,29 +65,75 @@ function renderChart(apiData) {
     return;
   }
 
-  const datasets = apiData.map((student, index) => {
-    const colors = ['#e4067e', '#4dbed2', '#342b60', '#f2b700', '#9396b0'];
-    const color = colors[index % colors.length];
-
-    if (!student.dataPoints || !Array.isArray(student.dataPoints)) {
-      console.error("VIGA: Tudengi objektil puuduvad või on vales formaadis 'dataPoints'", student);
-      return null;
-    }
-
+  const datasets = apiData.map((student) => {
     return {
       label: `${student.firstName} ${student.lastName}`,
       data: student.dataPoints,
-      borderColor: color,
-      backgroundColor: `${color}33`,
+      borderColor: '#342b60',
+      borderWidth: 2,
       fill: false,
-      tension: 0.1
+      tension: 0.1,
     };
-  }).filter(Boolean); //null removed
+  });
 
   const chartData = { datasets };
+  let currentlyHoveredIndex = null;
+
   const chartOptions = {
     responsive: true,
     maintainAspectRatio: false,
+
+    // Find nearest line to cursor
+    interaction: {
+      mode: 'dataset',
+      intersect: false,
+    },
+
+    // Change cursor to hand when hovering
+    onHover: (event, activeElements, chart) => {
+      event.native.target.style.cursor = activeElements.length ? 'pointer' : 'default';
+
+      // What line is active
+      const newHoveredIndex = activeElements.length > 0 ? activeElements[0].datasetIndex : null;
+
+      // Do nothing if same line
+      if (newHoveredIndex === currentlyHoveredIndex) {
+        return;
+      }
+
+      // Recolor lines if new line is hovered
+      currentlyHoveredIndex = newHoveredIndex;
+
+      for (const [index, dataset] of chart.data.datasets.entries()) {
+        if (index === currentlyHoveredIndex) {
+          // Make active line thich and pink
+          dataset.borderColor = '#e4067e';
+          dataset.borderWidth = 4;
+        } else {
+          dataset.borderColor = '#342b60';
+          dataset.borderWidth = 2;
+        }
+      }
+
+      chart.update('none');
+    },
+
+    // Clicking effect
+    onClick: (event, elements) => {
+      if (elements.length === 0) return;
+
+      const firstElement = elements[0];
+      const datasetIndex = firstElement.datasetIndex;
+
+      // Find the student who's line was clicked
+      const clickedStudent = apiStudentData[datasetIndex];
+
+      if (clickedStudent && clickedStudent.studentId) {
+        // Go to create a comment
+        router.push(`/comment/students/${clickedStudent.studentId}`);
+      }
+    },
+
     plugins: {
       legend: {
         display: false,
@@ -92,14 +141,37 @@ function renderChart(apiData) {
       title: {
         display: true,
         text: 'Tudengite õpikõverad',
-        font: {
-          size: 18
-        }
+        font: { size: 18 }
       },
-      // Index shows values on hover
+
       tooltip: {
-        mode: 'index',
+        enabled: true,
+        mode: 'nearest',
         intersect: false,
+        displayColors: false,
+
+        filter: function(tooltipItem) {
+          // 'tooltipItem' contains data for one line
+          // '_active' is Chart.js inner variable to hold active elements
+          const activeElements = tooltipItem.chart._active || [];
+          if (activeElements.length > 0) {
+            // Show only this tooltip line, that matches hovered lines datasetIndex
+            return tooltipItem.datasetIndex === activeElements[0].datasetIndex;
+          }
+          return false;
+        },
+
+        callbacks: {
+          label: function(context) {
+            const label = context.dataset.label || '';
+            const value = context.parsed.y;
+            return `${label}: ${value} punkti`;
+          },
+
+          footer: function(tooltipItems) {
+            return '\n'+'Kliki, et lisada kommentaar';
+          }
+        }
       }
     },
 
