@@ -1,0 +1,75 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.15.xsd">
+
+    <changeSet id="2025-10-22-grade-item-dummy-data" author="KJ" context="dev">
+        <sql>
+            INSERT INTO grade_item (gradeitem_id, course_id, user_id, created_at, item_name, item_type, item_module, grade)
+            VALUES (165894, 35065, 1, '2025-09-02 10:15:00', 'TK03 - Küsimustik (5p)', 'mod', 'quiz', 4)
+                ON CONFLICT DO NOTHING;
+
+            INSERT INTO grade_item (gradeitem_id, course_id, user_id, created_at, item_name, item_type, item_module, grade)
+            VALUES (146936, 35065, 1, '2025-09-08 14:30:00', 'PR/pr04_animals - Tests', 'mod', 'charon', 5)
+                ON CONFLICT DO NOTHING;
+
+            INSERT INTO grade_item (gradeitem_id, course_id, user_id, created_at, item_name, item_type, item_module, grade)
+            VALUES (146925, 35065, 1, '2025-09-15 09:00:00', 'PR/pr03_function - Tests', 'mod', 'charon', 3)
+                ON CONFLICT DO NOTHING;
+
+            INSERT INTO grade_item (gradeitem_id, course_id, user_id, created_at, item_name, item_type, item_module, grade)
+            VALUES (165894, 35065, 2, '2025-09-03 11:05:00', 'TK03 - Küsimustik (5p)', 'mod', 'quiz', 5)
+                ON CONFLICT DO NOTHING;
+
+            INSERT INTO grade_item (gradeitem_id, course_id, user_id, created_at, item_name, item_type, item_module, grade)
+            VALUES (146936, 35065, 2, '2025-09-10 16:45:00', 'PR/pr04_animals - Tests', 'mod', 'charon', 4)
+                ON CONFLICT DO NOTHING;
+
+            INSERT INTO grade_item (gradeitem_id, course_id, user_id, created_at, item_name, item_type, item_module, grade)
+            VALUES (146925, 35065, 2, '2025-09-18 10:20:00', 'PR/pr03_function - Tests', 'mod', 'charon', 5)
+                ON CONFLICT DO NOTHING;
+
+            INSERT INTO grade_item (gradeitem_id, course_id, user_id, created_at, item_name, item_type, item_module, grade)
+            VALUES (165894, 35065, 3, '2025-09-05 09:30:00', 'TK03 - Küsimustik (5p)', 'mod', 'quiz', 3)
+                ON CONFLICT DO NOTHING;
+
+            INSERT INTO grade_item (gradeitem_id, course_id, user_id, created_at, item_name, item_type, item_module, grade)
+            VALUES (146936, 35065, 3, '2025-09-12 13:00:00', 'PR/pr04_animals - Tests', 'mod', 'charon', 5)
+                ON CONFLICT DO NOTHING;
+
+            INSERT INTO grade_item (gradeitem_id, course_id, user_id, created_at, item_name, item_type, item_module, grade)
+            VALUES (146925, 35065, 3, '2025-09-22 11:45:00', 'PR/pr03_function - Tests', 'mod', 'charon', 4)
+                ON CONFLICT DO NOTHING;
+
+            INSERT INTO grade_item (gradeitem_id, course_id, user_id, created_at, item_name, item_type, item_module, grade)
+            VALUES (165894, 35065, 4, '2025-10-01 15:00:00', 'TK03 - Küsimustik (5p)', 'mod', 'quiz', 5)
+                ON CONFLICT DO NOTHING;
+
+            INSERT INTO grade_item (gradeitem_id, course_id, user_id, created_at, item_name, item_type, item_module, grade)
+            VALUES (146936, 35065, 4, '2025-10-07 18:10:00', 'PR/pr04_animals - Tests', 'mod', 'charon', 2)
+                ON CONFLICT DO NOTHING;
+
+            INSERT INTO grade_item (gradeitem_id, course_id, user_id, created_at, item_name, item_type, item_module, grade)
+            VALUES (146925, 35065, 4, '2025-10-14 20:00:00', 'PR/pr03_function - Tests', 'mod', 'charon', 4)
+                ON CONFLICT DO NOTHING;
+
+            INSERT INTO grade_item (gradeitem_id, course_id, user_id, created_at, item_name, item_type, item_module, grade)
+            VALUES (165894, 35065, 5, '2025-10-02 12:20:00', 'TK03 - Küsimustik (5p)', 'mod', 'quiz', 4)
+                ON CONFLICT DO NOTHING;
+
+            INSERT INTO grade_item (gradeitem_id, course_id, user_id, created_at, item_name, item_type, item_module, grade)
+            VALUES (146936, 35065, 5, '2025-10-09 11:11:00', 'PR/pr04_animals - Tests', 'mod', 'charon', 5)
+                ON CONFLICT DO NOTHING;
+
+            INSERT INTO grade_item (gradeitem_id, course_id, user_id, created_at, item_name, item_type, item_module, grade)
+            VALUES (146925, 35065, 5, '2025-10-16 21:30:00', 'PR/pr03_function - Tests', 'mod', 'charon', 3)
+                ON CONFLICT DO NOTHING;
+
+            INSERT INTO grade_item (gradeitem_id, course_id, user_id, created_at, item_name, item_type, item_module, grade)
+            VALUES (159069, 35065, 5, '2025-10-20 19:55:00', 'EX/ex00_hello - Tests', 'mod', 'charon', 5)
+                ON CONFLICT DO NOTHING;
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
