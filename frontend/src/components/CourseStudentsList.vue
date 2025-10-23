@@ -1,21 +1,12 @@
-<template>
-  <div class="container container--medium">
-    <h1>Konkreetse kursuse tudengid</h1>
-
-    <StudentList title="Aktiivsed tudengid" :students="studentsWithDeclaration" />
-    <StudentList title="Mitteaktiivsed tudengid" :students="inactiveStudents" />
-    <StudentList title="Ilma deklaratsioonita tudengid" :students="studentsWithoutDeclaration" />
-  </div>
-</template>
-
 <script setup>
 import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import StudentList from "@/components/StudentList.vue";
-import { fetchAllStudentsData } from "@/services/studentService";
+import { fetchAllStudentsData } from "@/services/studentService.js";
 
 const route = useRoute();
 const courseId = route.params.courseId;
+const courseName = route.query.courseName
 
 const studentsWithDeclaration = ref([]);
 const inactiveStudents = ref([]);
@@ -32,3 +23,13 @@ onMounted(async () => {
   }
 });
 </script>
+
+<template>
+  <div class="container container--medium">
+    <h1>{{ courseName }}</h1>
+
+    <StudentList title="Aktiivsed tudengid" :students="studentsWithDeclaration" />
+    <StudentList title="Mitteaktiivsed tudengid" :students="inactiveStudents" />
+    <StudentList title="Ilma deklaratsioonita tudengid" :students="studentsWithoutDeclaration" />
+  </div>
+</template>

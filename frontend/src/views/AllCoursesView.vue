@@ -40,7 +40,7 @@ onMounted(() => {
       <input
           type="text"
           v-model="searchQuery"
-          placeholder="Otsi kursuse nimi järgi"
+          placeholder="Kursuse nimi või kood"
       />
       <button @click="handleSearch">Otsi</button>
     </div>
