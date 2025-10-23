@@ -11,6 +11,7 @@ public interface CommentMapper {
 
     @Mapping(source = "student", target = "student")
     @Mapping(source = "teacherId", target = "teacherId")
+    @Mapping(source = "course", target = "course")
     CommentResponseDto mapToResponseDto(Comment comment);
 
     @Mapping(target = "student", expression = "java(studentMapper.studentIdToEntity(dto.getStudentId(), studentRepository))")

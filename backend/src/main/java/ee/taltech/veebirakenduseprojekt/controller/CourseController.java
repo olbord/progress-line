@@ -1,6 +1,5 @@
 package ee.taltech.veebirakenduseprojekt.controller;
 
-import ee.taltech.veebirakenduseprojekt.repository.Course;
 import ee.taltech.veebirakenduseprojekt.service.CourseService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.*;

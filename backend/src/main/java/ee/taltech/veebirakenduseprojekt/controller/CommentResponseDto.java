@@ -11,4 +11,5 @@ public class CommentResponseDto {
     private String commentText;
     private Long teacherId;
     private StudentDto student;
+    private CourseDto course;
 }
