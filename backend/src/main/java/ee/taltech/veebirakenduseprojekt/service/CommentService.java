@@ -55,7 +55,7 @@ public class CommentService {
     public CommentResponseDto updateComment(Long id, CommentRequestDto dto) {
         Comment existing = commentRepository.findById(id)
                 .orElseThrow(() -> new ApplicationException("Comment not found with id " + id));
-        // TODO: only update the comment when teacherId is actually an id of a user with the role of a teacher
+        // TODO: security: only update the comment when teacherId is actually an id of a user with the role of a teacher
         commentMapper.updateEntity(dto, existing, studentRepository, studentMapper, courseRepository);
         Comment updated = commentRepository.save(existing);
         return commentMapper.mapToResponseDto(updated);

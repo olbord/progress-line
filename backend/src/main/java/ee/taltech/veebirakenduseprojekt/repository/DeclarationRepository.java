@@ -12,6 +12,6 @@ public interface DeclarationRepository extends JpaRepository<Student, Long> {
 
     @Transactional
     @Modifying
-    @Query(value = "DELETE FROM declaration d WHERE d.user_id = :studentId", nativeQuery = true)
-    void deleteDeclarationByStudentId(@Param("studentId") Long studentId);
+    @Query(value = "DELETE FROM declaration d WHERE d.user_id = :studentId AND d.course_id = :courseId", nativeQuery = true)
+    void deleteDeclarationByStudentIdAndCourseId(@Param("studentId") Long studentId, @Param("courseId") Long courseId);
 }

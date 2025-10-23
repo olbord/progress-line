@@ -11,7 +11,7 @@ public class DeclarationService {
 
     private final DeclarationRepository declarationRepository;
 
-    public void deleteStudentDeclarationById(Long studentId) {
-        declarationRepository.deleteDeclarationByStudentId(studentId);
+    public void deleteStudentDeclarationById(Long studentId, Long courseId) {
+        declarationRepository.deleteDeclarationByStudentIdAndCourseId(studentId, courseId);
     }
 }

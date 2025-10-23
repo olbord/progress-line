@@ -24,7 +24,7 @@ public class InactiveService {
                         "Student not found or has not declared the course."
                 ));
 
-        if (inactiveRepository.existsByStudentId(studentId)) {
+        if (inactiveRepository.existsByCourseIdAndStudentId(courseId, studentId)) {
             throw new IllegalStateException("Student is already marked as inactive.");
         }
 

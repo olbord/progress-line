@@ -5,5 +5,5 @@ import org.springframework.stereotype.*;
 
 @Repository
 public interface InactiveRepository extends JpaRepository<Inactive, Long> {
-    boolean existsByStudentId(Long studentId);
+    boolean existsByCourseIdAndStudentId(Long courseId, Long studentId);
 }
