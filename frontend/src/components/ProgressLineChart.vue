@@ -22,21 +22,21 @@ import axios from 'axios';
 import Chart from 'chart.js/auto';
 import 'chartjs-adapter-date-fns';
 import { et } from 'date-fns/locale';
+import {useRoute} from "vue-router";
 
 const chartCanvas = ref(null);
 let chartInstance = null;
 const isLoading = ref(true);
 const error = ref(null);
 
-// TODO: get courseId from path/login data
-const courseId = 35065;
+const route = useRoute()
+const courseId = route.params.courseId
 
-// Get data for graph
 async function fetchAndRenderChart() {
   isLoading.value = true;
   error.value = null;
   try {
-    const response = await axios.get(`/api/grades/courses/${courseId}/grades/progress-lines`);
+    const response = await axios.get(`/api/courses/${courseId}/grades/progress-lines`);
     isLoading.value = false;
     await nextTick();
     renderChart(response.data);

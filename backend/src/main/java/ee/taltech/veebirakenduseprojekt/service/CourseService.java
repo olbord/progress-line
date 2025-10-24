@@ -1,9 +1,6 @@
 package ee.taltech.veebirakenduseprojekt.service;
 
-import ee.taltech.veebirakenduseprojekt.controller.CommentResponseDto;
-import ee.taltech.veebirakenduseprojekt.controller.CourseDto;
-import ee.taltech.veebirakenduseprojekt.controller.CourseSearchRequest;
-import ee.taltech.veebirakenduseprojekt.controller.StudentDto;
+import ee.taltech.veebirakenduseprojekt.controller.*;
 import ee.taltech.veebirakenduseprojekt.mapper.CourseMapper;
 import ee.taltech.veebirakenduseprojekt.repository.CourseRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -23,6 +20,7 @@ public class CourseService {
     private final InactiveService inactiveService;
     private final CommentService commentService;
     private final CourseMapper courseMapper;
+    private final GradeItemService gradeItemService;
 
     public List<CourseDto> getCourses(CourseSearchRequest searchRequest) {
         String query = (searchRequest != null && searchRequest.getQuery() != null)
@@ -61,5 +59,15 @@ public class CourseService {
     public List<CommentResponseDto> getCommentsByStudentId(Long courseId, Long studentId) {
         validateCourseExists(courseId);
         return commentService.getCommentsByCourseIdAndStudentId(courseId, studentId);
+    }
+
+    public List<GradeItemDto> getAllStudentGradesByStudentId(Long courseId, Long studentId) {
+        validateCourseExists(courseId);
+        return gradeItemService.getAllStudentGradesByStudentId(courseId, studentId);
+    }
+
+    public List<StudentProgressLineDto> getCourseProgressLineData(Long courseId) {
+        validateCourseExists(courseId);
+        return gradeItemService.getCourseProgressLineData(courseId);
     }
 }

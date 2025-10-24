@@ -14,7 +14,10 @@ public class GradeItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long courseId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "course_id", nullable = false)
+    @EqualsAndHashCode.Exclude
+    private Course course;
 
     @Column(name = "user_id", insertable = false, updatable = false)
     private Long userId;
