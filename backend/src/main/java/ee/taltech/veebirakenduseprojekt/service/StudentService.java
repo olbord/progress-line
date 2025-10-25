@@ -51,10 +51,4 @@ public class StudentService {
                 .toList();
         return studentDtos;
     }
-
-    public StudentDto getStudentWithGrades(String firstName, String lastName) {
-        Student student = studentRepository.findByFirstNameAndLastName(firstName, lastName)
-                .orElseThrow(() -> new ApplicationException("Student not found: " + firstName + " " + lastName));
-        return studentMapper.mapToDto(student);
-    }
 }
