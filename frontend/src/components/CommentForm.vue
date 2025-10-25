@@ -51,7 +51,7 @@ const newComment = ref({
   commentText: '',
   type: 'EMAIL',
   studentId: props.studentId,
-  teacherId: 1,
+  teacherId: 1,  // TODO: pass teacherId from JWT token?
   courseId: props.courseId
 });
 
