@@ -1,23 +1,11 @@
 <template>
-  <div class="container container--medium">
-    <h1>Tudengi hinded</h1>
-
-    <div class="horizontal-group">
-      <input
-          v-model="studentIdInput"
-          type="number"
-          placeholder="Sisesta tudengi ID"
-      />
-      <button @click="fetchGrades" class="btn btn--primary">Otsi hinded</button>
-    </div>
-
+  <div>
     <div v-if="loading">Laen hinded...</div>
     <div v-else-if="error" class="message message--error">{{ error }}</div>
 
-    <table v-else-if="grades.length > 0" class="data-table">
+    <table v-else-if="grades.length > 0">
       <thead>
       <tr>
-        <th>Kursuse ID</th>
         <th>Ülesanne</th>
         <th>Tüüp</th>
         <th>Hinne</th>
@@ -26,7 +14,6 @@
       </thead>
       <tbody>
       <tr v-for="grade in grades" :key="grade.id">
-        <td>{{ grade.courseId }}</td>
         <td>{{ grade.itemName }}</td>
         <td>{{ grade.itemType }}</td>
         <td>{{ grade.grade }}</td>
@@ -40,39 +27,47 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import apiClient from "@/services/api.js";
+import { ref, onMounted, watch } from 'vue'
+import apiClient from '@/services/api.js'
 
-const studentIdInput = ref('')
+const props = defineProps({
+  studentId: {
+    type: Number,
+    required: true
+  },
+  courseId: {
+    type: Number,
+    required: true
+  }
+})
+
 const grades = ref([])
 const loading = ref(false)
 const error = ref(null)
 
+const courseId = props.courseId
+const studentId = props.studentId
+
 async function fetchGrades() {
-  if (!studentIdInput.value) {
-    error.value = 'Palun sisesta tudengi ID'
-    return
-  }
   loading.value = true
   error.value = null
   grades.value = []
   try {
-    const response = await apiClient.get(`/grades/students/${studentIdInput.value}`)
+    const response = await apiClient.get(`/courses/${courseId}/grades/students/${studentId}`)
     grades.value = response.data
   } catch (err) {
+    console.error(err)
     error.value = 'Viga andmete laadimisel'
   } finally {
     loading.value = false
   }
 }
+
+onMounted(fetchGrades)
+watch(() => [props.courseId, props.studentId], fetchGrades)
 </script>
 
 <style scoped>
-.search-box {
-  margin: 1rem 0;
-  display: flex;
-  gap: 0.5rem;
-}
 input {
   padding: 0.4rem;
   border: 1px solid #ccc;
@@ -88,10 +83,6 @@ button {
 }
 button:hover {
   background: #c9056f;
-}
-.error {
-  color: red;
-  margin: 0.5rem 0;
 }
 table {
   border-collapse: collapse;

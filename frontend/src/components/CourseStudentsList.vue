@@ -28,8 +28,20 @@ onMounted(async () => {
   <div class="container container--medium">
     <h1>{{ courseName }}</h1>
 
-    <StudentList title="Aktiivsed tudengid" :students="studentsWithDeclaration" />
-    <StudentList title="Mitteaktiivsed tudengid" :students="inactiveStudents" />
-    <StudentList title="Ilma deklaratsioonita tudengid" :students="studentsWithoutDeclaration" />
+    <StudentList
+        title="Aktiivsed tudengid"
+        :students="studentsWithDeclaration"
+        :courseId="Number(courseId)"
+    />
+    <StudentList
+        title="Mitteaktiivsed tudengid"
+        :students="inactiveStudents"
+        :courseId="Number(courseId)"
+    />
+    <StudentList
+        title="Ilma deklaratsioonita tudengid"
+        :students="studentsWithoutDeclaration"
+        :courseId="Number(courseId)"
+    />
   </div>
 </template>
