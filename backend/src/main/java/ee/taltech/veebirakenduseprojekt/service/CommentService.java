@@ -20,6 +20,7 @@ public class CommentService {
     private final CommentMapper commentMapper;
     private final StudentRepository studentRepository;
     private final StudentMapper studentMapper;
+    private final CourseRepository courseRepository;
 
     public List<CommentResponseDto> getAllComments() {
         List<Comment> comments = commentRepository.findAllWithStudents();
@@ -36,23 +37,13 @@ public class CommentService {
                 return commentMapper.mapToResponseDto(comment);
     }
 
-    public List<CommentResponseDto> getCommentsByStudentId(Long studentId) {
-        log.debug("Getting comments of student with id " + studentId);
-        if (!studentRepository.existsById(studentId)) {
-            throw new ApplicationException("Student not found with id " + studentId);
-        }
-        return commentRepository.findByStudentId(studentId).stream()
-                .map(commentMapper::mapToResponseDto)
-                .toList();
-    }
-
     public CommentResponseDto addComment(CommentRequestDto dto) {
         Long studentId = dto.getStudentId();
         if (studentId == null) {
             throw new ApplicationException("Student ID cannot be null for a new comment");
         }
         Student student = studentMapper.studentIdToEntity(studentId, studentRepository);
-        Comment entity = commentMapper.mapToEntity(dto, studentRepository, studentMapper);
+        Comment entity = commentMapper.mapToEntity(dto, studentRepository, studentMapper, courseRepository);
         if (entity.getStudent() == null) {
             throw new ApplicationException("Student information is required for a comment.");
         }
@@ -64,9 +55,20 @@ public class CommentService {
     public CommentResponseDto updateComment(Long id, CommentRequestDto dto) {
         Comment existing = commentRepository.findById(id)
                 .orElseThrow(() -> new ApplicationException("Comment not found with id " + id));
-        commentMapper.updateEntity(dto, existing, studentMapper);
+        // TODO: security: only update the comment when teacherId is actually an id of a user with the role of a teacher
+        commentMapper.updateEntity(dto, existing, studentRepository, studentMapper, courseRepository);
         Comment updated = commentRepository.save(existing);
         return commentMapper.mapToResponseDto(updated);
     }
 
+    public List<CommentResponseDto> getCommentsByCourseIdAndStudentId(Long courseId, Long studentId) {
+        log.debug("Getting comments of student with id " + studentId);
+        if (!studentRepository.existsById(studentId)) {
+            throw new ApplicationException("Student not found with id " + studentId);
+        }
+        return commentRepository.findByStudentIdAndCourseId(courseId, studentId)
+                .stream()
+                .map(commentMapper::mapToResponseDto)
+                .toList();
+    }
 }

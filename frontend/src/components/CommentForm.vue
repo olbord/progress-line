@@ -31,10 +31,14 @@
 
 <script setup>
 import { ref } from 'vue';
-import apiClient from '@/services/api';
+import apiClient from '@/services/api.js';
 
 const props = defineProps({
   studentId: {
+    type: Number,
+    required: true
+  },
+  courseId: {
     type: Number,
     required: true
   }
@@ -47,7 +51,8 @@ const newComment = ref({
   commentText: '',
   type: 'EMAIL',
   studentId: props.studentId,
-  teacherId: 1
+  teacherId: 1,  // TODO: pass teacherId from JWT token?
+  courseId: props.courseId
 });
 
 async function submitComment() {

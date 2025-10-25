@@ -19,8 +19,8 @@ public class GradeItemService {
     private final GradeItemRepository gradeItemRepository;
     private final GradeItemMapper gradeItemMapper;
 
-    public List<GradeItemDto> getAllStudentGradesByStudentId(Long studentId) {
-        return gradeItemRepository.findAllByStudentId(studentId).stream()
+    public List<GradeItemDto> getAllStudentGradesByStudentId(Long courseId, Long studentId) {
+        return gradeItemRepository.findAllByCourseIdAndUserId(courseId, studentId).stream()
                 .map(gradeItemMapper::mapToDto)
                 .toList();
     }

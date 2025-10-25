@@ -1,0 +1,17 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.15.xsd">
+<changeSet id="2025-10-22-course_id-in-comment-table" author="NK">
+    <sql>
+        ALTER TABLE comment
+            ADD COLUMN course_id BIGINT NOT NULL DEFAULT 35065;
+
+        ALTER TABLE comment
+            ADD CONSTRAINT fk_comment_course
+                FOREIGN KEY (course_id)
+                    REFERENCES course(id);
+    </sql>
+</changeSet>
+</databaseChangeLog>

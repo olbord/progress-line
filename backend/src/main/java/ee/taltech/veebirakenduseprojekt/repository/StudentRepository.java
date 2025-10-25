@@ -11,35 +11,43 @@ import java.util.Optional;
 public interface StudentRepository extends JpaRepository<Student, Long> {
 
     @Query(value = """
-        SELECT * FROM "user" u
-        WHERE u.id NOT IN (SELECT d.user_id FROM declaration d WHERE course_id = 35065)
-        AND u.id IN (SELECT r.user_id FROM user_role r WHERE course_id = 35065 AND role_id = 5)
+        SELECT u.*
+        FROM "user" u
+        JOIN user_role r ON u.id = r.user_id
+        WHERE r.course_id = :courseId
+          AND r.role_id = 5
+          AND u.id NOT IN (
+              SELECT d.user_id
+              FROM declaration d
+              WHERE d.course_id = :courseId
+          )
         """, nativeQuery = true)
-    List<Student> findAllWithoutDeclaration();
+    List<Student> findAllWithoutDeclarationByCourse(@Param("courseId") Long courseId);
 
     @Query(value = """
         SELECT u.*
         FROM "user" u
         JOIN user_role r ON u.id = r.user_id
         JOIN declaration d ON u.id = d.user_id
-        WHERE r.course_id = 35065
+        WHERE r.course_id = :courseId
           AND r.role_id = 5
-          AND d.course_id = 35065
+          AND d.course_id = :courseId
           AND u.id NOT IN (SELECT i.user_id FROM inactive i)
         """, nativeQuery = true)
-    List<Student> findAllActiveWithDeclaration();
+    List<Student> findAllActiveWithDeclarationByCourse(@Param("courseId") Long courseId);
 
     @Query(value = """
         SELECT u.*
         FROM "user" u
         JOIN user_role r ON u.id = r.user_id
         JOIN declaration d ON u.id = d.user_id
-        WHERE r.course_id = 35065
+        WHERE r.course_id = :courseId
           AND r.role_id = 5
-          AND d.course_id = 35065
+          AND d.course_id = :courseId
           AND u.id = :studentId
         """, nativeQuery = true)
-    Optional<Student> findWithDeclarationById(@Param("studentId") Long studentId);
+    Optional<Student> findWithDeclarationByCourseAndId(@Param("courseId") Long courseId,
+                                                       @Param("studentId") Long studentId);
 
     @Query(value = """
     SELECT u.*
@@ -47,19 +55,9 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     JOIN user_role r ON u.id = r.user_id
     JOIN declaration d ON u.id = d.user_id
     JOIN inactive i ON u.id = i.user_id
-    WHERE r.course_id = 35065
+    WHERE r.course_id = :courseId
       AND r.role_id = 5
-      AND d.course_id = 35065
+      AND d.course_id = :courseId
     """, nativeQuery = true)
-    List<Student> findAllInactiveWithDeclaration();
-
-    @Query(value = """
-    SELECT s
-    FROM Student s
-    LEFT JOIN FETCH s.grades
-    WHERE s.firstName = :firstName
-        AND s.lastName = :lastName
-    """)
-    Optional<Student> findByFirstNameAndLastName(@Param("firstName") String firstName,
-                                           @Param("lastName") String lastName);
+    List<Student> findAllInactiveWithDeclarationByCourse(@Param("courseId") Long courseId);
 }

@@ -14,9 +14,10 @@ public class DeclarationController {
 
     private final DeclarationService declarationService;
 
-    @DeleteMapping("/student/{studentId}")
+    @DeleteMapping("/{courseId}/student/{studentId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteStudentDeclaration(@PathVariable Long studentId) {
-        declarationService.deleteStudentDeclarationById(studentId);
+    public void deleteStudentDeclaration(@PathVariable Long courseId,
+                                         @PathVariable Long studentId) {
+        declarationService.deleteStudentDeclarationById(studentId, courseId);
     }
 }

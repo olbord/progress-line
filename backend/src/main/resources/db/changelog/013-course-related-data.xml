@@ -1,0 +1,12 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.15.xsd">
+<changeSet id="2025-10-20-course-related-data" author="NK">
+    <sql>
+        ALTER TABLE inactive
+            ADD COLUMN course_id BIGINT NOT NULL DEFAULT 35065;
+    </sql>
+</changeSet>
+</databaseChangeLog>
