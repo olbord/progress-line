@@ -22,6 +22,8 @@ public class CourseService {
     private final CommentService commentService;
     private final CourseMapper courseMapper;
     private final GradeItemService gradeItemService;
+    private final TeacherService teacherService;
+
     public List<CourseDto> getCourses(Long teacherId, CourseSearchRequest request) {
         if (teacherId == null) {
             throw new IllegalArgumentException("Authenticated teacherId must be provided");
@@ -74,5 +76,10 @@ public class CourseService {
     public List<StudentProgressLineDto> getCourseProgressLineData(Long courseId) {
         validateCourseExists(courseId);
         return gradeItemService.getCourseProgressLineData(courseId);
+    }
+
+    public List<TeacherDto> getTeachers(Long courseId) {
+        validateCourseExists(courseId);
+        return teacherService.getTeachersByCourse(courseId);
     }
 }
