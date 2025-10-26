@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface StudentRepository extends JpaRepository<Student, Long> {
+public interface StudentRepository extends JpaRepository<User, Long> {
 
     @Query(value = """
         SELECT u.*
@@ -22,7 +22,7 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
               WHERE d.course_id = :courseId
           )
         """, nativeQuery = true)
-    List<Student> findAllWithoutDeclarationByCourse(@Param("courseId") Long courseId);
+    List<User> findAllWithoutDeclarationByCourse(@Param("courseId") Long courseId);
 
     @Query(value = """
         SELECT u.*
@@ -34,7 +34,7 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
           AND d.course_id = :courseId
           AND u.id NOT IN (SELECT i.user_id FROM inactive i)
         """, nativeQuery = true)
-    List<Student> findAllActiveWithDeclarationByCourse(@Param("courseId") Long courseId);
+    List<User> findAllActiveWithDeclarationByCourse(@Param("courseId") Long courseId);
 
     @Query(value = """
         SELECT u.*
@@ -46,7 +46,7 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
           AND d.course_id = :courseId
           AND u.id = :studentId
         """, nativeQuery = true)
-    Optional<Student> findWithDeclarationByCourseAndId(@Param("courseId") Long courseId,
+    Optional<User> findWithDeclarationByCourseAndId(@Param("courseId") Long courseId,
                                                        @Param("studentId") Long studentId);
 
     @Query(value = """
@@ -59,5 +59,5 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
       AND r.role_id = 5
       AND d.course_id = :courseId
     """, nativeQuery = true)
-    List<Student> findAllInactiveWithDeclarationByCourse(@Param("courseId") Long courseId);
+    List<User> findAllInactiveWithDeclarationByCourse(@Param("courseId") Long courseId);
 }

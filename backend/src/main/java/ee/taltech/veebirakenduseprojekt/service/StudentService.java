@@ -1,9 +1,7 @@
 package ee.taltech.veebirakenduseprojekt.service;
 
 import ee.taltech.veebirakenduseprojekt.controller.StudentDto;
-import ee.taltech.veebirakenduseprojekt.exception.ApplicationException;
 import ee.taltech.veebirakenduseprojekt.mapper.StudentMapper;
-import ee.taltech.veebirakenduseprojekt.repository.Student;
 import ee.taltech.veebirakenduseprojekt.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

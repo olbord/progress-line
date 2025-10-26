@@ -25,7 +25,7 @@ public class GradeItem {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     @EqualsAndHashCode.Exclude
-    private Student student;
+    private User student;
 
     private String itemName;
     private String itemType;

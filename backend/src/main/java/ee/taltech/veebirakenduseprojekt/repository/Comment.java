@@ -36,5 +36,5 @@ public class Comment {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     @EqualsAndHashCode.Exclude
-    private Student student;
+    private User student;
 }

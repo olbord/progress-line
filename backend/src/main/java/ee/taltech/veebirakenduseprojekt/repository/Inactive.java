@@ -17,7 +17,7 @@ public class Inactive {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    private Student student;
+    private User student;
 
     @Column(name = "date_time", nullable = false)
     private LocalDateTime dateTime;
