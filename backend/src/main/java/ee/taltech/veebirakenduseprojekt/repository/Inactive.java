@@ -15,10 +15,9 @@ public class Inactive {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // TODO: inactive table should have a column "course_id"
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    private Student student;
+    private User student;
 
     @Column(name = "date_time", nullable = false)
     private LocalDateTime dateTime;

@@ -11,11 +11,11 @@ import java.util.List;
 public interface StudentMapper {
 
 
-    StudentDto mapToDto(Student student);
+    StudentDto mapToDto(User student);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "comments", ignore = true)
-    Student mapToEntity(StudentDto dto);
+    User mapToEntity(StudentDto dto);
 
     default List<LocalDateTime> mapComments(List<Comment> comments) {
         return comments.stream()
@@ -24,7 +24,7 @@ public interface StudentMapper {
     }
 
     @Named("studentDtoToEntityFromCommentDto")
-    default Student studentDtoToEntityFromCommentDto(StudentDto studentDto, @Context StudentRepository studentRepository) {
+    default User studentDtoToEntityFromCommentDto(StudentDto studentDto, @Context StudentRepository studentRepository) {
         if (studentDto == null) {
             return null;
         }
@@ -33,7 +33,7 @@ public interface StudentMapper {
     }
 
     @Named("studentIdToEntity")
-    default Student studentIdToEntity(Long studentId, @Context StudentRepository studentRepository) {
+    default User studentIdToEntity(Long studentId, @Context StudentRepository studentRepository) {
         if (studentId == null) {
             return null;
         }

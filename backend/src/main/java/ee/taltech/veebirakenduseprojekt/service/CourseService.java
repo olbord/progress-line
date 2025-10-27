@@ -2,6 +2,7 @@ package ee.taltech.veebirakenduseprojekt.service;
 
 import ee.taltech.veebirakenduseprojekt.controller.*;
 import ee.taltech.veebirakenduseprojekt.mapper.CourseMapper;
+import ee.taltech.veebirakenduseprojekt.repository.Course;
 import ee.taltech.veebirakenduseprojekt.repository.CourseRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -21,13 +22,19 @@ public class CourseService {
     private final CommentService commentService;
     private final CourseMapper courseMapper;
     private final GradeItemService gradeItemService;
+    private final TeacherService teacherService;
 
-    public List<CourseDto> getCourses(CourseSearchRequest searchRequest) {
-        String query = (searchRequest != null && searchRequest.getQuery() != null)
-                ? searchRequest.getQuery().trim()
-                : null;
+    public List<CourseDto> getCourses(Long teacherId, CourseSearchRequest request) {
+        if (teacherId == null) {
+            throw new IllegalArgumentException("Authenticated teacherId must be provided");
+        }
 
-        return courseMapper.toDtoList(courseRepository.searchCourses(query));
+        String query = request.getQuery();
+        String trimmedQuery = (query != null) ? query.trim() : null;
+
+        List<Course> courses = courseRepository.searchCourses(teacherId, trimmedQuery);
+
+        return courseMapper.toDtoList(courses);
     }
 
     public List<StudentDto> getAllActiveStudentsWithDeclarations(Long courseId) {
@@ -69,5 +76,10 @@ public class CourseService {
     public List<StudentProgressLineDto> getCourseProgressLineData(Long courseId) {
         validateCourseExists(courseId);
         return gradeItemService.getCourseProgressLineData(courseId);
+    }
+
+    public List<TeacherDto> getTeachers(Long courseId) {
+        validateCourseExists(courseId);
+        return teacherService.getTeachersByCourse(courseId);
     }
 }

@@ -18,6 +18,7 @@ public class CourseController {
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
     public List<CourseDto> getCourses(@RequestBody(required = false) CourseSearchRequest searchRequest) {
-        return courseService.getCourses(searchRequest);
+        // TODO: replace teacherId with app user's id from the UserDetails - security
+        return courseService.getCourses(3L, searchRequest);
     }
 }

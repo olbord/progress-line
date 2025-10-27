@@ -42,7 +42,7 @@ public class CommentService {
         if (studentId == null) {
             throw new ApplicationException("Student ID cannot be null for a new comment");
         }
-        Student student = studentMapper.studentIdToEntity(studentId, studentRepository);
+        User student = studentMapper.studentIdToEntity(studentId, studentRepository);
         Comment entity = commentMapper.mapToEntity(dto, studentRepository, studentMapper, courseRepository);
         if (entity.getStudent() == null) {
             throw new ApplicationException("Student information is required for a comment.");

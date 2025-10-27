@@ -30,5 +30,5 @@ public class Course {
     private Set<Inactive> inactives = new HashSet<>();
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<MoodleEnrollment> enrollments = new HashSet<>();
+    private Set<UserRole> userRoles = new HashSet<>();
 }
