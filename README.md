@@ -107,14 +107,14 @@ Build the application JAR. Use of -x test to avoid tests is optional:
 ./gradlew clean build -x test
 ```
 The Dockerfile can be found in Git.
-Build the Docker image: (Replace kadij with your Docker Hub username)
+Build the Docker image: (Replace projectprogressline with your Docker Hub username, if needed)
 ```sh
-docker build -t kadij/progress-line .
+docker build -t projectprogressline/progress-line-backend .
 ```
 
 Tag the image as latest:
 ```sh
-docker tag progress-line kadij/progress-line:latest
+docker tag progress-line projectprogressline/progress-line-backend:latest
 ```
 
 Log in to Docker Hub:
@@ -124,7 +124,7 @@ docker login
 
 Push the image to Docker Hub:
 ```sh
-docker push kadij/progress-line:latest
+docker push projectprogressline/progress-line-backend:latest
 ```
 #### Part 1.2. The frontend image  (on your local machine)
 TODO

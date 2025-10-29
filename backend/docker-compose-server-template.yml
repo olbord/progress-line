@@ -1,7 +1,7 @@
 version: "3.7"
 services:
   progress-line:
-    image: kadij/progress-line:latest
+    image: projectprogressline/progress-line-backend:latest
     container_name: progress-line
     restart: always
     ports:
