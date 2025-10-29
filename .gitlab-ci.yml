@@ -12,8 +12,8 @@ build:
     - chmod +x ./gradlew
     - ./gradlew clean build
   artifacts:
-  paths:
-    - build/libs/*.jar
+    paths:
+      - build/libs/*.jar
 dockerize:
   stage: dockerize
   image: docker:latest
