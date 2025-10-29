@@ -14,7 +14,7 @@ build:
     - ./gradlew clean build -x test
   artifacts:
     paths:
-      - build/libs/*.jar
+      - backend/build/libs/*.jar
 dockerize:
   stage: dockerize
   image: docker:latest
