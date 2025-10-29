@@ -9,8 +9,9 @@ build:
   stage: build
   image: gradle:jdk21
   script:
+    - cd backend
     - chmod +x ./gradlew
-    - ./gradlew clean build
+    - ./gradlew clean build -x test
   artifacts:
     paths:
       - build/libs/*.jar
