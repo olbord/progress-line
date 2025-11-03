@@ -3,13 +3,13 @@
     <div v-if="loading">Laen hinded...</div>
     <div v-else-if="error" class="message message--error">{{ error }}</div>
 
-    <table v-else-if="grades.length > 0">
+    <table v-else-if="grades.length > 0" class="data-table">
       <thead>
       <tr>
-        <th>Ülesanne</th>
-        <th>Tüüp</th>
-        <th>Hinne</th>
-        <th>Kuupäev</th>
+        <th class="col-wide">Ülesanne</th>
+        <th class="col-narrow">Tüüp</th>
+        <th class="col-narrow">Hinne</th>
+        <th class="col-medium">Kuupäev</th>
       </tr>
       </thead>
       <tbody>
@@ -67,34 +67,3 @@ onMounted(fetchGrades)
 watch(() => [props.courseId, props.studentId], fetchGrades)
 </script>
 
-<style scoped>
-input {
-  padding: 0.4rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-button {
-  padding: 0.4rem 0.8rem;
-  background: #e4067e;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-button:hover {
-  background: #c9056f;
-}
-table {
-  border-collapse: collapse;
-  width: 100%;
-  margin-top: 1rem;
-}
-th, td {
-  border: 1px solid #ddd;
-  padding: 8px;
-}
-th {
-  background: #f4f4f4;
-  text-align: left;
-}
-</style>

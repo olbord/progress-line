@@ -60,6 +60,22 @@ a:hover {
     color: var(--taltech-white);
 }
 
+/* Button link */
+.btn--link {
+    background: #e4067e;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 0.4rem 0.8rem;
+    cursor: pointer;
+    display: inline-block;
+    white-space: nowrap;
+}
+
+.btn--link:hover {
+    background: #c9056f;
+}
+
 .message {
     margin-top: 1rem;
     text-align: center;
@@ -134,29 +150,28 @@ a:hover {
 .data-table {
     border-collapse: collapse;
     width: 100%;
-    margin-top: 2rem;
-    background-color: var(--color-surface);
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    overflow: hidden;
+    margin-top: 1rem;
+    table-layout: fixed;
+    min-width: 900px;
 }
 
 .data-table th,
 .data-table td {
-    border: 1px solid var(--color-border);
-    padding: 12px 15px;
-    text-align: left;
+    border: 1px solid #ddd;
+    padding: 8px;
+    white-space: normal;
+    overflow-wrap: break-word;
+    vertical-align: top;
 }
 
 .data-table th {
-    background-color: var(--taltech-light-grey);
-    color: var(--color-heading);
-    font-weight: 600;
+    background: #f4f4f4;
+    text-align: left;
 }
 
-.data-table tbody tr:hover {
-    background-color: var(--color-background);
-}
+.data-table .col-wide   { width: 43%; }
+.data-table .col-medium { width: 27%; }
+.data-table .col-narrow { width: 15%; }
 
 .container {
     margin: 0 auto;
@@ -171,7 +186,9 @@ a:hover {
     max-width: 900px; /* Wide for tables */
 }
 .container--wide {
-    max-width: 1200px; /* Very wide */
+    max-width: 100%; /* Very wide */
+    height: 500px;
+    position: relative;
 }
 
 /* For horizontal element aligning */

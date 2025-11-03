@@ -1,8 +1,6 @@
 <template>
   <div>
-    <span @click="openPopup" style="cursor: pointer;">
-      {{ student.firstName }} {{ student.lastName }}
-    </span>
+    <button class="btn--link" @click="openPopup">Vaata hindeid</button>
 
     <PopupModal :visible="showPopup" @close="closePopup">
       <h2>{{ student.firstName }} {{ student.lastName }}</h2>
@@ -36,7 +34,9 @@ const showPopup = ref(false)
 function openPopup() {
   showPopup.value = true
 }
+
 function closePopup() {
   showPopup.value = false
 }
 </script>
+
