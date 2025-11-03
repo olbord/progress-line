@@ -1,0 +1,108 @@
+// CommentController
+
+###
+GET http://localhost:8080/api/comments
+
+###
+GET http://localhost:8080/api/comments/1
+
+<> 2025-11-03T122251.200.json
+
+###
+POST http://localhost:8080/api/comments
+Content-Type: application/json
+
+{
+  "studentId": 1,
+  "type": "EMAIL",
+  "commentText": "Teine meeldetuletus.",
+  "teacherId": 3,
+  "courseId": 35065
+}
+
+<> 2025-11-03T122556.201.json
+<> 2025-11-03T122549.201.json
+<> 2025-11-03T122334.500.json
+<> 2025-10-09T220040.500.json
+<> 2025-09-27T083538.201.json
+<> 2025-09-27T083525.500.json
+<> 2025-09-12T143734.404.json
+<> 2025-09-02T173454.201.json
+<> 2025-09-02T173438.201.json
+<> 2025-09-02T173254.406.json
+<> 2025-09-02T173239.406.json
+
+###
+PUT http://localhost:8080/api/comments/1
+Content-Type: application/json
+
+{
+  "studentId": 1,
+  "type": "EMAIL",
+  "commentText": "Meeldetuletus... Parandatud kuupäev.",
+  "courseId": 35065
+}
+
+<> 2025-11-03T122734.200.json
+<> 2025-11-03T122711.500.json
+<> 2025-09-27T083519.200.json
+
+
+// CourseCommentController
+
+###
+GET http://localhost:8080/api/courses/35065/students/1/comments
+
+
+// CourseController
+// Currently not working
+###
+GET http://localhost:8080/api/courses
+
+
+// CourseGradeController
+
+###
+GET http://localhost:8080/api/courses/35065/grades/students/1
+
+###
+GET http://localhost:8080/api/courses/35065/grades/progress-lines
+
+
+// CourseStudentController
+
+###
+GET http://localhost:8080/api/courses/35065/students/with-declarations
+
+###
+GET http://localhost:8080/api/courses/35065/students/no-declarations
+
+<> 2025-11-03T123117.200.json
+<> 2025-11-03T123101.404.json
+<> 2025-10-19T230906.404.json
+<> 2025-09-28T222113.200.json
+<> 2025-09-27T083614.200.json
+
+###
+GET http://localhost:8080/api/courses/35065/students/inactive
+
+###
+POST http://localhost:8080/api/courses/35065/students/1/inactive
+Content-Type: application/x-www-form-urlencoded
+
+<> 2025-11-03T123250.201.txt
+<> 2025-11-03T123217.404.json
+<> 2025-10-19T230914.400.txt
+
+
+// CourseTeacherController
+
+###
+GET http://localhost:8080/api/courses/35065/teachers
+
+
+// DeclarationController
+
+###
+DELETE http://localhost:8080/api/declarations/35065/student/1
+
