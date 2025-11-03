@@ -38,7 +38,7 @@ async function fetchAndRenderChart() {
   isLoading.value = true;
   error.value = null;
   try {
-    const response = await axios.get(`/api/courses/${courseId}/grades/progress-lines`);
+    const response = await axios.get(`/api/courses/${courseId}/progress-lines`);
     apiStudentData = response.data;
     isLoading.value = false;
     await nextTick();
@@ -127,10 +127,14 @@ function renderChart(apiData) {
 
       // Find the student who's line was clicked
       const clickedStudent = apiStudentData[datasetIndex];
+      console.log("Klikiti tudengi andmetel: ", clickedStudent)
 
       if (clickedStudent && clickedStudent.studentId) {
         // Go to create a comment
-        router.push(`/comment/students/${clickedStudent.studentId}`);
+        router.push(`/courses/${courseId}/students/${clickedStudent.studentId}/grades`);
+        console.log("Tudengi id on ", clickedStudent.studentId)
+      } else {
+        console.error("Ei saanud tudengi ID-d kätte. Tudeng: ", clickedStudent)
       }
     },
 
