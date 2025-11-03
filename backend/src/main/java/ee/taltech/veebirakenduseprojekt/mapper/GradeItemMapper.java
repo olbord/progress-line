@@ -8,5 +8,6 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface GradeItemMapper {
     @Mapping(source = "createdAt", target = "gradeDateGraded")
+    @Mapping(source = "course.id", target = "courseId")
     GradeItemDto mapToDto(GradeItem gradeItem);
 }
