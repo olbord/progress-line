@@ -35,9 +35,10 @@ class CommentServiceTest {
 
     private User testStudent;
     private Course testCourse;
-    private Comment testComment;
+    private Comment testComment1;
     private Comment testComment2;
-    private CommentResponseDto testCommentResponseDto;
+    private CommentResponseDto dto1;
+    private CommentResponseDto dto2;
     private CommentRequestDto testCommentRequestDto;
     private StudentDto testStudentDto;
 
@@ -56,7 +57,7 @@ class CommentServiceTest {
                 .fullName("Testkursus")
                 .build();
 
-        testComment = Comment.builder()
+        testComment1 = Comment.builder()
                 .id(1L)
                 .commentText("Esimene kommentaar")
                 .type(CommentType.EMAIL)
@@ -69,20 +70,22 @@ class CommentServiceTest {
                 .type(CommentType.EMAIL)
                 .course(testCourse)
                 .build();
+
+        dto1 = new CommentResponseDto();
+        dto1.setId(1L);
+        dto1.setCommentText("Esimene kommentaar");
+
+        dto2 = new CommentResponseDto();
+        dto2.setId(2L);
+        dto2.setCommentText("Teine kommentaar");
     }
 
     @Test
     void getAllComments_newCommentsAdded_returnsAllComments() {
         // Given
-        List<Comment> commentsFromDb = List.of(testComment, testComment2);
-        CommentResponseDto dto1 = new CommentResponseDto();
-        dto1.setId(1L);
-        dto1.setCommentText("Esimene kommentaar");
-        CommentResponseDto dto2 = new CommentResponseDto();
-        dto2.setId(2L);
-        dto2.setCommentText("Teine kommentaar");
+        List<Comment> commentsFromDb = List.of(testComment1, testComment2);
         when(commentRepository.findAllWithStudents()).thenReturn(commentsFromDb);
-        when(commentMapper.mapToResponseDto(testComment)).thenReturn(dto1);
+        when(commentMapper.mapToResponseDto(testComment1)).thenReturn(dto1);
         when(commentMapper.mapToResponseDto(testComment2)).thenReturn(dto2);
 
         // When
