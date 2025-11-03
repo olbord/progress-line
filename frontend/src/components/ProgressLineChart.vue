@@ -9,7 +9,7 @@
       Viga andmete laadimisel: {{ error }}
     </div>
 
-    <div v-if="!isLoading && !error" class="chart-container">
+    <div v-if="!isLoading && !error" class="container--wide">
       <canvas ref="chartCanvas"></canvas>
     </div>
   </div>
@@ -224,7 +224,7 @@ function renderChart(apiData) {
     });
     console.log("6. Graafik on edukalt loodud!");
   } catch(e) {
-    console.error("KRIITILINE VIGA: Chart.js viskas vea graafiku loomisel!", e);
+    console.error("KRIITILINE VIGA: Chart.js viga graafiku loomisel!", e);
     error.value = "Graafiku joonistamine ebaõnnestus.";
   }
 }
@@ -234,14 +234,3 @@ onMounted(() => {
 });
 </script>
 
-<style scoped>
-.chart-container {
-  height: 500px;
-  width: 100%;
-  position: relative;
-}
-
-.message {
-  padding: 2rem 0;
-}
-</style>

@@ -40,20 +40,3 @@ function closePopup() {
 }
 </script>
 
-<style scoped>
-.btn--link {
-  background: #e4067e;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  padding: 0.4rem 0.8rem;
-  cursor: pointer;
-  display: inline-block;
-  white-space: nowrap;
-}
-
-.btn--link:hover {
-  background: #c9056f;
-}
-
-</style>

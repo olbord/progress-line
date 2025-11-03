@@ -5,10 +5,10 @@
     <table v-if="students.length > 0" class="data-table">
       <thead>
       <tr>
-        <th>Eesnimi / Perekonnanimi</th>
-        <th>Email</th>
-        <th>Punktide summa</th>
-        <th>Tegevus</th>
+        <th class="col-medium">Eesnimi / Perekonnanimi</th>
+        <th class="col-wide">Email</th>
+        <th class="col-narrow">Punktide summa</th>
+        <th class="col-narrow">Tegevus</th>
       </tr>
       </thead>
 
@@ -38,39 +38,3 @@ const props = defineProps({
 })
 </script>
 
-<style scoped>
-.data-table {
-  border-collapse: collapse;
-  width: 100%;
-  margin-top: 1rem;
-  table-layout: fixed;
-  min-width: 900px;
-}
-
-.data-table th,
-.data-table td {
-  border: 1px solid #ddd;
-  padding: 8px;
-  white-space: normal;
-  overflow-wrap: break-word;
-  vertical-align: top;
-}
-
-.data-table th {
-  background: #f4f4f4;
-  text-align: left;
-}
-
-.data-table th:nth-child(1),
-.data-table td:nth-child(1) { width: 27%; }
-
-.data-table th:nth-child(2),
-.data-table td:nth-child(2) { width: 43%; }
-
-.data-table th:nth-child(3),
-.data-table td:nth-child(3) { width: 15%; }
-
-.data-table th:nth-child(4),
-.data-table td:nth-child(4) { width: 15%; }
-
-</style>
