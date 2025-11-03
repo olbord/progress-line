@@ -1,8 +1,8 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
-import StudentList from "@/components/StudentList.vue";
 import { fetchAllStudentsData } from "@/services/studentService.js";
+import StudentTable from "@/components/StudentTable.vue";
 
 const route = useRoute();
 const courseId = route.params.courseId;
@@ -28,17 +28,17 @@ onMounted(async () => {
   <div class="container container--medium">
     <h1>{{ courseName }}</h1>
 
-    <StudentList
+    <StudentTable
         title="Aktiivsed tudengid"
         :students="studentsWithDeclaration"
         :courseId="Number(courseId)"
     />
-    <StudentList
+    <StudentTable
         title="Mitteaktiivsed tudengid"
         :students="inactiveStudents"
         :courseId="Number(courseId)"
     />
-    <StudentList
+    <StudentTable
         title="Ilma deklaratsioonita tudengid"
         :students="studentsWithoutDeclaration"
         :courseId="Number(courseId)"

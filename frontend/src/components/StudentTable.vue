@@ -11,15 +11,14 @@
         <th>Tegevus</th>
       </tr>
       </thead>
+
       <tbody>
       <tr v-for="student in students" :key="student.id">
         <td>{{ student.firstName }} {{ student.lastName }}</td>
         <td>{{ student.email }}</td>
         <td>{{ (student.totalPoints ?? 0).toFixed(2) }}</td>
         <td>
-          <button class="btn btn--link" @click="goToGrades(student.id)">
-            Vaata hindeid
-          </button>
+          <StudentRow :student="student" :courseId="courseId" />
         </td>
       </tr>
       </tbody>
@@ -30,19 +29,13 @@
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router'
+import StudentRow from '@/components/StudentRow.vue'
 
 const props = defineProps({
   title: { type: String, required: true },
   students: { type: Array, default: () => [] },
   courseId: { type: Number, required: true },
 })
-
-const router = useRouter()
-
-function goToGrades(studentId) {
-  router.push(`/grades/${props.courseId}/${studentId}`)
-}
 </script>
 
 <style scoped>
@@ -80,17 +73,4 @@ function goToGrades(studentId) {
 .data-table th:nth-child(4),
 .data-table td:nth-child(4) { width: 15%; }
 
-.btn--link {
-  background: #e4067e;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  padding: 0.4rem 0.8rem;
-  cursor: pointer;
-  white-space: nowrap;
-}
-
-.btn--link:hover {
-  background: #c9056f;
-}
 </style>
