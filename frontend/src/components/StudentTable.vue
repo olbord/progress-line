@@ -2,10 +2,7 @@
   <div class="student-table">
     <h2>{{ title }}</h2>
 
-    <div v-if="loading">Laen tudengeid...</div>
-    <div v-else-if="error" class="message message--error">{{ error }}</div>
-
-    <table v-else-if="students.length > 0" class="data-table">
+    <table v-if="students.length > 0" class="data-table">
       <thead>
       <tr>
         <th>Eesnimi / Perekonnanimi</th>
@@ -20,7 +17,7 @@
         <td>{{ student.email }}</td>
         <td>{{ (student.totalPoints ?? 0).toFixed(2) }}</td>
         <td>
-          <button class="btn btn--link" @click="$emit('view-grades', student.id)">
+          <button class="btn btn--link" @click="goToGrades(student.id)">
             Vaata hindeid
           </button>
         </td>
@@ -28,20 +25,24 @@
       </tbody>
     </table>
 
-    <div v-else>{{ emptyMessage }}</div>
+    <div v-else>Tudengeid ei leitud</div>
   </div>
 </template>
 
 <script setup>
-defineProps({
+import { useRouter } from 'vue-router'
+
+const props = defineProps({
   title: { type: String, required: true },
   students: { type: Array, default: () => [] },
-  loading: { type: Boolean, default: false },
-  error: { type: String, default: '' },
-  emptyMessage: { type: String, default: 'Tudengeid ei leitud' }
+  courseId: { type: Number, required: true },
 })
 
-defineEmits(['view-grades'])
+const router = useRouter()
+
+function goToGrades(studentId) {
+  router.push(`/grades/${props.courseId}/${studentId}`)
+}
 </script>
 
 <style scoped>
