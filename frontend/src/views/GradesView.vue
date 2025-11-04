@@ -23,12 +23,36 @@
     </table>
 
     <div v-else>Hinded puuduvad</div>
-  </div>
+
+
+
+    <div class="container--narrow">
+      <br>
+      <button class="btn btn--link" @click="openCommentPopup">Lisa kommentaar</button>
+    </div>
+
+    <PopupModal :visible="showCommentPopup" @close="closeCommentPopup">
+      <h2>Lisa uus kommentaar</h2>
+      <p>Täpsusta, mis põhjusel tudengiga kontakteerusid.</p>
+      <hr />
+
+      <!-- See on ainus komponent, mida me siin kasutame -->
+      <CommentForm
+          :course-id="props.courseId"
+          :student-id="props.studentId"
+          @comment-added="handleCommentAdded"
+      />
+    </PopupModal>
+
+</div>
 </template>
+
 
 <script setup>
 import { ref, onMounted, watch } from 'vue'
 import apiClient from '@/services/api.js'
+import PopupModal from '@/components/PopupModal.vue'
+import CommentForm from '@/components/CommentForm.vue'
 
 const props = defineProps({
   studentId: {
@@ -53,7 +77,7 @@ async function fetchGrades() {
   error.value = null
   grades.value = []
   try {
-    const response = await apiClient.get(`/courses/${courseId}/grades/students/${studentId}`)
+    const response = await apiClient.get(`/courses/${courseId}/students/${studentId}/grades`)
     grades.value = response.data
   } catch (err) {
     console.error(err)
@@ -65,5 +89,22 @@ async function fetchGrades() {
 
 onMounted(fetchGrades)
 watch(() => [props.courseId, props.studentId], fetchGrades)
+
+const showCommentPopup = ref(false)
+
+// Open pop-up
+function openCommentPopup() {
+  showCommentPopup.value = true
+}
+
+// Close pop-up
+function closeCommentPopup() {
+  showCommentPopup.value = false
+}
+
+// New comment
+function handleCommentAdded() {
+  closeCommentPopup()
+}
 </script>
 

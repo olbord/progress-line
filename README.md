@@ -38,6 +38,7 @@ cd frontend
 * Installing Project Dependencies (if needed):
 ```sh
 npm install
+npm install chart.js
 ```
 * Launching the dev server
 ```sh

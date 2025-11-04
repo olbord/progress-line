@@ -9,12 +9,12 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/courses/{courseId}/grades")
+@RequestMapping("api/courses/{courseId}")
 public class CourseGradeController {
 
     private final CourseService courseService;
 
-    @GetMapping("/students/{studentId}")
+    @GetMapping("/students/{studentId}/grades")
     @ResponseStatus(HttpStatus.OK)
     public List<GradeItemDto> getGradeItemsByStudent(
             @PathVariable Long courseId,
