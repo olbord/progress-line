@@ -1,11 +1,13 @@
 package ee.taltech.veebirakenduseprojekt.controller;
 
+import ee.taltech.veebirakenduseprojekt.service.CourseAccessService;
 import ee.taltech.veebirakenduseprojekt.service.CourseService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 import java.util.List;
 
@@ -15,29 +17,45 @@ import java.util.List;
 public class CourseStudentController {
 
     private final CourseService courseService;
+    private final CourseAccessService accessService;
 
     @GetMapping("/with-declarations")
-    @ResponseStatus(HttpStatus.OK)
-    public List<StudentDto> getActiveStudentsWithDeclarations(@PathVariable Long courseId) {
+    public List<StudentDto> getActiveStudentsWithDeclarations(
+            @PathVariable Long courseId,
+            @AuthenticationPrincipal(expression = "email") String email) {
+
+        accessService.requireTeacherAccess(email, courseId);
         return courseService.getAllActiveStudentsWithDeclarations(courseId);
     }
 
     @GetMapping("/no-declarations")
     @ResponseStatus(HttpStatus.OK)
-    public List<StudentDto> getStudentsWithoutDeclarations(@PathVariable Long courseId) {
+    public List<StudentDto> getStudentsWithoutDeclarations(
+            @PathVariable Long courseId,
+            @AuthenticationPrincipal(expression = "email") String email) {
+
+        accessService.requireTeacherAccess(email, courseId);
         return courseService.getAllStudentsWithoutDeclarations(courseId);
     }
 
     @GetMapping("/inactive")
     @ResponseStatus(HttpStatus.OK)
-    public List<StudentDto> getInactiveStudents(@PathVariable Long courseId) {
+    public List<StudentDto> getInactiveStudents(
+            @PathVariable Long courseId,
+            @AuthenticationPrincipal(expression = "email") String email) {
+
+        accessService.requireTeacherAccess(email, courseId);
         return courseService.getAllInactiveStudents(courseId);
     }
 
     @PostMapping("/{studentId}/inactive")
     public ResponseEntity<String> markInactive(
             @PathVariable Long courseId,
-            @PathVariable Long studentId) {
+            @PathVariable Long studentId,
+            @AuthenticationPrincipal(expression = "email") String email) {
+
+        accessService.requireTeacherAccess(email, courseId);
+
         try {
             courseService.markStudentInactive(courseId, studentId);
             return ResponseEntity.status(HttpStatus.CREATED)

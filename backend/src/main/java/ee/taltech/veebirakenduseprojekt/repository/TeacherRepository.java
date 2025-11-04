@@ -18,4 +18,16 @@ public interface TeacherRepository extends JpaRepository<User, Long> {
       AND r.role_id = 3
     """, nativeQuery = true)
     List<User> getTeachersByCourse(@Param("courseId") Long courseId);
+
+    @Query(value = """
+    SELECT EXISTS (
+        SELECT 1
+        FROM "user" u
+        JOIN user_role r ON u.id = r.user_id
+        WHERE u.email = :email
+          AND r.course_id = :courseId
+          AND r.role_id = 3
+    )
+    """, nativeQuery = true)
+    boolean isTeacherOfCourse(@Param("email") String email, @Param("courseId") Long courseId);
 }
