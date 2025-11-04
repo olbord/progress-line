@@ -29,7 +29,7 @@ public class DevSecurityConfig {
     // they are a teacher for queried courses and course-related info
 
     // this specific user is a teacher for the Python course (courseId = 35065)
-    private static final String MOCK_TEACHER_EMAIL = "nikest@taltech.ee";
+    private static final String MOCK_TEACHER_EMAIL = "kadi.jairus@taltech.ee";
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
