@@ -1,8 +1,10 @@
 package ee.taltech.veebirakenduseprojekt.repository;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import lombok.Builder;
+import lombok.Builder.Default;
+import org.mapstruct.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +13,9 @@ import java.util.List;
 @Table(name = "\"user\"")
 @Getter
 @Setter
+@Builder
+@RequiredArgsConstructor
+@AllArgsConstructor
 public class User {  // for both students and teachers
 
     @Id
@@ -22,12 +27,15 @@ public class User {  // for both students and teachers
     private String email;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Default
     private List<UserRole> roles = new ArrayList<>();
 
     // Only students will have these populated
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Default
     private List<Comment> comments = new ArrayList<>();
 
     @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
+    @Default
     private List<GradeItem> grades = new ArrayList<>();
 }

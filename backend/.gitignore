@@ -39,4 +39,8 @@ out/
 ### VS Code ###
 .vscode/
 /config/
+
+### Configuration ###
 /src/main/resources/application-local.properties
+/src/main/resources/application.properties
+docker-compose.yml

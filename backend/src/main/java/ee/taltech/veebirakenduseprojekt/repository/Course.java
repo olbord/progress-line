@@ -1,8 +1,8 @@
 package ee.taltech.veebirakenduseprojekt.repository;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import lombok.Builder.Default;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -11,6 +11,9 @@ import java.util.Set;
 @Table(name = "course")
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
+@RequiredArgsConstructor
 public class Course {
 
     @Id
@@ -24,11 +27,14 @@ public class Course {
     private String fullName;
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Default
     private Set<Declaration> declarations = new HashSet<>();
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Default
     private Set<Inactive> inactives = new HashSet<>();
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Default
     private Set<UserRole> userRoles = new HashSet<>();
 }
