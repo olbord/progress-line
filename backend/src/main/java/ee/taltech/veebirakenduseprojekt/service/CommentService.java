@@ -25,7 +25,7 @@ public class CommentService {
     public List<CommentResponseDto> getAllComments() {
         List<Comment> comments = commentRepository.findAllWithStudents();
         return comments.stream()
-                .map(comment -> commentMapper.mapToResponseDto(comment))
+                .map(commentMapper::mapToResponseDto)
                 .toList();
     }
 
