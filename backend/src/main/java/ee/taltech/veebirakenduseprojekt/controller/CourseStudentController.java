@@ -2,6 +2,8 @@ package ee.taltech.veebirakenduseprojekt.controller;
 
 import ee.taltech.veebirakenduseprojekt.service.CourseAccessService;
 import ee.taltech.veebirakenduseprojekt.service.CourseService;
+import io.swagger.v3.oas.annotations.*;
+import io.swagger.v3.oas.annotations.tags.*;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -11,6 +13,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 import java.util.List;
 
+@Tag(name = "Course Student Controller", description = "Endpoints to manage students on a specific course.")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/courses/{courseId}/students")
@@ -19,6 +22,8 @@ public class CourseStudentController {
     private final CourseService courseService;
     private final CourseAccessService accessService;
 
+    @Operation(summary = "Require all active students with declaration",
+            description = "Gets all students who have declared participation on a specific course and are not inactive.")
     @GetMapping("/with-declarations")
     public List<StudentDto> getActiveStudentsWithDeclarations(
             @PathVariable Long courseId,
@@ -28,6 +33,8 @@ public class CourseStudentController {
         return courseService.getAllActiveStudentsWithDeclarations(courseId);
     }
 
+    @Operation(summary = "Require all students without declaration",
+            description = "Gets all students who have not declared participation on a specific course.")
     @GetMapping("/no-declarations")
     @ResponseStatus(HttpStatus.OK)
     public List<StudentDto> getStudentsWithoutDeclarations(
@@ -38,6 +45,8 @@ public class CourseStudentController {
         return courseService.getAllStudentsWithoutDeclarations(courseId);
     }
 
+    @Operation(summary = "Require all inactive students",
+            description = "Gets all students who are marked as inactive on a specific course.")
     @GetMapping("/inactive")
     @ResponseStatus(HttpStatus.OK)
     public List<StudentDto> getInactiveStudents(
@@ -48,6 +57,9 @@ public class CourseStudentController {
         return courseService.getAllInactiveStudents(courseId);
     }
 
+    // TODO: ADD TO FRONTEND
+    @Operation(summary = "[ADD TO FRONTEND] Mark a student as inactive",
+            description = "Marks a student as inactive on a specific course.")
     @PostMapping("/{studentId}/inactive")
     public ResponseEntity<String> markInactive(
             @PathVariable Long courseId,

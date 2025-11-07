@@ -21,7 +21,7 @@ import java.util.List;
  * Use for development only.
  */
 @Configuration
-@Profile("local")
+//@Profile("local")
 @EnableWebSecurity
 public class DevSecurityConfig {
 
