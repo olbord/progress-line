@@ -16,7 +16,7 @@ public class CourseController {
 
     private final CourseService courseService;
 
-    @PostMapping
+    @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<CourseDto> getCourses(
             @AuthenticationPrincipal(expression = "email") String email,
