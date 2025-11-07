@@ -9,15 +9,16 @@ import java.util.List;
 
 @Repository
 public interface CourseRepository extends JpaRepository<Course, Long> {
+
     @Query("""
-    SELECT c FROM Course c
-    JOIN c.userRoles r
-    WHERE r.user.id = :teacherId
-      AND r.roleId = 3
-      AND (:query IS NULL OR :query = ''
-           OR LOWER(c.shortName) LIKE LOWER(CONCAT('%', :query, '%'))
-           OR LOWER(c.fullName) LIKE LOWER(CONCAT('%', :query, '%')))
-    ORDER BY c.fullName ASC
-""")
-    List<Course> searchCourses(@Param("teacherId") Long teacherId, @Param("query") String query);
+        SELECT c FROM Course c
+        JOIN c.userRoles r
+        WHERE r.user.email = :teacherEmail
+          AND r.roleId = 3
+          AND (:query IS NULL OR :query = ''
+               OR LOWER(c.shortName) LIKE LOWER(CONCAT('%', :query, '%'))
+               OR LOWER(c.fullName) LIKE LOWER(CONCAT('%', :query, '%')))
+        ORDER BY c.fullName ASC
+    """)
+    List<Course> searchCoursesByEmail(@Param("teacherEmail") String teacherEmail, @Param("query") String query);
 }

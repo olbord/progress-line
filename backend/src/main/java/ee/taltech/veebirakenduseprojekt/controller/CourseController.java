@@ -2,6 +2,7 @@ package ee.taltech.veebirakenduseprojekt.controller;
 
 import ee.taltech.veebirakenduseprojekt.service.CourseService;
 import org.springframework.http.*;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,8 +18,10 @@ public class CourseController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<CourseDto> getCourses(@RequestBody(required = false) CourseSearchRequest searchRequest) {
-        // TODO: replace teacherId with app user's id from the UserDetails - security
-        return courseService.getCourses(3L, searchRequest);
+    public List<CourseDto> getCourses(
+            @AuthenticationPrincipal(expression = "email") String email,
+            @RequestBody(required = false) CourseSearchRequest searchRequest) {
+
+        return courseService.getCourses(email, searchRequest);
     }
 }

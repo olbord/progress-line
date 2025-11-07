@@ -24,16 +24,15 @@ public class CourseService {
     private final GradeItemService gradeItemService;
     private final TeacherService teacherService;
 
-    public List<CourseDto> getCourses(Long teacherId, CourseSearchRequest request) {
-        if (teacherId == null) {
-            throw new IllegalArgumentException("Authenticated teacherId must be provided");
+    public List<CourseDto> getCourses(String teacherEmail, CourseSearchRequest request) {
+        if (teacherEmail == null || teacherEmail.isEmpty()) {
+            throw new IllegalArgumentException("Authenticated teacher email must be provided");
         }
 
-        String query = request.getQuery();
+        String query = request != null ? request.getQuery() : null;
         String trimmedQuery = (query != null) ? query.trim() : null;
 
-        List<Course> courses = courseRepository.searchCourses(teacherId, trimmedQuery);
-
+        List<Course> courses = courseRepository.searchCoursesByEmail(teacherEmail, trimmedQuery);
         return courseMapper.toDtoList(courses);
     }
 

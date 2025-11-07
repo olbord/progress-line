@@ -13,7 +13,7 @@ const fetchCourses = async (query = '') => {
   error.value = null
   try {
     const payload = query ? { query } : {}
-    const response = await axios.post('/api/courses', payload)
+    const response = await axios.get('/api/courses', payload)
     courses.value = response.data
   } catch (err) {
     error.value = 'Failed to load courses.'
