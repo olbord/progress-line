@@ -1,5 +1,6 @@
 package ee.taltech.veebirakenduseprojekt.repository;
 
+import io.swagger.v3.oas.annotations.media.*;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.Builder;
@@ -16,21 +17,22 @@ import java.util.List;
 @Builder
 @RequiredArgsConstructor
 @AllArgsConstructor
-public class User {  // for both students and teachers
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String firstName;
+
     private String lastName;
+
     private String email;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @Default
     private List<UserRole> roles = new ArrayList<>();
 
-    // Only students will have these populated
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
     @Default
     private List<Comment> comments = new ArrayList<>();

@@ -7,9 +7,7 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.*;
 import org.mockito.*;
 import org.mockito.junit.jupiter.*;
-
 import java.util.*;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
@@ -23,33 +21,18 @@ class CommentServiceTest {
     private CommentRepository commentRepository;
     @Mock
     private CommentMapper commentMapper;
-    @Mock
-    private StudentRepository studentRepository;
-    @Mock
-    private StudentMapper studentMapper;
-    @Mock
-    private CourseRepository courseRepository;
 
     @InjectMocks
     private CommentService commentService;
 
-    private User testStudent;
     private Course testCourse;
     private Comment testComment1;
     private Comment testComment2;
     private CommentResponseDto dto1;
     private CommentResponseDto dto2;
-    private CommentRequestDto testCommentRequestDto;
-    private StudentDto testStudentDto;
 
     @BeforeEach
     void setUp() {
-        testStudent = User.builder()
-                .id(1L)
-                .firstName("Tuuli")
-                .lastName("Tudeng")
-                .email("tuutu@taltech.ee")
-                .build();
 
         testCourse = Course.builder()
                 .id(35065L)
@@ -98,22 +81,5 @@ class CommentServiceTest {
         assertEquals("Teine kommentaar", result.get(1).getCommentText());
         verify(commentRepository, times(1)).findAllWithStudents();
         verify(commentMapper, times(2)).mapToResponseDto(any(Comment.class));
-    }
-
-    @Test
-    void getComment_newCommentAdded_returnsCorrectComment() {
-
-    }
-
-    @Test
-    void addComment() {
-    }
-
-    @Test
-    void updateComment() {
-    }
-
-    @Test
-    void getCommentsByCourseIdAndStudentId() {
     }
 }

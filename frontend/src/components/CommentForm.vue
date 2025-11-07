@@ -63,7 +63,7 @@ async function submitComment() {
     return;
   }
   try {
-    await apiClient.post("/comments", newComment.value);
+    await apiClient.post("/courses/${courseId}/students/${studentId}/comments", newComment.value);
     successMessage.value = 'Kommentaar on edukalt salvestatud!';
     newComment.value.commentText = '';
   } catch (error) {

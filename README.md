@@ -231,7 +231,7 @@ docker-compose up -d
 -d: This runs the containers in detached mode (in the background).
 
 
-All three containers (progress-line-frontend, progress-line-backend, postgres-db) should show a state of Up.
+All three containers (`progress-line-frontend`, `progress-line-backend`, `postgres-db`) should show a state of Up.
 
 ### Application Debugging (on the server)
 
@@ -259,3 +259,9 @@ tail -f /var/log/nginx/access.log
 ```sh
 tail -f /var/log/nginx/error.log
 ```
+## Documentation
+
+OpenAPI is used for documentation.
+
+* Interactive UI: `http://localhost:8080/swagger-ui/index.html`
+* Raw Spec JSON file: `http://localhost:8080/v3/api-docs`

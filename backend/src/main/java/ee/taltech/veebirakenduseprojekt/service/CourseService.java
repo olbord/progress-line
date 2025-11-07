@@ -24,7 +24,7 @@ public class CourseService {
     private final GradeItemService gradeItemService;
     private final TeacherService teacherService;
 
-    public List<CourseDto> getCourses(String teacherEmail, CourseSearchRequest request) {
+    public List<CourseDto> getCourses(String teacherEmail, CourseRequestDto request) {
         if (teacherEmail == null || teacherEmail.isEmpty()) {
             throw new IllegalArgumentException("Authenticated teacher email must be provided");
         }
