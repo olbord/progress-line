@@ -82,4 +82,3 @@ deploy-frontend:
     - rsync -e "ssh -o StrictHostKeyChecking=no" -avz --delete --chmod=D755,F644 frontend/dist/ $SERVER_USER@$SERVER_IP:/var/www/html/
   only:
     - master
-
