@@ -1,6 +1,6 @@
 package ee.taltech.veebirakenduseprojekt.service;
 
-import ee.taltech.veebirakenduseprojekt.controller.StudentDto;
+import ee.taltech.veebirakenduseprojekt.controller.*;
 import ee.taltech.veebirakenduseprojekt.mapper.StudentMapper;
 import ee.taltech.veebirakenduseprojekt.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,10 +26,17 @@ public class StudentService {
         return studentDtos;
     }
 
+    /*
     public StudentDto getStudent(Long id) {
         return studentRepository.findById(id)
                 .map(studentMapper::mapToDto)
                 .orElseThrow(() -> new RuntimeException("Student not found with id " + id));
+    }
+    */
+    public StudentPersonalDataResponseDto getStudentPersonalDataById(Long studentId) {
+        return studentRepository.findById(studentId)
+                .map(studentMapper::mapToPersonalDataResponseDto)
+                .orElseThrow(() -> new RuntimeException("Student not found for personal data: " + studentId));
     }
 
     public List<StudentDto> getAllActiveStudentsWithDeclarationByCourse(Long courseId) {

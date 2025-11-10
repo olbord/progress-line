@@ -1,6 +1,6 @@
 package ee.taltech.veebirakenduseprojekt.mapper;
 
-import ee.taltech.veebirakenduseprojekt.controller.StudentDto;
+import ee.taltech.veebirakenduseprojekt.controller.*;
 import ee.taltech.veebirakenduseprojekt.exception.*;
 import ee.taltech.veebirakenduseprojekt.repository.*;
 import org.mapstruct.*;
@@ -40,5 +40,7 @@ public interface StudentMapper {
         return studentRepository.findById(studentId)
                 .orElseThrow(() -> new ApplicationException("Student not found with ID: " + studentId));
     }
+
+    StudentPersonalDataResponseDto mapToPersonalDataResponseDto(User entity);
 }
 
