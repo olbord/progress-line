@@ -1,5 +1,7 @@
 package ee.taltech.veebirakenduseprojekt.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -60,4 +62,30 @@ public interface StudentRepository extends JpaRepository<User, Long> {
       AND d.course_id = :courseId
     """, nativeQuery = true)
     List<User> findAllInactiveWithDeclarationByCourse(@Param("courseId") Long courseId);
+
+
+    @Query(
+            value = """
+            SELECT u.*
+            FROM "user" u
+            JOIN user_role r ON u.id = r.user_id
+            JOIN declaration d ON u.id = d.user_id
+            WHERE r.course_id = :courseId
+              AND r.role_id = 5
+              AND d.course_id = :courseId
+            """,
+            countQuery = """
+            SELECT COUNT(*)
+            FROM "user" u
+            JOIN user_role r ON u.id = r.user_id
+            JOIN declaration d ON u.id = d.user_id
+            WHERE r.course_id = :courseId
+              AND r.role_id = 5
+              AND d.course_id = :courseId
+            """,
+            nativeQuery = true
+    )
+    Page<User> findAllActiveStudentsWithDeclarationByCourse(
+            @Param("courseId") Long courseId,
+            Pageable pageable);
 }

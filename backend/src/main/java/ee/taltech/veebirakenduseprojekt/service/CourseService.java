@@ -7,6 +7,8 @@ import ee.taltech.veebirakenduseprojekt.repository.CourseRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,9 +38,9 @@ public class CourseService {
         return courseMapper.toDtoList(courses);
     }
 
-    public List<StudentDto> getAllActiveStudentsWithDeclarations(Long courseId) {
+    public Page<StudentDto> getAllActiveStudentsWithDeclarations(Long courseId, Pageable pageable) {
         validateCourseExists(courseId);
-        return studentService.getAllActiveStudentsWithDeclarationByCourse(courseId);
+        return studentService.getActiveStudentsWithDeclarationByCourse(courseId, pageable);
     }
 
     public List<StudentDto> getAllStudentsWithoutDeclarations(Long courseId) {

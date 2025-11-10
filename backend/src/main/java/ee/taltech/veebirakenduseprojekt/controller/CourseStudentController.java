@@ -6,6 +6,9 @@ import io.swagger.v3.oas.annotations.*;
 import io.swagger.v3.oas.annotations.tags.*;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,15 +25,18 @@ public class CourseStudentController {
     private final CourseService courseService;
     private final CourseAccessService accessService;
 
-    @Operation(summary = "Require all active students with declaration",
-            description = "Gets all students who have declared participation on a specific course and are not inactive.")
+    @Operation(summary = "Get paginated list of active students with declarations")
     @GetMapping("/with-declarations")
-    public List<StudentDto> getActiveStudentsWithDeclarations(
+    @ResponseStatus(HttpStatus.OK)
+    public Page<StudentDto> getActiveStudentsWithDeclarations(
             @PathVariable Long courseId,
-            @AuthenticationPrincipal(expression = "email") String email) {
+            @AuthenticationPrincipal(expression = "email") String email,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
 
         accessService.requireTeacherAccess(email, courseId);
-        return courseService.getAllActiveStudentsWithDeclarations(courseId);
+        Pageable pageable = PageRequest.of(page, size);
+        return courseService.getAllActiveStudentsWithDeclarations(courseId, pageable);
     }
 
     @Operation(summary = "Require all students without declaration",
