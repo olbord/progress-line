@@ -31,6 +31,7 @@
 
     <div class="container--narrow">
       <br>
+      <button class="btn btn--link" @click="navigateToComments" style="margin-right: 1rem;">Loe kommentaare</button>
       <button class="btn btn--link" @click="openCommentPopup">Lisa kommentaar</button>
     </div>
 
@@ -43,6 +44,8 @@
       />
     </PopupModal>
 
+
+
 </div>
 </template>
 
@@ -50,9 +53,12 @@
 <script setup>
 import { ref, onMounted, watch } from 'vue'
 import apiClient from '@/services/api.js'
+import { useRouter } from 'vue-router'
 import PopupModal from '@/components/PopupModal.vue'
 import CommentForm from '@/components/CommentForm.vue'
 import StudentPersonalDataDisplay from '@/components/StudentPersonalDataDisplay.vue'
+
+const router = useRouter()
 
 const props = defineProps({
   studentId: {
@@ -105,6 +111,20 @@ function closeCommentPopup() {
 // New comment
 function handleCommentAdded() {
   closeCommentPopup()
+}
+
+function navigateToComments() {
+  if (props.courseId && props.studentId) {
+    router.push({
+      name: 'students comments',
+      params: {
+        courseId: props.courseId,
+        studentId: props.studentId
+      }
+    })
+  } else {
+    console.error("Ei saa navigeerida: kursuse või tudengi ID puudub.");
+  }
 }
 </script>
 
