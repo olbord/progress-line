@@ -1,5 +1,8 @@
 <template>
   <div>
+    <StudentPersonalDataDisplay
+        :student-id="props.studentId"
+    />
     <div v-if="loading">Laen hinded...</div>
     <div v-else-if="error" class="message message--error">{{ error }}</div>
 
@@ -32,11 +35,7 @@
     </div>
 
     <PopupModal :visible="showCommentPopup" @close="closeCommentPopup">
-      <h2>Lisa uus kommentaar</h2>
-      <p>Täpsusta, mis põhjusel tudengiga kontakteerusid.</p>
-      <hr />
 
-      <!-- See on ainus komponent, mida me siin kasutame -->
       <CommentForm
           :course-id="props.courseId"
           :student-id="props.studentId"
@@ -53,6 +52,7 @@ import { ref, onMounted, watch } from 'vue'
 import apiClient from '@/services/api.js'
 import PopupModal from '@/components/PopupModal.vue'
 import CommentForm from '@/components/CommentForm.vue'
+import StudentPersonalDataDisplay from '@/components/StudentPersonalDataDisplay.vue'
 
 const props = defineProps({
   studentId: {

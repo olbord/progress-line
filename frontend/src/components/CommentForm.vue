@@ -1,5 +1,8 @@
 <template>
   <div class="comment-form">
+    <StudentPersonalDataDisplay
+        :student-id="props.studentId"
+    />
     <form @submit.prevent="submitComment">
       <div class="comment-form__group">
         <label for="comment-type">Kontakteerumise viis</label>
@@ -32,6 +35,7 @@
 <script setup>
 import { ref } from 'vue';
 import apiClient from '@/services/api.js';
+import StudentPersonalDataDisplay from '@/components/StudentPersonalDataDisplay.vue'
 
 const props = defineProps({
   studentId: {
