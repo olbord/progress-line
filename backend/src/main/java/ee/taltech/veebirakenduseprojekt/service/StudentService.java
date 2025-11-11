@@ -5,6 +5,7 @@ import ee.taltech.veebirakenduseprojekt.mapper.StudentMapper;
 import ee.taltech.veebirakenduseprojekt.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.*;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -26,17 +27,11 @@ public class StudentService {
         return studentDtos;
     }
 
-    /*
-    public StudentDto getStudent(Long id) {
+    @Cacheable(value = "studentPersonalData", key="#id")
+    public StudentPersonalDataResponseDto getStudentPersonalDataById(Long id) {
         return studentRepository.findById(id)
-                .map(studentMapper::mapToDto)
-                .orElseThrow(() -> new RuntimeException("Student not found with id " + id));
-    }
-    */
-    public StudentPersonalDataResponseDto getStudentPersonalDataById(Long studentId) {
-        return studentRepository.findById(studentId)
                 .map(studentMapper::mapToPersonalDataResponseDto)
-                .orElseThrow(() -> new RuntimeException("Student not found for personal data: " + studentId));
+                .orElseThrow(() -> new RuntimeException("Student not found for personal data: " + id));
     }
 
     public List<StudentDto> getAllActiveStudentsWithDeclarationByCourse(Long courseId) {
