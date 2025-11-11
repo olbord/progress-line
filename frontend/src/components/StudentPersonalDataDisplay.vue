@@ -47,7 +47,7 @@ async function fetchStudentInfo() {
     studentInfo.value = response.data
   } catch (err) {
     console.error("Error fetching student info:", err)
-    error.value = 'Tudengi info laadimine ebaõnnestus'
+    error.value = 'Unable to load student data'
   } finally {
     loading.value = false
   }

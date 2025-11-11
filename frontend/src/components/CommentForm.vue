@@ -62,6 +62,7 @@ const newComment = ref({
 async function submitComment() {
   successMessage.value = '';
   errorMessage.value = '';
+
   if (!newComment.value.commentText.trim()) {
     errorMessage.value = 'Kommentaar ei saa olla tühi.';
     return;

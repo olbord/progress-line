@@ -27,8 +27,6 @@
 
     <div v-else>Hinded puuduvad</div>
 
-
-
     <div class="container--narrow">
       <br>
       <button class="btn btn--link" @click="navigateToComments" style="margin-right: 1rem;">Loe kommentaare</button>
@@ -43,8 +41,6 @@
           @comment-added="handleCommentAdded"
       />
     </PopupModal>
-
-
 
 </div>
 </template>
@@ -87,7 +83,7 @@ async function fetchGrades() {
     grades.value = response.data
   } catch (err) {
     console.error(err)
-    error.value = 'Viga andmete laadimisel'
+    error.value = 'Error while loading students grades'
   } finally {
     loading.value = false
   }
@@ -123,7 +119,7 @@ function navigateToComments() {
       }
     })
   } else {
-    console.error("Ei saa navigeerida: kursuse või tudengi ID puudub.");
+    console.error("Unable to navigate: no student ID or no course ID.", props);
   }
 }
 </script>
