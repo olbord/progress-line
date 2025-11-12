@@ -22,5 +22,6 @@ function navigateToGrades() {
     console.error("Unable to navigate: no student ID or no course ID.", props)
   }
 }
+
 </script>
 

@@ -36,5 +36,6 @@ const props = defineProps({
   students: { type: Array, default: () => [] },
   courseId: { type: Number, required: true },
 })
+
 </script>
 

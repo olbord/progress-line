@@ -55,4 +55,5 @@ async function fetchStudentInfo() {
 
 onMounted(fetchStudentInfo)
 watch(() => props.studentId, fetchStudentInfo)
+
 </script>

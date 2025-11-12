@@ -76,4 +76,5 @@ async function submitComment() {
     errorMessage.value = 'Kommentaari salvestamine ebaõnnestus. Palun proovi uuesti.';
   }
 }
+
 </script>

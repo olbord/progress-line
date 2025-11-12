@@ -44,4 +44,5 @@ onMounted(async () => {
         :courseId="Number(courseId)"
     />
   </div>
+
 </template>
