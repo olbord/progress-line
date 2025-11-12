@@ -15,7 +15,6 @@ const props = defineProps({
 })
 
 const student = ref(null)
-
 const fetchStudent = async () => {
   try {
     const response = await apiClient.get(`/courses/${props.courseId}/students/${props.studentId}/comments`)

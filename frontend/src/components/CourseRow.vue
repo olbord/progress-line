@@ -20,4 +20,5 @@ const goToCourse = () => {
   <li @click="goToCourse" style="cursor: pointer;">
     <strong>{{ course.shortName }}</strong> — {{ course.fullName }}
   </li>
+
 </template>

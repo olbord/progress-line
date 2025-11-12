@@ -22,5 +22,6 @@ function navigateToGrades() {
     console.error("Ei saa navigeerida: kursuse või tudengi ID puudub.", props)
   }
 }
+
 </script>
 

@@ -106,5 +106,6 @@ function closeCommentPopup() {
 function handleCommentAdded() {
   closeCommentPopup()
 }
+
 </script>
 

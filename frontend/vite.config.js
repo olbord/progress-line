@@ -11,7 +11,6 @@ export default defineConfig(async ({command}) => {
     const vueDevTools = (await import('vite-plugin-vue-devtools')).default
     plugins.push(vueDevTools())
   }
-
   return {
     base: './',
     plugins,
