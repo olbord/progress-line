@@ -1,5 +1,8 @@
 <template>
   <div>
+    <StudentPersonalDataDisplay
+        :student-id="props.studentId"
+    />
     <div v-if="loading">Laen hinded...</div>
     <div v-else-if="error" class="message message--error">{{ error }}</div>
 
@@ -24,19 +27,14 @@
 
     <div v-else>Hinded puuduvad</div>
 
-
-
     <div class="container--narrow">
       <br>
+      <button class="btn btn--link" @click="navigateToComments" style="margin-right: 1rem;">Loe kommentaare</button>
       <button class="btn btn--link" @click="openCommentPopup">Lisa kommentaar</button>
     </div>
 
     <PopupModal :visible="showCommentPopup" @close="closeCommentPopup">
-      <h2>Lisa uus kommentaar</h2>
-      <p>Täpsusta, mis põhjusel tudengiga kontakteerusid.</p>
-      <hr />
 
-      <!-- See on ainus komponent, mida me siin kasutame -->
       <CommentForm
           :course-id="props.courseId"
           :student-id="props.studentId"
@@ -51,8 +49,12 @@
 <script setup>
 import { ref, onMounted, watch } from 'vue'
 import apiClient from '@/services/api.js'
+import { useRouter } from 'vue-router'
 import PopupModal from '@/components/PopupModal.vue'
 import CommentForm from '@/components/CommentForm.vue'
+import StudentPersonalDataDisplay from '@/components/StudentPersonalDataDisplay.vue'
+
+const router = useRouter()
 
 const props = defineProps({
   studentId: {
@@ -81,7 +83,7 @@ async function fetchGrades() {
     grades.value = response.data
   } catch (err) {
     console.error(err)
-    error.value = 'Viga andmete laadimisel'
+    error.value = 'Error while loading students grades'
   } finally {
     loading.value = false
   }
@@ -107,5 +109,18 @@ function handleCommentAdded() {
   closeCommentPopup()
 }
 
+function navigateToComments() {
+  if (props.courseId && props.studentId) {
+    router.push({
+      name: 'students comments',
+      params: {
+        courseId: props.courseId,
+        studentId: props.studentId
+      }
+    })
+  } else {
+    console.error("Unable to navigate: no student ID or no course ID.", props);
+  }
+}
 </script>
 

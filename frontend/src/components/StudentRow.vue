@@ -19,7 +19,7 @@ function navigateToGrades() {
   if (props.courseId && props.student && props.student.id) {
     router.push(`/courses/${props.courseId}/students/${props.student.id}/grades`)
   } else {
-    console.error("Ei saa navigeerida: kursuse või tudengi ID puudub.", props)
+    console.error("Unable to navigate: no student ID or no course ID.", props)
   }
 }
 

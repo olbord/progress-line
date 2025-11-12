@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import CommentsView from '../components/CommentsView.vue'
-import CourseStudentsList from "../components/CourseStudentsList.vue";
+import CommentsView from '@/views/CommentsView.vue'
+import CourseStudentsList from "@/components/CourseStudentsList.vue";
 import GradesView from "@/views/GradesView.vue";
 import CourseAnalyticsView from "@/views/CourseAnalyticsView.vue";
 import AllCoursesView from "@/views/AllCoursesView.vue";
@@ -15,9 +15,10 @@ const router = createRouter({
       component: HomeView,
     },
     {
-      path: '/courses/:courseId/students/:studentId',
+      path: '/courses/:courseId/students/:studentId/comments',
       name: 'students comments',
       component: CommentsView,
+      props: true
     },
     {
       path: '/courses',
