@@ -20,8 +20,7 @@ public class CourseCommentController {
     private final CourseAccessService accessService;
     private final CommentService commentService;
 
-    // TODO ADD TO FRONTEND
-    @Operation(summary = "[ADD TO FRONTEND] Require all students comments",
+    @Operation(summary = "Retrieve all students comments",
             description = "Gets all comments comment describing students progress on a specific course.")
     @GetMapping
     @ResponseStatus(HttpStatus.OK)

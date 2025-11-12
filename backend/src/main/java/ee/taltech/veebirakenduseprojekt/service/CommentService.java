@@ -29,14 +29,6 @@ public class CommentService {
                 .toList();
     }
 
-    @Transactional
-    public CommentResponseDto getComment(Long id) {
-        log.debug("Getting comment with id " + id);
-        Comment comment = commentRepository.findById(id)
-                .orElseThrow(() -> new ApplicationException("Comment not found for student with id " + id));
-                return commentMapper.mapToResponseDto(comment);
-    }
-
     public CommentResponseDto addComment(CommentRequestDto dto) {
         Long studentId = dto.getStudentId();
         if (studentId == null) {
