@@ -9,7 +9,10 @@
       </h2>
 
       <p>
-        Email: <a :href="'mailto:' + studentInfo.email">{{ studentInfo.email }}</a>
+        Email:
+        <a href="#" @click="handleEmailClick">
+          {{ studentInfo.email }}
+        </a>
       </p>
 
       <slot :student="studentInfo"></slot>
@@ -31,6 +34,15 @@ const props = defineProps({
 const studentInfo = ref(null)
 const loading = ref(false)
 const error = ref(null)
+
+const emit = defineEmits(['emailClicked']);
+
+function handleEmailClick(event) {
+  // Do not allow browser mailto
+  event.preventDefault();
+  console.log("Email clicked! Emitting event.");
+  emit('emailClicked', props.studentId);
+}
 
 async function fetchStudentInfo() {
   if (!props.studentId || props.studentId <= 0) {
