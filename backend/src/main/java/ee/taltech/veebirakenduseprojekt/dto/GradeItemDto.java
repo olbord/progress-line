@@ -1,4 +1,4 @@
-package ee.taltech.veebirakenduseprojekt.controller;
+package ee.taltech.veebirakenduseprojekt.dto;
 
 import io.swagger.v3.oas.annotations.media.*;
 import lombok.*;
@@ -36,7 +36,7 @@ public class GradeItemDto {
             example = "5")
     private BigDecimal grade;
 
-    @Schema(description = "The date when the grade was added",
+    @Schema(description = "The date and time when the grade was added",
             example = "2025-09-24T15:00:00")
     private LocalDateTime gradeDateGraded;
 }

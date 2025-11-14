@@ -30,4 +30,6 @@ public interface TeacherRepository extends JpaRepository<User, Long> {
     )
     """, nativeQuery = true)
     boolean isTeacherOfCourse(@Param("email") String email, @Param("courseId") Long courseId);
+
+    User findByEmail(String email);
 }
