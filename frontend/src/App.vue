@@ -1,14 +1,9 @@
-<script setup>
-import { RouterLink, RouterView } from 'vue-router'
-
-</script>
-
 <template>
   <header class="header-bar">
 
-
     <div class="header-content">
-      <h1>ProgressLine</h1>
+
+      <h1 class="header-logo-text">PROGRESSLINE</h1>
 
       <nav>
         <RouterLink to="/">Algusesse</RouterLink>
@@ -20,3 +15,8 @@ import { RouterLink, RouterView } from 'vue-router'
 
   <RouterView />
 </template>
+
+<script setup>
+import { RouterLink, RouterView } from 'vue-router'
+
+</script>

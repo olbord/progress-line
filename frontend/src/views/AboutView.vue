@@ -1,16 +1,17 @@
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
+  <div class="container--narrow">
+    <h1>Rakendus ProgressLine</h1>
+
+    <p>ProgressLine on tudengite individuaalse edenemise jälgimise ja toetamise rakendus.
+      See rakendus on valminud TalTechi kursuse "Veebirakenduse projekt" raames.
+      <br>
+    Rakendus on arendamisjärgus.</p>
+
+    <p>Tutvu rakenduse tehnilise kirjeldusega
+      <a href="https://gitlab.cs.taltech.ee/nikest/iti0302-2025-projekt"
+         target="_blank" rel="noopener noreferrer">siin lingil</a></p>
   </div>
 </template>
 
-<style>
-@media (min-width: 1024px) {
-  .about {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-  }
-}
-</style>
-
+<script setup>
+</script>
