@@ -41,16 +41,23 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from "vue";
+import { ref, onMounted, watch, computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import StudentRow from "@/components/StudentRow.vue";
-
+import Pagination from "@/components/Pagination.vue";
 import {
   fetchStudentsWithDeclaration,
   fetchInactiveStudents,
   fetchStudentsWithoutDeclaration
 } from "@/services/studentService.js";
-import Pagination from "@/components/Pagination.vue";
+
+const route = useRoute();
+const router = useRouter();
+
+const isLoading = ref(false);
+const students = ref([]);
+const size = ref(10);
+const totalPages = ref(0);
 
 const props = defineProps({
   title: { type: String, required: true },
@@ -63,16 +70,22 @@ const props = defineProps({
   }
 });
 
-const route = useRoute();
-const router = useRouter();
+const pageParam = computed(() => {
+  switch (props.type) {
+    case "with-declarations":
+      return "withDeclPage";
+    case "inactive":
+      return "inactivePage";
+    case "no-declarations":
+      return "noDeclPage";
+  }
+});
 
-const isLoading = ref(false);
-const students = ref([]);
 const page = ref(
-    route.query.page ? Number(route.query.page) - 1 : 0
+    route.query[pageParam.value]
+        ? Number(route.query[pageParam.value]) - 1
+        : 0
 );
-const size = ref(10);
-const totalPages = ref(0);
 
 function loadFromService(courseId, page, size) {
   switch (props.type) {
@@ -111,7 +124,7 @@ watch(page, (newPage) => {
   router.replace({
     query: {
       ...route.query,
-      page: newPage + 1
+      [pageParam.value]: newPage + 1
     }
   });
 
@@ -125,7 +138,7 @@ watch(() => [props.courseId, props.type], () => {
   router.replace({
     query: {
       ...route.query,
-      page: 1
+      [pageParam.value]: 1
     }
   });
 
@@ -157,27 +170,6 @@ onMounted(loadStudents);
   border: 1px solid #ccc;
   padding: 8px;
   text-align: left;
-}
-
-.pagination {
-  margin-top: 1rem;
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-}
-
-button {
-  padding: 6px 12px;
-  border: none;
-  background-color: #007bff;
-  color: white;
-  cursor: pointer;
-  border-radius: 4px;
-}
-
-button:disabled {
-  background-color: #aaa;
-  cursor: not-allowed;
 }
 
 .loading {
