@@ -1,25 +1,31 @@
 import apiClient from './api';
 
-export async function fetchStudentsWithDeclaration(courseId) {
-    const res = await apiClient.get(`/courses/${courseId}/students/with-declarations`);
+export async function fetchStudentsWithDeclaration(courseId, page = 0, size = 10) {
+    const res = await apiClient.get(`/courses/${courseId}/students/with-declarations`, {
+        params: { page, size }
+    });
     return res.data;
 }
 
-export async function fetchInactiveStudents(courseId) {
-    const res = await apiClient.get(`/courses/${courseId}/students/inactive`);
+export async function fetchInactiveStudents(courseId, page = 0, size = 10) {
+    const res = await apiClient.get(`/courses/${courseId}/students/inactive`, {
+        params: { page, size }
+    });
     return res.data;
 }
 
-export async function fetchStudentsWithoutDeclaration(courseId) {
-    const res = await apiClient.get(`/courses/${courseId}/students/no-declarations`);
+export async function fetchStudentsWithoutDeclaration(courseId, page = 0, size = 10) {
+    const res = await apiClient.get(`/courses/${courseId}/students/no-declarations`, {
+        params: { page, size }
+    });
     return res.data;
 }
 
-export async function fetchAllStudentsData(courseId) {
+export async function fetchAllStudentsData(courseId, page = 0, size = 10) {
     const [withDecl, inactive, withoutDecl] = await Promise.all([
-        fetchStudentsWithDeclaration(courseId),
-        fetchInactiveStudents(courseId),
-        fetchStudentsWithoutDeclaration(courseId),
+        fetchStudentsWithDeclaration(courseId, page, size),
+        fetchInactiveStudents(courseId, page, size),
+        fetchStudentsWithoutDeclaration(courseId, page, size),
     ]);
 
     return { withDecl, inactive, withoutDecl };
