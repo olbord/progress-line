@@ -1,8 +1,17 @@
 <template>
-  <div>
+  <div class="container container--medium">
     <StudentPersonalDataDisplay
         :student-id="props.studentId"
+        @email-clicked="openEmailModal"
     />
+
+    <PopupModal :visible="showEmailPopup" @close="showEmailPopup = false">
+      <EmailForm
+          :course-id="props.courseId"
+          :student-id="props.studentId"
+          @email-sent="showEmailPopup = false"
+      />
+    </PopupModal>
     <div v-if="loading">Laen hinded...</div>
     <div v-else-if="error" class="message message--error">{{ error }}</div>
 
@@ -53,8 +62,16 @@ import { useRouter } from 'vue-router'
 import PopupModal from '@/components/PopupModal.vue'
 import CommentForm from '@/components/CommentForm.vue'
 import StudentPersonalDataDisplay from '@/components/StudentPersonalDataDisplay.vue'
+import EmailForm from "@/components/EmailForm.vue";
 
 const router = useRouter()
+
+// Must be used with StudentPersonalDataDisplay component to make email clickable
+const showEmailPopup = ref(false)
+function openEmailModal() {
+  console.log("Modal open function called.");
+  showEmailPopup.value = true
+}
 
 const props = defineProps({
   studentId: {

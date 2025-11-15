@@ -1,73 +1,17 @@
-<script setup>
-import { ref, onMounted, watch } from 'vue'
-import apiClient from '@/services/api.js'
-import StudentPersonalDataDisplay from '@/components/StudentPersonalDataDisplay.vue'
-import PopupModal from "@/components/PopupModal.vue";
-import CommentForm from '@/components/CommentForm.vue'
-
-const comments = ref([]);
-const loadingComments = ref(false)
-const errorComments = ref(null)
-const showCommentPopup = ref(false)
-
-const props = defineProps({
-  studentId: {
-    type: String,
-    required: true
-  },
-  courseId: {
-    type: String,
-    required: true
-  }
-})
-
-const fetchComments = async () => {
-  const courseId = Number(props.courseId);
-  const studentId = Number(props.studentId);
-
-  if (!courseId || !studentId) {
-    console.warn("Skipping API call: Course ID or Student ID is missing.");
-    return;
-  }
-
-  loadingComments.value = true
-  errorComments.value = null
-
-  try {
-    const response = await apiClient.get(`/courses/${courseId}/students/${studentId}/comments`)
-    comments.value = response.data // PARANDUS: Salvesta kommentaarid kommentaaride viitesse
-  } catch (err) {
-    console.error("Failed to fetch comments:", err)
-    errorComments.value = 'Kommentaaride laadimine ebaõnnestus.'
-  } finally {
-    loadingComments.value = false
-  }
-}
-
-onMounted(fetchComments)
-
-watch(() => [props.courseId, props.studentId], fetchComments)
-
-function openCommentPopup() {
-  showCommentPopup.value = true
-}
-
-function closeCommentPopup() {
-  showCommentPopup.value = false
-  fetchComments()
-}
-
-function handleCommentAdded() {
-  closeCommentPopup()
-}
-
-</script>
-
 <template>
   <div class="container container--medium">
     <StudentPersonalDataDisplay
         :student-id="props.studentId"
+        @email-clicked="openEmailModal"
     />
+
+    <PopupModal :visible="showEmailPopup" @close="showEmailPopup = false">
+      <EmailForm
+          :course-id="props.courseId"
+          :student-id="props.studentId"
+          @email-sent="showEmailPopup = false"
+      />
+    </PopupModal>
 
     <h2>Kommentaarid</h2>
     <hr />
@@ -108,3 +52,77 @@ function handleCommentAdded() {
 
   </div>
 </template>
+
+<script setup>
+import { ref, onMounted, watch } from 'vue'
+import apiClient from '@/services/api.js'
+import PopupModal from "@/components/PopupModal.vue";
+import CommentForm from '@/components/CommentForm.vue'
+import StudentPersonalDataDisplay from '@/components/StudentPersonalDataDisplay.vue'
+import EmailForm from '@/components/EmailForm.vue'
+
+const comments = ref([]);
+const loadingComments = ref(false)
+const errorComments = ref(null)
+const showCommentPopup = ref(false)
+
+// Must be used with StudentPersonalDataDisplay component to make email clickable
+const showEmailPopup = ref(false)
+function openEmailModal() {
+  console.log("Modal open function called.");
+  showEmailPopup.value = true
+}
+
+const props = defineProps({
+  studentId: {
+    type: String,
+    required: true
+  },
+  courseId: {
+    type: String,
+    required: true
+  }
+})
+
+const fetchComments = async () => {
+  const courseId = Number(props.courseId);
+  const studentId = Number(props.studentId);
+
+  if (!courseId || !studentId) {
+    console.warn("Skipping API call: Course ID or Student ID is missing.");
+    return;
+  }
+
+  loadingComments.value = true
+  errorComments.value = null
+
+  try {
+    const response = await apiClient.get(`/courses/${courseId}/students/${studentId}/comments`)
+    comments.value = response.data
+  } catch (err) {
+    console.error("Failed to fetch comments:", err)
+    errorComments.value = 'Kommentaaride laadimine ebaõnnestus.'
+  } finally {
+    loadingComments.value = false
+  }
+}
+
+onMounted(fetchComments)
+
+watch(() => [props.courseId, props.studentId], fetchComments)
+
+function openCommentPopup() {
+  showCommentPopup.value = true
+}
+
+function closeCommentPopup() {
+  showCommentPopup.value = false
+  fetchComments()
+}
+
+function handleCommentAdded() {
+  closeCommentPopup()
+}
+
+</script>
+
