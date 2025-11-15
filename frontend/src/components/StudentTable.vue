@@ -63,7 +63,9 @@ const route = useRoute();
 const router = useRouter();
 
 const students = ref([]);
-const page = ref(Number(route.query.page ?? 0));
+const page = ref(
+    route.query.page ? Number(route.query.page) - 1 : 0
+);
 const size = ref(10);
 const totalPages = ref(0);
 
@@ -99,24 +101,21 @@ watch(page, (newPage) => {
   router.replace({
     query: {
       ...route.query,
-      page: newPage
+      page: newPage + 1
     }
   });
 
   loadStudents();
 });
 
-
 watch(() => [props.courseId, props.type], () => {
 
-  // сбрасываем страницу
   page.value = 0;
 
-  // обновляем URL
   router.replace({
     query: {
       ...route.query,
-      page: 0
+      page: 1
     }
   });
 
