@@ -38,6 +38,7 @@
 
 <script setup>
 import { ref, onMounted, watch } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import StudentRow from "@/components/StudentRow.vue";
 
 import {
@@ -58,8 +59,11 @@ const props = defineProps({
   }
 });
 
+const route = useRoute();
+const router = useRouter();
+
 const students = ref([]);
-const page = ref(0);
+const page = ref(Number(route.query.page ?? 0));
 const size = ref(10);
 const totalPages = ref(0);
 
@@ -91,24 +95,34 @@ async function loadStudents() {
   }
 }
 
-function nextPage() {
-  if (page.value < totalPages.value - 1) {
-    page.value++;
-    loadStudents();
-  }
-}
+watch(page, (newPage) => {
+  router.replace({
+    query: {
+      ...route.query,
+      page: newPage
+    }
+  });
 
-function prevPage() {
-  if (page.value > 0) {
-    page.value--;
-    loadStudents();
-  }
-}
-
-watch(() => [props.courseId, props.type], () => {
-  page.value = 0;
   loadStudents();
 });
+
+
+watch(() => [props.courseId, props.type], () => {
+
+  // сбрасываем страницу
+  page.value = 0;
+
+  // обновляем URL
+  router.replace({
+    query: {
+      ...route.query,
+      page: 0
+    }
+  });
+
+  loadStudents();
+});
+
 
 watch(page, () => {
   loadStudents();
