@@ -11,17 +11,22 @@
         <th class="col-narrow">Tegevus</th>
       </tr>
       </thead>
+
       <tbody>
       <tr v-for="student in students" :key="student.id">
         <td>{{ student.firstName }} {{ student.lastName }}</td>
         <td>{{ student.email }}</td>
         <td>{{ (student.totalPoints ?? 0).toFixed(2) }}</td>
-        <td><StudentRow :student="student" :courseId="courseId" /></td>
+        <td>
+          <StudentRow :student="student" :courseId="courseId" />
+        </td>
       </tr>
       </tbody>
     </table>
 
-    <div v-else>Tudengeid ei leitud</div>
+    <div v-else>
+      Tudengeid ei leitud
+    </div>
 
     <div class="pagination" v-if="totalPages > 1">
       <button @click="prevPage" :disabled="page === 0">← Tagasi</button>
@@ -32,9 +37,14 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
-import StudentRow from '@/components/StudentRow.vue'
-import axios from 'axios'
+import { ref, onMounted, watch } from "vue";
+import StudentRow from "@/components/StudentRow.vue";
+
+import {
+  fetchStudentsWithDeclaration,
+  fetchInactiveStudents,
+  fetchStudentsWithoutDeclaration
+} from "@/services/studentService.js";
 
 const props = defineProps({
   title: { type: String, required: true },
@@ -42,49 +52,64 @@ const props = defineProps({
   type: {
     type: String,
     required: true,
-    validator: (value) =>
-        ['with-declarations', 'no-declarations', 'inactive'].includes(value),
-  },
-})
+    validator: (v) =>
+        ["with-declarations", "inactive", "no-declarations"].includes(v)
+  }
+});
 
-const students = ref([])
-const page = ref(0)
-const size = ref(10)
-const totalPages = ref(0)
+const students = ref([]);
+const page = ref(0);
+const size = ref(10);
+const totalPages = ref(0);
+
+function loadFromService(courseId, page, size) {
+  switch (props.type) {
+    case "with-declarations":
+      return fetchStudentsWithDeclaration(courseId, page, size);
+    case "inactive":
+      return fetchInactiveStudents(courseId, page, size);
+    case "no-declarations":
+      return fetchStudentsWithoutDeclaration(courseId, page, size);
+  }
+}
 
 async function loadStudents() {
   try {
-    const response = await axios.get(
-        `/api/courses/${props.courseId}/students/with-declarations`,
-        {
-          params: { page: page.value, size: size.value },
-        }
-    )
+    const data = await loadFromService(
+        props.courseId,
+        page.value,
+        size.value
+    );
 
-    students.value = response.data.content
-    totalPages.value = response.data.totalPages
-  } catch (error) {
-    console.error('Viga tudengite laadimisel:', error)
-    students.value = []
-    totalPages.value = 0
+    students.value = data.content;
+    totalPages.value = data.totalPages;
+  } catch (err) {
+    console.error("Viga tudengite laadimisel:", err);
+    students.value = [];
+    totalPages.value = 0;
   }
 }
 
 function nextPage() {
   if (page.value < totalPages.value - 1) {
-    page.value++
-    loadStudents()
+    page.value++;
+    loadStudents();
   }
 }
 
 function prevPage() {
   if (page.value > 0) {
-    page.value--
-    loadStudents()
+    page.value--;
+    loadStudents();
   }
 }
 
-onMounted(loadStudents)
+watch(() => [props.courseId, props.type], () => {
+  page.value = 0;
+  loadStudents();
+});
+
+onMounted(loadStudents);
 </script>
 
 <style scoped>
@@ -127,4 +152,3 @@ button:disabled {
   cursor: not-allowed;
 }
 </style>
-
