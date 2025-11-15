@@ -71,38 +71,3 @@ const visible = computed(() => {
 });
 </script>
 
-<style scoped>
-.pagination {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 6px;
-  margin-top: 16px;
-  flex-wrap: wrap;
-}
-
-.page-btn {
-  background-color: white;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 6px 12px;
-  min-width: 34px;
-  cursor: pointer;
-  transition: 0.25s;
-}
-
-.page-btn:hover:not(:disabled) {
-  background-color: #eee;
-}
-
-.page-btn.active {
-  background-color: #2e236c;
-  color: white;
-  border-color: #2e236c;
-}
-
-.page-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-</style>
