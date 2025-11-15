@@ -179,4 +179,12 @@ button:disabled {
   background-color: #aaa;
   cursor: not-allowed;
 }
+
+.loading {
+  text-align: center;
+  padding: 15px;
+  font-size: 18px;
+  color: #555;
+}
+
 </style>
