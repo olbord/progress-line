@@ -73,6 +73,7 @@ public interface StudentRepository extends JpaRepository<User, Long> {
             WHERE r.course_id = :courseId
               AND r.role_id = 5
               AND d.course_id = :courseId
+              AND u.id NOT IN (SELECT i.user_id FROM inactive i)
             """,
             countQuery = """
             SELECT COUNT(*)
@@ -82,6 +83,7 @@ public interface StudentRepository extends JpaRepository<User, Long> {
             WHERE r.course_id = :courseId
               AND r.role_id = 5
               AND d.course_id = :courseId
+              AND u.id NOT IN (SELECT i.user_id FROM inactive i)
             """,
             nativeQuery = true
     )
