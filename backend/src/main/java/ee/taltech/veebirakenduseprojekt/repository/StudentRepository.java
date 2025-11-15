@@ -35,6 +35,7 @@ public interface StudentRepository extends JpaRepository<User, Long> {
               AND r.role_id = 5
               AND d.course_id = :courseId
               AND u.id NOT IN (SELECT i.user_id FROM inactive i)
+            ORDER BY u.first_name ASC
             """, countQuery = """
             SELECT COUNT(*)
             FROM "user" u
@@ -62,6 +63,7 @@ public interface StudentRepository extends JpaRepository<User, Long> {
               FROM declaration d
               WHERE d.course_id = :courseId
           )
+        ORDER BY u.first_name ASC
         """, countQuery = """
         SELECT COUNT(*)
         FROM "user" u
@@ -88,6 +90,7 @@ public interface StudentRepository extends JpaRepository<User, Long> {
         WHERE r.course_id = :courseId
           AND r.role_id = 5
           AND d.course_id = :courseId
+        ORDER BY u.first_name ASC
         """,
             countQuery = """
         SELECT COUNT(*)
