@@ -87,7 +87,35 @@ public interface StudentRepository extends JpaRepository<User, Long> {
             """,
             nativeQuery = true
     )
-    Page<User> findAllActiveStudentsWithDeclarationByCourse(
+    Page<User> findPaginatedActiveWithDeclarationByCourse(
             @Param("courseId") Long courseId,
             Pageable pageable);
+
+    @Query(value = """
+        SELECT u.*
+        FROM "user" u
+        JOIN user_role r ON u.id = r.user_id
+        WHERE r.course_id = :courseId
+          AND r.role_id = 5
+          AND u.id NOT IN (
+              SELECT d.user_id
+              FROM declaration d
+              WHERE d.course_id = :courseId
+          )
+        """,
+            countQuery = """
+            SELECT COUNT(*)
+            FROM "user" u
+            JOIN user_role r ON u.id = r.user_id
+            WHERE r.course_id = :courseId
+              AND r.role_id = 5
+              AND d.course_id = :courseId
+              AND u.id NOT IN (
+              SELECT d.user_id
+              FROM declaration d
+              WHERE d.course_id = :courseId
+            """,
+            nativeQuery = true)
+    Page<User> findPaginatedWithoutDeclarationByCourse(@Param("courseId") Long courseId,
+                                                       Pageable pageable);
 }
