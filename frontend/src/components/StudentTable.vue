@@ -28,11 +28,11 @@
       Tudengeid ei leitud
     </div>
 
-    <div class="pagination" v-if="totalPages > 1">
-      <button @click="prevPage" :disabled="page === 0">← Tagasi</button>
-      <span>Leht {{ page + 1 }} / {{ totalPages }}</span>
-      <button @click="nextPage" :disabled="page >= totalPages - 1">Edasi →</button>
-    </div>
+    <Pagination
+        v-model="page"
+        :totalPages="totalPages"
+    />
+
   </div>
 </template>
 
@@ -45,6 +45,7 @@ import {
   fetchInactiveStudents,
   fetchStudentsWithoutDeclaration
 } from "@/services/studentService.js";
+import Pagination from "@/components/Pagination.vue";
 
 const props = defineProps({
   title: { type: String, required: true },
@@ -106,6 +107,10 @@ function prevPage() {
 
 watch(() => [props.courseId, props.type], () => {
   page.value = 0;
+  loadStudents();
+});
+
+watch(page, () => {
   loadStudents();
 });
 
