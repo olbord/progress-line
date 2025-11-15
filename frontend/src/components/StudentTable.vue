@@ -2,7 +2,11 @@
   <div class="student-table">
     <h2>{{ title }}</h2>
 
-    <table v-if="students.length > 0" class="data-table">
+    <div v-if="isLoading" class="loading">
+      Laadimine...
+    </div>
+
+    <table v-if="!isLoading && students.length > 0" class="data-table">
       <thead>
       <tr>
         <th class="col-medium">Eesnimi / Perekonnanimi</th>
@@ -24,8 +28,8 @@
       </tbody>
     </table>
 
-    <div v-else>
-      Tudengeid ei leitud
+    <div v-else-if="!isLoading && students.length === 0">
+    Tudengeid ei leitud
     </div>
 
     <Pagination
@@ -62,6 +66,7 @@ const props = defineProps({
 const route = useRoute();
 const router = useRouter();
 
+const isLoading = ref(false);
 const students = ref([]);
 const page = ref(
     route.query.page ? Number(route.query.page) - 1 : 0
@@ -82,6 +87,8 @@ function loadFromService(courseId, page, size) {
 
 async function loadStudents() {
   try {
+    isLoading.value = true;
+
     const data = await loadFromService(
         props.courseId,
         page.value,
@@ -94,8 +101,11 @@ async function loadStudents() {
     console.error("Viga tudengite laadimisel:", err);
     students.value = [];
     totalPages.value = 0;
+  } finally {
+    isLoading.value = false;
   }
 }
+
 
 watch(page, (newPage) => {
   router.replace({

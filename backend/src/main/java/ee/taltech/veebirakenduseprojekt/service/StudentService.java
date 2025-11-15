@@ -8,7 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import java.util.List;
 
 @Slf4j
 @Service
@@ -18,7 +17,7 @@ public class StudentService {
     private final StudentRepository studentRepository;
     private final StudentMapper studentMapper;
 
-    public Page<StudentDto> getAllStudentsWithoutDeclarationByCourse(Long courseId, Pageable pageable) {
+    public Page<StudentDto> getPaginatedStudentsWithoutDeclarationByCourse(Long courseId, Pageable pageable) {
         //Business logic: find all students without declaration and show them in a different view
         return studentRepository
                 .findPaginatedWithoutDeclarationByCourse(courseId, pageable)
@@ -31,18 +30,15 @@ public class StudentService {
                 .orElseThrow(() -> new RuntimeException("Student not found with id " + id));
     }
 
-    public Page<StudentDto> getActiveStudentsWithDeclarationByCourse(Long courseId, Pageable pageable) {
+    public Page<StudentDto> getPaginatedActiveStudentsWithDeclarationByCourse(Long courseId, Pageable pageable) {
         return studentRepository
                 .findPaginatedActiveWithDeclarationByCourse(courseId, pageable)
                 .map(studentMapper::mapToDto);
     }
 
-    public List<StudentDto> getAllInactiveStudentsWithDeclarationByCourse(Long courseId) {
-        List<StudentDto> studentDtos = studentRepository
-                .findAllInactiveWithDeclarationByCourse(courseId)
-                .stream()
-                .map(studentMapper::mapToDto)
-                .toList();
-        return studentDtos;
+    public Page<StudentDto> getPaginatedInactiveStudentsWithDeclarationByCourse(Long courseId, Pageable pageable) {
+        return studentRepository
+                .findPaginatedInactiveWithDeclarationByCourse(courseId, pageable)
+                .map(studentMapper::mapToDto);
     }
 }

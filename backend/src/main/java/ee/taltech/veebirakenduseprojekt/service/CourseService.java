@@ -38,19 +38,19 @@ public class CourseService {
         return courseMapper.toDtoList(courses);
     }
 
-    public Page<StudentDto> getAllActiveStudentsWithDeclarations(Long courseId, Pageable pageable) {
+    public Page<StudentDto> getPaginatedActiveStudentsWithDeclarations(Long courseId, Pageable pageable) {
         validateCourseExists(courseId);
-        return studentService.getActiveStudentsWithDeclarationByCourse(courseId, pageable);
+        return studentService.getPaginatedActiveStudentsWithDeclarationByCourse(courseId, pageable);
     }
 
-    public Page<StudentDto> getAllStudentsWithoutDeclarations(Long courseId, Pageable pageable) {
+    public Page<StudentDto> getPaginatedStudentsWithoutDeclarations(Long courseId, Pageable pageable) {
         validateCourseExists(courseId);
-        return studentService.getAllStudentsWithoutDeclarationByCourse(courseId, pageable);
+        return studentService.getPaginatedStudentsWithoutDeclarationByCourse(courseId, pageable);
     }
 
-    public List<StudentDto> getAllInactiveStudents(Long courseId) {
+    public Page<StudentDto> getPaginatedInactiveStudents(Long courseId, Pageable pageable) {
         validateCourseExists(courseId);
-        return studentService.getAllInactiveStudentsWithDeclarationByCourse(courseId);
+        return studentService.getPaginatedInactiveStudentsWithDeclarationByCourse(courseId, pageable);
     }
 
     public void markStudentInactive(Long courseId, Long studentId) {
