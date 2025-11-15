@@ -1,12 +1,13 @@
 package ee.taltech.veebirakenduseprojekt.service;
 
-import ee.taltech.veebirakenduseprojekt.controller.StudentDto;
+import ee.taltech.veebirakenduseprojekt.controller.*;
 import ee.taltech.veebirakenduseprojekt.mapper.StudentMapper;
 import ee.taltech.veebirakenduseprojekt.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.cache.annotation.*;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -24,10 +25,11 @@ public class StudentService {
                 .map(studentMapper::mapToDto);
     }
 
-    public StudentDto getStudent(Long id) {
+    @Cacheable(value = "studentPersonalData", key="#id")
+    public StudentPersonalDataResponseDto getStudentPersonalDataById(Long id) {
         return studentRepository.findById(id)
-                .map(studentMapper::mapToDto)
-                .orElseThrow(() -> new RuntimeException("Student not found with id " + id));
+                .map(studentMapper::mapToPersonalDataResponseDto)
+                .orElseThrow(() -> new RuntimeException("Student not found for personal data: " + id));
     }
 
     public Page<StudentDto> getPaginatedActiveStudentsWithDeclarationByCourse(Long courseId, Pageable pageable) {

@@ -1,16 +1,20 @@
 package ee.taltech.veebirakenduseprojekt.service;
 
 import ee.taltech.veebirakenduseprojekt.controller.*;
+import ee.taltech.veebirakenduseprojekt.dto.*;
+import ee.taltech.veebirakenduseprojekt.entity.*;
+import ee.taltech.veebirakenduseprojekt.exception.*;
 import ee.taltech.veebirakenduseprojekt.mapper.CourseMapper;
-import ee.taltech.veebirakenduseprojekt.repository.Course;
-import ee.taltech.veebirakenduseprojekt.repository.CourseRepository;
+import ee.taltech.veebirakenduseprojekt.repository.*;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.*;
 import java.util.List;
 
 @Slf4j
@@ -20,11 +24,13 @@ public class CourseService {
 
     private final CourseRepository courseRepository;
     private final StudentService studentService;
+    private final TeacherService teacherService;
     private final InactiveService inactiveService;
     private final CommentService commentService;
     private final CourseMapper courseMapper;
     private final GradeItemService gradeItemService;
-    private final TeacherService teacherService;
+    private final EmailService emailService;
+    private final EmailRepository emailRepository;
 
     public List<CourseDto> getCourses(String teacherEmail, CourseRequestDto request) {
         if (teacherEmail == null || teacherEmail.isEmpty()) {
@@ -82,5 +88,42 @@ public class CourseService {
     public List<TeacherDto> getTeachers(Long courseId) {
         validateCourseExists(courseId);
         return teacherService.getTeachersByCourse(courseId);
+    }
+
+    @Transactional
+    public void sendAndSaveEmail(Long courseId, Long studentId, String emailBody, String senderEmail) {
+        User teacherEntity = teacherService.getTeacherByEmail(senderEmail);
+
+        StudentPersonalDataResponseDto studentInfo = studentService.getStudentPersonalDataById(studentId);
+        String recipientEmail = studentInfo.getEmail();
+
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new ApplicationException("Kursust ID-ga " + courseId + " ei leitud."));
+        String courseName = course.getFullName();
+
+        String subject = "Tagasiside kursusel " + courseName;
+
+        emailService.sendMail(recipientEmail, senderEmail, subject, emailBody);
+
+        // Add new email to database table email
+        Email email = Email.builder()
+                .studentId(studentId)
+                .courseId(courseId)
+                .teacherId(teacherEntity.getId())
+                .body(emailBody)
+                .sentAt(LocalDateTime.now())
+                .build();
+        emailRepository.save(email);
+
+        // Add comment to database table comment
+        String commentText = "Saadetud email: \n\n" + emailBody.substring(0, Math.min(emailBody.length(), 250)) + "...\n\n";
+        CommentRequestDto comment = CommentRequestDto.builder()
+                .studentId(studentId)
+                .commentText(commentText)
+                .type(CommentType.EMAIL)
+                .teacherId(teacherEntity.getId())
+                .courseId(courseId)
+                .build();
+        commentService.addComment(comment);
     }
 }
