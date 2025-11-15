@@ -21,5 +21,6 @@
     <include file="/db/changelog/014-course_id-in-comment-table.xml"/>
     <include file="db/changelog/015-grade-item-dummy-data.xml"/>
     <include file="/db/changelog/016-create-email-table.xml"/>
+    <include file="/db/changelog/17-local-test-add-pagination-dummy-data.xml"/>
 
 </databaseChangeLog>
