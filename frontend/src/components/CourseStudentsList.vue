@@ -30,19 +30,22 @@ onMounted(async () => {
 
     <StudentTable
         title="Aktiivsed tudengid"
-        :students="studentsWithDeclaration"
+        type="with-declarations"
         :courseId="Number(courseId)"
     />
+
     <StudentTable
         title="Mitteaktiivsed tudengid"
-        :students="inactiveStudents"
+        type="inactive"
         :courseId="Number(courseId)"
     />
+
     <StudentTable
         title="Ilma deklaratsioonita tudengid"
-        :students="studentsWithoutDeclaration"
+        type="no-declarations"
         :courseId="Number(courseId)"
     />
+
   </div>
 
 </template>

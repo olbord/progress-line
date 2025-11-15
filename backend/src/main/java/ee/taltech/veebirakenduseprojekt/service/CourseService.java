@@ -10,6 +10,8 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.*;
@@ -42,19 +44,19 @@ public class CourseService {
         return courseMapper.toDtoList(courses);
     }
 
-    public List<StudentDto> getAllActiveStudentsWithDeclarations(Long courseId) {
+    public Page<StudentDto> getPaginatedActiveStudentsWithDeclarations(Long courseId, Pageable pageable) {
         validateCourseExists(courseId);
-        return studentService.getAllActiveStudentsWithDeclarationByCourse(courseId);
+        return studentService.getPaginatedActiveStudentsWithDeclarationByCourse(courseId, pageable);
     }
 
-    public List<StudentDto> getAllStudentsWithoutDeclarations(Long courseId) {
+    public Page<StudentDto> getPaginatedStudentsWithoutDeclarations(Long courseId, Pageable pageable) {
         validateCourseExists(courseId);
-        return studentService.getAllStudentsWithoutDeclarationByCourse(courseId);
+        return studentService.getPaginatedStudentsWithoutDeclarationByCourse(courseId, pageable);
     }
 
-    public List<StudentDto> getAllInactiveStudents(Long courseId) {
+    public Page<StudentDto> getPaginatedInactiveStudents(Long courseId, Pageable pageable) {
         validateCourseExists(courseId);
-        return studentService.getAllInactiveStudentsWithDeclarationByCourse(courseId);
+        return studentService.getPaginatedInactiveStudentsWithDeclarationByCourse(courseId, pageable);
     }
 
     public void markStudentInactive(Long courseId, Long studentId) {

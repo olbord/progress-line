@@ -5,9 +5,10 @@ import ee.taltech.veebirakenduseprojekt.mapper.StudentMapper;
 import ee.taltech.veebirakenduseprojekt.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.cache.annotation.*;
 import org.springframework.stereotype.Service;
-import java.util.List;
 
 @Slf4j
 @Service
@@ -17,14 +18,11 @@ public class StudentService {
     private final StudentRepository studentRepository;
     private final StudentMapper studentMapper;
 
-    public List<StudentDto> getAllStudentsWithoutDeclarationByCourse(Long courseId) {
+    public Page<StudentDto> getPaginatedStudentsWithoutDeclarationByCourse(Long courseId, Pageable pageable) {
         //Business logic: find all students without declaration and show them in a different view
-        List<StudentDto> studentDtos = studentRepository
-                .findAllWithoutDeclarationByCourse(courseId)
-                .stream()
-                .map(studentMapper::mapToDto)
-                .toList();
-        return studentDtos;
+        return studentRepository
+                .findPaginatedWithoutDeclarationByCourse(courseId, pageable)
+                .map(studentMapper::mapToDto);
     }
 
     @Cacheable(value = "studentPersonalData", key="#id")
@@ -34,21 +32,15 @@ public class StudentService {
                 .orElseThrow(() -> new RuntimeException("Student not found for personal data: " + id));
     }
 
-    public List<StudentDto> getAllActiveStudentsWithDeclarationByCourse(Long courseId) {
-        List<StudentDto> studentDtos = studentRepository
-                .findAllActiveWithDeclarationByCourse(courseId)
-                .stream()
-                .map(studentMapper::mapToDto)
-                .toList();
-        return studentDtos;
+    public Page<StudentDto> getPaginatedActiveStudentsWithDeclarationByCourse(Long courseId, Pageable pageable) {
+        return studentRepository
+                .findPaginatedActiveWithDeclarationByCourse(courseId, pageable)
+                .map(studentMapper::mapToDto);
     }
 
-    public List<StudentDto> getAllInactiveStudentsWithDeclarationByCourse(Long courseId) {
-        List<StudentDto> studentDtos = studentRepository
-                .findAllInactiveWithDeclarationByCourse(courseId)
-                .stream()
-                .map(studentMapper::mapToDto)
-                .toList();
-        return studentDtos;
+    public Page<StudentDto> getPaginatedInactiveStudentsWithDeclarationByCourse(Long courseId, Pageable pageable) {
+        return studentRepository
+                .findPaginatedInactiveWithDeclarationByCourse(courseId, pageable)
+                .map(studentMapper::mapToDto);
     }
 }
