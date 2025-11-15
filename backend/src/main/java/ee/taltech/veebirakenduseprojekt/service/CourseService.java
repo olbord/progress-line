@@ -43,9 +43,9 @@ public class CourseService {
         return studentService.getActiveStudentsWithDeclarationByCourse(courseId, pageable);
     }
 
-    public List<StudentDto> getAllStudentsWithoutDeclarations(Long courseId) {
+    public Page<StudentDto> getAllStudentsWithoutDeclarations(Long courseId, Pageable pageable) {
         validateCourseExists(courseId);
-        return studentService.getAllStudentsWithoutDeclarationByCourse(courseId);
+        return studentService.getAllStudentsWithoutDeclarationByCourse(courseId, pageable);
     }
 
     public List<StudentDto> getAllInactiveStudents(Long courseId) {

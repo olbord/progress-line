@@ -18,14 +18,11 @@ public class StudentService {
     private final StudentRepository studentRepository;
     private final StudentMapper studentMapper;
 
-    public List<StudentDto> getAllStudentsWithoutDeclarationByCourse(Long courseId) {
+    public Page<StudentDto> getAllStudentsWithoutDeclarationByCourse(Long courseId, Pageable pageable) {
         //Business logic: find all students without declaration and show them in a different view
-        List<StudentDto> studentDtos = studentRepository
-                .findAllWithoutDeclarationByCourse(courseId)
-                .stream()
-                .map(studentMapper::mapToDto)
-                .toList();
-        return studentDtos;
+        return studentRepository
+                .findPaginatedWithoutDeclarationByCourse(courseId, pageable)
+                .map(studentMapper::mapToDto);
     }
 
     public StudentDto getStudent(Long id) {
@@ -36,7 +33,7 @@ public class StudentService {
 
     public Page<StudentDto> getActiveStudentsWithDeclarationByCourse(Long courseId, Pageable pageable) {
         return studentRepository
-                .findAllActiveStudentsWithDeclarationByCourse(courseId, pageable)
+                .findPaginatedActiveWithDeclarationByCourse(courseId, pageable)
                 .map(studentMapper::mapToDto);
     }
 

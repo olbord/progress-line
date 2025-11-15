@@ -25,7 +25,8 @@ public class CourseStudentController {
     private final CourseService courseService;
     private final CourseAccessService accessService;
 
-    @Operation(summary = "Get paginated list of active students with declarations")
+    @Operation(summary = "Get paginated list of active students with declarations",
+            description = "Gets all students who have declared participation on a specific course and are not inactive.")
     @GetMapping("/with-declarations")
     @ResponseStatus(HttpStatus.OK)
     public Page<StudentDto> getActiveStudentsWithDeclarations(
@@ -39,16 +40,19 @@ public class CourseStudentController {
         return courseService.getAllActiveStudentsWithDeclarations(courseId, pageable);
     }
 
-    @Operation(summary = "Require all students without declaration",
+    @Operation(summary = "Get paginated list of students without declaration",
             description = "Gets all students who have not declared participation on a specific course.")
     @GetMapping("/no-declarations")
     @ResponseStatus(HttpStatus.OK)
-    public List<StudentDto> getStudentsWithoutDeclarations(
+    public Page<StudentDto> getStudentsWithoutDeclarations(
             @PathVariable Long courseId,
-            @AuthenticationPrincipal(expression = "email") String email) {
+            @AuthenticationPrincipal(expression = "email") String email,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
 
         accessService.requireTeacherAccess(email, courseId);
-        return courseService.getAllStudentsWithoutDeclarations(courseId);
+        Pageable pageable = PageRequest.of(page, size);
+        return courseService.getAllStudentsWithoutDeclarations(courseId, pageable);
     }
 
     @Operation(summary = "Require all inactive students",
