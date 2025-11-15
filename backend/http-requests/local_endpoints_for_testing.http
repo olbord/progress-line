@@ -115,3 +115,8 @@ Content-Type: application/json
   "courseId": 35065,
   "emailBody": "Testmeil v2"
 }
+
+// FeedbackController
+
+###
+GET http://localhost:8080/courses/35065/students/2/feedback

@@ -2,7 +2,6 @@ package ee.taltech.veebirakenduseprojekt.dto;
 
 import io.swagger.v3.oas.annotations.media.*;
 import lombok.*;
-
 import java.math.BigDecimal;
 import java.time.*;
 

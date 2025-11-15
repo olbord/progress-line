@@ -2,6 +2,7 @@ package ee.taltech.veebirakenduseprojekt.controller;
 
 import ee.taltech.veebirakenduseprojekt.dto.*;
 import ee.taltech.veebirakenduseprojekt.service.*;
+import io.swagger.v3.oas.annotations.*;
 import io.swagger.v3.oas.annotations.tags.*;
 import lombok.*;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,8 @@ public class EmailController {
     private final CourseService courseService;
     private final CourseAccessService accessService;
 
+    @Operation(summary = "Send and save email",
+            description = "Sends email with specific body to student and saves to database.")
     @PostMapping("/send-email")
     @ResponseStatus(HttpStatus.OK)
     public void sendGradeEmail(
