@@ -2,7 +2,7 @@
 import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import { fetchAllStudentsData } from "@/services/studentService.js";
-import StudentTable from "@/components/StudentTable.vue";
+import StudentTable from "@/views/StudentTable.vue";
 
 const route = useRoute();
 const courseId = route.params.courseId;

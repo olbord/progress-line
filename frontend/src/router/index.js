@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import CommentsView from '@/views/CommentsView.vue'
 import CourseStudentsList from "@/components/CourseStudentsList.vue";
 import GradesView from "@/views/GradesView.vue";
+import FeedbackView from "@/views/FeedbackView.vue";
 import CourseAnalyticsView from "@/views/CourseAnalyticsView.vue";
 import AllCoursesView from "@/views/AllCoursesView.vue";
 
@@ -43,6 +44,12 @@ const router = createRouter({
       path: '/courses/:courseId/students/:studentId/grades',
       name: 'students grades',
       component: GradesView,
+      props: true
+    },
+    {
+      path: '/courses/:courseId/students/:studentId/feedback',
+      name: 'students feedback',
+      component: FeedbackView,
       props: true
     },
     {

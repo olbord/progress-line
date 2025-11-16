@@ -39,7 +39,8 @@
     <div class="container--narrow">
       <br>
       <button class="btn btn--link" @click="navigateToComments" style="margin-right: 1rem;">Loe kommentaare</button>
-      <button class="btn btn--link" @click="openCommentPopup">Lisa kommentaar</button>
+      <button class="btn btn--link" @click="openCommentPopup" style="margin-right: 1rem;">Lisa kommentaar</button>
+      <button class="btn btn--link" @click="navigateToFeedback">Vaata tagasisidet</button>
     </div>
 
     <PopupModal :visible="showCommentPopup" @close="closeCommentPopup">
@@ -137,6 +138,14 @@ function navigateToComments() {
     })
   } else {
     console.error("Unable to navigate: no student ID or no course ID.", props);
+  }
+}
+
+function navigateToFeedback() {
+  if (props.courseId && props.studentId) {
+    router.push(`/courses/${props.courseId}/students/${props.studentId}/feedback`)
+  } else {
+    console.error("Unable to navigate: no student ID or no course ID.", props)
   }
 }
 </script>
