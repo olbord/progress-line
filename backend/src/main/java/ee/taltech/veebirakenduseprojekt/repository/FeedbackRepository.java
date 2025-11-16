@@ -16,7 +16,7 @@ public interface FeedbackRepository extends JpaRepository<FeedbackResponse, Long
         JOIN FETCH fa.feedback f
         WHERE f.courseId = :courseId
           AND fa.student.id = :studentId
-        ORDER BY fa.createdAt DESC, fr.id ASC
+        ORDER BY f.name ASC, fr.id ASC
     """)
     List<FeedbackResponse> findAllStudentResponsesByCourseAndStudentId(
             @Param("courseId") Long courseId,
