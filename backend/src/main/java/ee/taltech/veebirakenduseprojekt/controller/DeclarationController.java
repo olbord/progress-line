@@ -1,10 +1,12 @@
 package ee.taltech.veebirakenduseprojekt.controller;
 
 import ee.taltech.veebirakenduseprojekt.service.DeclarationService;
+import ee.taltech.veebirakenduseprojekt.service.CourseAccessService;
 import io.swagger.v3.oas.annotations.*;
 import io.swagger.v3.oas.annotations.tags.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 public class DeclarationController {
 
     private final DeclarationService declarationService;
+    private final CourseAccessService accessService;
 
 
     // TODO: ADD TO FRONTEND
@@ -25,7 +28,9 @@ public class DeclarationController {
     @DeleteMapping("/{courseId}/student/{studentId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteStudentDeclaration(@PathVariable Long courseId,
-                                         @PathVariable Long studentId) {
+                                         @PathVariable Long studentId,
+                                         @AuthenticationPrincipal(expression = "email") String email) {
+        accessService.requireTeacherAccess(email, courseId);
         declarationService.deleteStudentDeclarationById(studentId, courseId);
     }
 }
