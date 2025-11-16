@@ -1,0 +1,110 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.15.xsd">
+
+    <changeSet id="2025-11-15-add-feedback-table" author="KJ">
+        <sql>
+            CREATE TABLE feedback (
+                                      id BIGSERIAL PRIMARY KEY,
+                                      course_id BIGINT NOT NULL,
+                                      name TEXT,
+                                      intro TEXT,
+                                      introformat BIGINT,
+                                      lang TEXT,
+                                      anonymous BIGINT,
+                                      email_notification BOOLEAN,
+                                      multiple_submit BOOLEAN,
+                                      autonumbering BOOLEAN,
+                                      site_after_submit TEXT,
+                                      page_after_submit TEXT,
+                                      page_after_submit_format BIGINT,
+                                      publish_stats BOOLEAN,
+                                      time_open TIMESTAMP WITHOUT TIME ZONE,
+                                      time_close TIMESTAMP WITHOUT TIME ZONE,
+                                      time_modified TIMESTAMP WITHOUT TIME ZONE,
+                                      completion_submit BOOLEAN,
+                                      course_module BIGINT,
+                                      created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+                                      updated_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+                                      CONSTRAINT fk_feedback_course
+                                        FOREIGN KEY (course_id) REFERENCES course (id)
+            );
+        </sql>
+        <rollback>
+            DROP TABLE feedback;
+        </rollback>
+    </changeSet>
+
+    <changeSet id="2025-11-15-create-feedback_item-table" author="KJ">
+        <sql>
+            CREATE TABLE feedback_item (
+                                           id BIGSERIAL PRIMARY KEY,
+                                           feedback_id BIGINT NOT NULL,
+                                           template TEXT,
+                                           name TEXT,
+                                           label TEXT,
+                                           presentation TEXT,
+                                           typ TEXT,
+                                           has_value BIGINT,
+                                           position BIGINT,
+                                           required BOOLEAN,
+                                           depend_item BIGINT,
+                                           depend_value TEXT,
+                                           options TEXT,
+                                           item_number BIGINT,
+                                           created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+                                           updated_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+                                           CONSTRAINT fk_fitem_feedback
+                                               FOREIGN KEY (feedback_id) REFERENCES feedback (id)
+            );
+        </sql>
+        <rollback>
+            DROP TABLE feedback_item;
+        </rollback>
+    </changeSet>
+
+
+    <changeSet id="2025-11-15-create-feedback_attempt-table" author="KJ">
+        <sql>
+            CREATE TABLE feedback_attempt (
+                                              id BIGSERIAL PRIMARY KEY,
+                                              feedback_id BIGINT NOT NULL,
+                                              user_id BIGINT NOT NULL,
+                                              time_modified TIMESTAMP WITHOUT TIME ZONE,
+                                              created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+                                              updated_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+                                              CONSTRAINT fk_fattempt_feedback
+                                                  FOREIGN KEY (feedback_id) REFERENCES feedback (id),
+                                              CONSTRAINT fk_fattempt_user
+                                                  FOREIGN KEY (user_id) REFERENCES "user" (id)
+            );
+        </sql>
+        <rollback>
+            DROP TABLE feedback_attempt;
+        </rollback>
+    </changeSet>
+
+
+    <changeSet id="2025-11-15-create-feedback_response-table" author="KJ">
+        <sql>
+            CREATE TABLE feedback_response (
+                                               id BIGSERIAL PRIMARY KEY,
+                                               attempt_id BIGINT NOT NULL,
+                                               name TEXT,
+                                               printval TEXT,
+                                               rawval TEXT,
+                                               created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+                                               updated_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+                                               CONSTRAINT fk_fresponse_attempt
+                                                   FOREIGN KEY (attempt_id)
+                                                       REFERENCES feedback_attempt (id)
+            );
+        </sql>
+        <rollback>
+            DROP TABLE feedback_response;
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

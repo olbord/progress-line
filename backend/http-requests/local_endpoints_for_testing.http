@@ -104,6 +104,12 @@ GET http://localhost:8080/api/courses/35065/teachers
 DELETE http://localhost:8080/api/declarations/35065/student/1
 
 
+// FeedbackController
+
+###
+GET http://localhost:8080/api/courses/35065/students/19/feedback
+
+
 // Email controller
 
 ###
@@ -115,3 +121,4 @@ Content-Type: application/json
   "courseId": 35065,
   "emailBody": "Testmeil v2"
 }
+

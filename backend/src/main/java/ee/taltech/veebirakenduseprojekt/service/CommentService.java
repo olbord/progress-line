@@ -1,9 +1,7 @@
 package ee.taltech.veebirakenduseprojekt.service;
 
 import java.util.*;
-
 import ee.taltech.veebirakenduseprojekt.exception.*;
-import jakarta.transaction.*;
 import lombok.*;
 import lombok.extern.slf4j.*;
 import org.springframework.stereotype.*;

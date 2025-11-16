@@ -6,7 +6,6 @@ import jakarta.persistence.Table;
 import lombok.*;
 import lombok.extern.slf4j.*;
 import org.hibernate.annotations.*;
-
 import java.time.LocalDateTime;
 
 @Slf4j
