@@ -64,6 +64,11 @@ public class CourseService {
         inactiveService.addInactive(courseId, studentId);
     }
 
+    public void markStudentActive(Long courseId, Long studentId) {
+        validateCourseExists(courseId);
+        inactiveService.deleteInactive(courseId, studentId);
+    }
+
     private void validateCourseExists(Long courseId) {
         if (!courseRepository.existsById(courseId)) {
             throw new EntityNotFoundException("Course with id " + courseId + " not found.");

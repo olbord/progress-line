@@ -3,8 +3,8 @@ package ee.taltech.veebirakenduseprojekt.service;
 import ee.taltech.veebirakenduseprojekt.repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
+import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 
 @Service
@@ -32,5 +32,13 @@ public class InactiveService {
         inactive.setDateTime(LocalDateTime.now());
 
         return inactiveRepository.save(inactive);
+    }
+
+    public void deleteInactive(Long courseId, Long studentId) {
+        if (!inactiveRepository.existsByCourseIdAndStudentId(courseId, studentId)) {
+            throw new IllegalStateException("Student is not marked as inactive.");
+        } else {
+            inactiveRepository.deleteInactiveByStudentIdAndCourseId(studentId, courseId);
+        }
     }
 }

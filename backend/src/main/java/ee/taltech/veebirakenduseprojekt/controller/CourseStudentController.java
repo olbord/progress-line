@@ -89,4 +89,16 @@ public class CourseStudentController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
+
+    // TODO: ADD TO FRONTEND
+    @Operation(summary = "[ADD TO FRONTEND] Delete student inactivity label",
+            description = "Removes the student inactivity label if student has changed his/her activity.")
+    @DeleteMapping("/{studentId}/active")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void markActive(@PathVariable Long courseId,
+                                         @PathVariable Long studentId,
+                                         @AuthenticationPrincipal(expression = "email") String email) {
+        accessService.requireTeacherAccess(email, courseId);
+        courseService.markStudentActive(courseId, studentId);
+    }
 }
