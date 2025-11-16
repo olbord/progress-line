@@ -30,3 +30,13 @@ export async function fetchAllStudentsData(courseId, page = 0, size = 10) {
 
     return { withDecl, inactive, withoutDecl };
 }
+
+export async function markStudentInactive(courseId, studentId) {
+    const res = await apiClient.post(`/courses/${courseId}/students/${studentId}/inactive`);
+    return res.data;
+}
+
+export async function markStudentActive(courseId, studentId) {
+    await apiClient.delete(`/courses/${courseId}/students/${studentId}/active`);
+    return true;
+}

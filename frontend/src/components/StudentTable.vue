@@ -22,7 +22,11 @@
         <td>{{ student.email }}</td>
         <td>{{ (student.totalPoints ?? 0).toFixed(2) }}</td>
         <td>
-          <StudentRow :student="student" :courseId="courseId" />
+          <StudentRow
+              :student="student"
+              :courseId="courseId"
+              :type="type"
+          />
         </td>
       </tr>
       </tbody>
@@ -142,11 +146,6 @@ watch(() => [props.courseId, props.type], () => {
     }
   });
 
-  loadStudents();
-});
-
-
-watch(page, () => {
   loadStudents();
 });
 
