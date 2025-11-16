@@ -10,15 +10,14 @@ import java.util.*;
 @Repository
 public interface FeedbackRepository extends JpaRepository<FeedbackResponse, Long> {
 
-    @Query(value = """
-        SELECT fr.*
-        FROM feedback_response fr
-        JOIN feedback_attempt fa ON fr.attempt_id = fa.id
-        JOIN feedback f ON fa.feedback_id = f.id
-        WHERE f.course_id = :courseId
-          AND fa.user_id = :studentId
-        ORDER BY fa.created_at DESC, fr.id ASC 
-    """, nativeQuery = true)
+    @Query("""
+        SELECT fr FROM FeedbackResponse fr
+        JOIN FETCH fr.attempt fa
+        JOIN FETCH fa.feedback f
+        WHERE f.courseId = :courseId
+          AND fa.student.id = :studentId
+        ORDER BY fa.createdAt DESC, fr.id ASC
+    """)
     List<FeedbackResponse> findAllStudentResponsesByCourseAndStudentId(
             @Param("courseId") Long courseId,
             @Param("studentId") Long studentId);

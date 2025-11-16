@@ -11,5 +11,7 @@ public interface FeedbackMapper {
     @Mapping(source = "id", target = "responseId")
     @Mapping(source = "name", target = "questionName")
     @Mapping(source = "printval", target = "printValue")
+    @Mapping(source = "attempt.feedback.name", target = "feedbackName")
+    @Mapping(source = "createdAt", target = "responseTime")
     FeedbackResponseDto mapToDto(FeedbackResponse response);
 }
