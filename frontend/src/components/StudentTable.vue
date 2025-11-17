@@ -22,7 +22,12 @@
         <td>{{ student.email }}</td>
         <td>{{ (student.totalPoints ?? 0).toFixed(2) }}</td>
         <td>
-          <StudentRow :student="student" :courseId="courseId" />
+          <StudentRow
+              :student="student"
+              :courseId="courseId"
+              :type="type"
+              @updated="onRowUpdated"
+          />
         </td>
       </tr>
       </tbody>
@@ -36,7 +41,6 @@
         v-model="page"
         :totalPages="totalPages"
     />
-
   </div>
 </template>
 
@@ -58,6 +62,13 @@ const isLoading = ref(false);
 const students = ref([]);
 const size = ref(10);
 const totalPages = ref(0);
+
+const emit = defineEmits(["updated"]);
+
+function onRowUpdated() {
+  loadStudents();
+  emit("updated");
+}
 
 const props = defineProps({
   title: { type: String, required: true },
@@ -81,11 +92,10 @@ const pageParam = computed(() => {
   }
 });
 
-const page = ref(
-    route.query[pageParam.value]
-        ? Number(route.query[pageParam.value]) - 1
-        : 0
-);
+const rawPage = Number(route.query[pageParam.value]);
+const initialPage = !isNaN(rawPage) && rawPage >= 1 ? rawPage - 1 : 0;
+
+const page = ref(initialPage);
 
 function loadFromService(courseId, page, size) {
   switch (props.type) {
@@ -99,6 +109,9 @@ function loadFromService(courseId, page, size) {
 }
 
 async function loadStudents() {
+  if (isNaN(page.value) || page.value < 0) {
+    page.value = 0;
+  }
   try {
     isLoading.value = true;
 
@@ -108,8 +121,32 @@ async function loadStudents() {
         size.value
     );
 
-    students.value = data.content;
-    totalPages.value = data.totalPages;
+    if (
+        data.content.length === 0 &&
+        data.totalPages > 0 &&
+        page.value >= data.totalPages
+    ) {
+      page.value = data.totalPages - 1;
+
+      await router.replace({
+        query: {
+          ...route.query,
+          [pageParam.value]: page.value + 1
+        }
+      })
+
+      const fixedData = await loadFromService(
+          props.courseId,
+          page.value,
+          size.value
+      );
+
+      students.value = fixedData.content;
+      totalPages.value = fixedData.totalPages;
+    } else {
+      students.value = data.content;
+      totalPages.value = data.totalPages;
+    }
   } catch (err) {
     console.error("Viga tudengite laadimisel:", err);
     students.value = [];
@@ -119,8 +156,14 @@ async function loadStudents() {
   }
 }
 
+defineExpose({ loadStudents });
 
-watch(page, (newPage) => {
+watch(page, (newPage, oldPage) => {
+  if (isNaN(newPage) || newPage < 0) {
+    page.value = oldPage;
+    return;
+  }
+
   router.replace({
     query: {
       ...route.query,
@@ -142,11 +185,6 @@ watch(() => [props.courseId, props.type], () => {
     }
   });
 
-  loadStudents();
-});
-
-
-watch(page, () => {
   loadStudents();
 });
 
@@ -178,5 +216,4 @@ onMounted(loadStudents);
   font-size: 18px;
   color: #555;
 }
-
 </style>

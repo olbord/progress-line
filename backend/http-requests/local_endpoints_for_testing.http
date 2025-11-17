@@ -91,6 +91,8 @@ Content-Type: application/x-www-form-urlencoded
 <> 2025-11-03T123217.404.json
 <> 2025-10-19T230914.400.txt
 
+###
+DELETE http://localhost:8080/api/courses/35065/students/1/active
 
 // CourseTeacherController
 

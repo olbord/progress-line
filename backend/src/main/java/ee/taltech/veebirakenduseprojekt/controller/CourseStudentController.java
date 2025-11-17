@@ -68,8 +68,7 @@ public class CourseStudentController {
         return courseService.getPaginatedInactiveStudents(courseId, pageable);
     }
 
-    // TODO: ADD TO FRONTEND
-    @Operation(summary = "[ADD TO FRONTEND] Mark a student as inactive",
+    @Operation(summary = "Mark a student as inactive",
             description = "Marks a student as inactive on a specific course.")
     @PostMapping("/{studentId}/inactive")
     public ResponseEntity<String> markInactive(
@@ -88,5 +87,16 @@ public class CourseStudentController {
         } catch (IllegalStateException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
+    }
+
+    @Operation(summary = "Delete student inactivity label",
+            description = "Removes the student inactivity label if student has changed his/her activity.")
+    @DeleteMapping("/{studentId}/active")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void markActive(@PathVariable Long courseId,
+                                         @PathVariable Long studentId,
+                                         @AuthenticationPrincipal(expression = "email") String email) {
+        accessService.requireTeacherAccess(email, courseId);
+        courseService.markStudentActive(courseId, studentId);
     }
 }
