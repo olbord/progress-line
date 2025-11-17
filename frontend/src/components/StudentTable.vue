@@ -3,7 +3,7 @@
     <h2>{{ title }}</h2>
 
     <div v-if="isLoading" class="loading">
-      Laadimine...
+      Laaadimine...
     </div>
 
     <table v-if="!isLoading && students.length > 0" class="data-table">
