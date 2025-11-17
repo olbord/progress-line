@@ -120,8 +120,32 @@ async function loadStudents() {
         size.value
     );
 
-    students.value = data.content;
-    totalPages.value = data.totalPages;
+    if (
+        data.content.length === 0 &&
+        data.totalPages > 0 &&
+        page.value >= data.totalPages
+    ) {
+      page.value = data.totalPages - 1;
+
+      await router.replace({
+        query: {
+          ...route.query,
+          [pageParam.value]: page.value + 1
+        }
+      })
+
+      const fixedData = await loadFromService(
+          props.courseId,
+          page.value,
+          size.value
+      );
+
+      students.value = fixedData.content;
+      totalPages.value = fixedData.totalPages;
+    } else {
+      students.value = data.content;
+      totalPages.value = data.totalPages;
+    }
   } catch (err) {
     console.error("Viga tudengite laadimisel:", err);
     students.value = [];
@@ -186,5 +210,4 @@ onMounted(loadStudents);
   font-size: 18px;
   color: #555;
 }
-
 </style>
