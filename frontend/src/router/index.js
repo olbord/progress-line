@@ -5,6 +5,7 @@ import CourseStudentsList from "@/components/CourseStudentsList.vue";
 import GradesView from "@/views/GradesView.vue";
 import CourseAnalyticsView from "@/views/CourseAnalyticsView.vue";
 import AllCoursesView from "@/views/AllCoursesView.vue";
+import {useAuth} from "@/composables/useAuth.js";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -18,12 +19,14 @@ const router = createRouter({
       path: '/courses/:courseId/students/:studentId/comments',
       name: 'students comments',
       component: CommentsView,
-      props: true
+      props: true,
+      meta: { requiresAuth: true }
     },
     {
       path: '/courses',
       name: 'courses',
       component: AllCoursesView,
+      meta: { requiresAuth: true }
     },
     {
       path: '/courses/:courseId/students',
@@ -32,18 +35,21 @@ const router = createRouter({
       props: route => ({
         courseId: route.params.courseId,
         courseName: route.params.courseName,
-      })
+      }),
+      meta: { requiresAuth: true }
     },
     {
       path: '/courses/:courseId',
       name: 'course',
       component: CourseAnalyticsView,
+      meta: { requiresAuth: true }
     },
     {
       path: '/courses/:courseId/students/:studentId/grades',
       name: 'students grades',
       component: GradesView,
-      props: true
+      props: true,
+      meta: { requiresAuth: true }
     },
     {
       path: '/about',
@@ -52,5 +58,19 @@ const router = createRouter({
     },
   ],
 })
+
+// router guard:
+router.beforeEach((to, from, next) => {
+  const auth = useAuth();
+  const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+
+  if (requiresAuth && !auth.account.value) {
+    auth.setRedirectPath(to.fullPath);
+
+    auth.setShowForcedLoginModal(true);
+  }
+
+  next();
+});
 
 export default router
