@@ -68,8 +68,7 @@ public class CourseStudentController {
         return courseService.getPaginatedInactiveStudents(courseId, pageable);
     }
 
-    // TODO: ADD TO FRONTEND
-    @Operation(summary = "[ADD TO FRONTEND] Mark a student as inactive",
+    @Operation(summary = "Mark a student as inactive",
             description = "Marks a student as inactive on a specific course.")
     @PostMapping("/{studentId}/inactive")
     public ResponseEntity<String> markInactive(
@@ -90,8 +89,7 @@ public class CourseStudentController {
         }
     }
 
-    // TODO: ADD TO FRONTEND
-    @Operation(summary = "[ADD TO FRONTEND] Delete student inactivity label",
+    @Operation(summary = "Delete student inactivity label",
             description = "Removes the student inactivity label if student has changed his/her activity.")
     @DeleteMapping("/{studentId}/active")
     @ResponseStatus(HttpStatus.NO_CONTENT)
