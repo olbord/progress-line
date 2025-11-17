@@ -68,6 +68,8 @@ router.beforeEach((to, from, next) => {
     auth.setRedirectPath(to.fullPath);
 
     auth.setShowForcedLoginModal(true);
+  } else {
+    auth.setShowForcedLoginModal(false);
   }
 
   next();
