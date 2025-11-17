@@ -173,7 +173,7 @@ function renderChart(apiData) {
           },
 
           footer: function(tooltipItems) {
-            return '\n'+'Kliki, et lisada kommentaar';
+            return '\n'+'Kliki, et vaadata hindeid';
           }
         }
       }

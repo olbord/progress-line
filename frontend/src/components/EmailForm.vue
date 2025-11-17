@@ -71,7 +71,7 @@ async function fetchEmailDraft() {
 function generateEmailDraft(student, grade) {
 
   const gradeInfo = grade && grade.itemName
-      ? `Märkasin, et viimati said punkte ${new Date(grade.gradeDateGraded).toLocaleDateString()} ülesande "${grade.itemName}" eest.`
+      ? `Märkasin, et viimati said punkte üsna ammu, ${new Date(grade.gradeDateGraded).toLocaleDateString()} ülesande "${grade.itemName}" eest.`
       : `Märkasin, et sul ei ole sellel kursusel veel hindeid.`;
 
   return `Tere ${student.firstName}!
