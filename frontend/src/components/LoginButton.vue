@@ -1,6 +1,6 @@
 <template>
   <button @click="login" class="login-btn">
-    Login with Microsoft
+    Logi sisse oma @taltech.ee kontoga
   </button>
 </template>
 

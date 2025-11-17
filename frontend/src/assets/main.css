@@ -339,3 +339,60 @@ a:hover {
     opacity: 0.5;
     cursor: not-allowed;
 }
+
+/* Navbar logout button with outline */
+.logout-btn {
+    background: transparent;
+    border: 1px solid var(--taltech-white);
+    color: var(--taltech-white);
+    font-family: 'Proxima Nova Heavy', sans-serif;
+    font-size: 1.5rem; /* match nav links */
+    font-weight: 500;
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s, background-color 0.2s;
+}
+
+/* Navbar logout button – aligned with nav links */
+.logout-btn {
+    background: transparent;
+    border: none;
+    color: var(--taltech-white);
+    font-family: 'Proxima Nova Heavy', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 500;
+    padding: 0.25rem 0.75rem 0.25rem 0.75rem; /* top, right, bottom, left */
+    line-height: 1; /* match nav links */
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+/* Hover effect */
+.logout-btn:hover {
+    background-color: var(--taltech-magenta);
+    color: var(--taltech-white);
+}
+
+.header-bar nav .logout-btn {
+    display: flex;
+    align-items: center;
+}
+
+.login-btn {
+    background-color: #2F72B7; /* Microsoft blue */
+    color: var(--taltech-white);
+    padding: 0.85rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: filter 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+}
+
+.login-btn:hover {
+    filter: brightness(115%);
+    background-color: #255aa3; /* Slightly darker on hover */
+}
