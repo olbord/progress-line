@@ -41,7 +41,6 @@
         v-model="page"
         :totalPages="totalPages"
     />
-
   </div>
 </template>
 
@@ -93,11 +92,10 @@ const pageParam = computed(() => {
   }
 });
 
-const page = ref(
-    route.query[pageParam.value]
-        ? Number(route.query[pageParam.value]) - 1
-        : 0
-);
+const rawPage = Number(route.query[pageParam.value]);
+const initialPage = !isNaN(rawPage) && rawPage >= 1 ? rawPage - 1 : 0;
+
+const page = ref(initialPage);
 
 function loadFromService(courseId, page, size) {
   switch (props.type) {
@@ -111,6 +109,9 @@ function loadFromService(courseId, page, size) {
 }
 
 async function loadStudents() {
+  if (isNaN(page.value) || page.value < 0) {
+    page.value = 0;
+  }
   try {
     isLoading.value = true;
 
@@ -157,7 +158,12 @@ async function loadStudents() {
 
 defineExpose({ loadStudents });
 
-watch(page, (newPage) => {
+watch(page, (newPage, oldPage) => {
+  if (isNaN(newPage) || newPage < 0) {
+    page.value = oldPage;
+    return;
+  }
+
   router.replace({
     query: {
       ...route.query,
