@@ -26,6 +26,7 @@
               :student="student"
               :courseId="courseId"
               :type="type"
+              @updated="onRowUpdated"
           />
         </td>
       </tr>
@@ -62,6 +63,13 @@ const isLoading = ref(false);
 const students = ref([]);
 const size = ref(10);
 const totalPages = ref(0);
+
+const emit = defineEmits(["updated"]);
+
+function onRowUpdated() {
+  loadStudents();
+  emit("updated");
+}
 
 const props = defineProps({
   title: { type: String, required: true },
@@ -123,6 +131,7 @@ async function loadStudents() {
   }
 }
 
+defineExpose({ loadStudents });
 
 watch(page, (newPage) => {
   router.replace({

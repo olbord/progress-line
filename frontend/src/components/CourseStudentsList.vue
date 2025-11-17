@@ -12,6 +12,16 @@ const studentsWithDeclaration = ref([]);
 const inactiveStudents = ref([]);
 const studentsWithoutDeclaration = ref([]);
 
+const withDeclRef = ref(null);
+const inactiveRef = ref(null);
+const withoutDeclRef = ref(null);
+
+function refreshAll() {
+  withDeclRef.value?.loadStudents();
+  inactiveRef.value?.loadStudents();
+  withoutDeclRef.value?.loadStudents();
+}
+
 onMounted(async () => {
   try {
     const { withDecl, inactive, withoutDecl } = await fetchAllStudentsData(courseId);
@@ -29,23 +39,28 @@ onMounted(async () => {
     <h1>{{ courseName }}</h1>
 
     <StudentTable
+        ref="withDeclRef"
         title="Aktiivsed tudengid"
         type="with-declarations"
         :courseId="Number(courseId)"
+        @updated="refreshAll"
     />
 
     <StudentTable
+        ref="inactiveRef"
         title="Mitteaktiivsed tudengid"
         type="inactive"
         :courseId="Number(courseId)"
+        @updated="refreshAll"
     />
 
     <StudentTable
+        ref="withoutDeclRef"
         title="Ilma deklaratsioonita tudengid"
         type="no-declarations"
         :courseId="Number(courseId)"
+        @updated="refreshAll"
     />
 
   </div>
-
 </template>
