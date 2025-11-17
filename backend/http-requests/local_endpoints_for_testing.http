@@ -57,6 +57,9 @@ GET http://localhost:8080/api/courses/35065/grades/students/1
 ###
 GET http://localhost:8080/api/courses/35065/grades/progress-lines
 
+###
+GET http://localhost:8080/api/courses/35065/students/2/latest-grade
+
 
 // CourseStudentController
 
@@ -88,6 +91,8 @@ Content-Type: application/x-www-form-urlencoded
 <> 2025-11-03T123217.404.json
 <> 2025-10-19T230914.400.txt
 
+###
+DELETE http://localhost:8080/api/courses/35065/students/1/active
 
 // CourseTeacherController
 
@@ -99,4 +104,23 @@ GET http://localhost:8080/api/courses/35065/teachers
 
 ###
 DELETE http://localhost:8080/api/declarations/35065/student/1
+
+
+// FeedbackController
+
+###
+GET http://localhost:8080/api/courses/35065/students/19/feedback
+
+
+// Email controller
+
+###
+POST http://localhost:8080/api/courses/35065/students/3/send-email
+Content-Type: application/json
+
+{
+  "studentId": 3,
+  "courseId": 35065,
+  "emailBody": "Testmeil v2"
+}
 

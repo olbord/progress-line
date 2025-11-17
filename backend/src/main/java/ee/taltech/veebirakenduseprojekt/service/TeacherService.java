@@ -1,8 +1,9 @@
 package ee.taltech.veebirakenduseprojekt.service;
 
 import ee.taltech.veebirakenduseprojekt.controller.TeacherDto;
+import ee.taltech.veebirakenduseprojekt.exception.*;
 import ee.taltech.veebirakenduseprojekt.mapper.TeacherMapper;
-import ee.taltech.veebirakenduseprojekt.repository.TeacherRepository;
+import ee.taltech.veebirakenduseprojekt.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,5 +21,9 @@ public class TeacherService {
                 .stream()
                 .map(teacherMapper::mapToDto)
                 .toList();
+    }
+
+    public User getTeacherByEmail(String email) {
+        return teacherRepository.findByEmail(email);
     }
 }

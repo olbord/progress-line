@@ -1,8 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import CommentsView from '@/views/CommentsView.vue'
-import CourseStudentsList from "@/components/CourseStudentsList.vue";
+import CourseStudentsView from "@/views/CourseStudentsView.vue";
 import GradesView from "@/views/GradesView.vue";
+import FeedbackView from "@/views/FeedbackView.vue";
 import CourseAnalyticsView from "@/views/CourseAnalyticsView.vue";
 import AllCoursesView from "@/views/AllCoursesView.vue";
 import {useAuth} from "@/composables/useAuth.js";
@@ -31,7 +32,7 @@ const router = createRouter({
     {
       path: '/courses/:courseId/students',
       name: 'course students',
-      component: CourseStudentsList,
+      component: CourseStudentsView,
       props: route => ({
         courseId: route.params.courseId,
         courseName: route.params.courseName,
@@ -50,6 +51,12 @@ const router = createRouter({
       component: GradesView,
       props: true,
       meta: { requiresAuth: true }
+    },
+    {
+      path: '/courses/:courseId/students/:studentId/feedback',
+      name: 'students feedback',
+      component: FeedbackView,
+      props: true
     },
     {
       path: '/about',

@@ -6,12 +6,13 @@ import io.swagger.v3.oas.annotations.*;
 import io.swagger.v3.oas.annotations.tags.*;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-
-import java.util.List;
 
 @Tag(name = "Course Student Controller", description = "Endpoints to manage students on a specific course.")
 @RestController
@@ -22,43 +23,52 @@ public class CourseStudentController {
     private final CourseService courseService;
     private final CourseAccessService accessService;
 
-    @Operation(summary = "Require all active students with declaration",
-            description = "Gets all students who have declared participation on a specific course and are not inactive.")
+    @Operation(summary = "Get paginated list of active students with declarations",
+            description = "Gets page of students who have declared participation on a specific course and are not inactive.")
     @GetMapping("/with-declarations")
-    public List<StudentDto> getActiveStudentsWithDeclarations(
+    @ResponseStatus(HttpStatus.OK)
+    public Page<StudentDto> getActiveStudentsWithDeclarations(
             @PathVariable Long courseId,
-            @AuthenticationPrincipal(expression = "email") String email) {
+            @AuthenticationPrincipal(expression = "email") String email,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
 
         accessService.requireTeacherAccess(email, courseId);
-        return courseService.getAllActiveStudentsWithDeclarations(courseId);
+        Pageable pageable = PageRequest.of(page, size);
+        return courseService.getPaginatedActiveStudentsWithDeclarations(courseId, pageable);
     }
 
-    @Operation(summary = "Require all students without declaration",
-            description = "Gets all students who have not declared participation on a specific course.")
+    @Operation(summary = "Get paginated list of students without declaration",
+            description = "Gets page of students who have not declared participation on a specific course.")
     @GetMapping("/no-declarations")
     @ResponseStatus(HttpStatus.OK)
-    public List<StudentDto> getStudentsWithoutDeclarations(
+    public Page<StudentDto> getStudentsWithoutDeclarations(
             @PathVariable Long courseId,
-            @AuthenticationPrincipal(expression = "email") String email) {
+            @AuthenticationPrincipal(expression = "email") String email,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
 
         accessService.requireTeacherAccess(email, courseId);
-        return courseService.getAllStudentsWithoutDeclarations(courseId);
+        Pageable pageable = PageRequest.of(page, size);
+        return courseService.getPaginatedStudentsWithoutDeclarations(courseId, pageable);
     }
 
-    @Operation(summary = "Require all inactive students",
-            description = "Gets all students who are marked as inactive on a specific course.")
+    @Operation(summary = "Get paginated list of inactive students",
+            description = "Gets page of students who are marked as inactive on a specific course.")
     @GetMapping("/inactive")
     @ResponseStatus(HttpStatus.OK)
-    public List<StudentDto> getInactiveStudents(
+    public Page<StudentDto> getInactiveStudents(
             @PathVariable Long courseId,
-            @AuthenticationPrincipal(expression = "email") String email) {
+            @AuthenticationPrincipal(expression = "email") String email,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
 
         accessService.requireTeacherAccess(email, courseId);
-        return courseService.getAllInactiveStudents(courseId);
+        Pageable pageable = PageRequest.of(page, size);
+        return courseService.getPaginatedInactiveStudents(courseId, pageable);
     }
 
-    // TODO: ADD TO FRONTEND
-    @Operation(summary = "[ADD TO FRONTEND] Mark a student as inactive",
+    @Operation(summary = "Mark a student as inactive",
             description = "Marks a student as inactive on a specific course.")
     @PostMapping("/{studentId}/inactive")
     public ResponseEntity<String> markInactive(
@@ -77,5 +87,16 @@ public class CourseStudentController {
         } catch (IllegalStateException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
+    }
+
+    @Operation(summary = "Delete student inactivity label",
+            description = "Removes the student inactivity label if student has changed his/her activity.")
+    @DeleteMapping("/{studentId}/active")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void markActive(@PathVariable Long courseId,
+                                         @PathVariable Long studentId,
+                                         @AuthenticationPrincipal(expression = "email") String email) {
+        accessService.requireTeacherAccess(email, courseId);
+        courseService.markStudentActive(courseId, studentId);
     }
 }

@@ -1,9 +1,12 @@
 package ee.taltech.veebirakenduseprojekt.controller;
 
 import io.swagger.v3.oas.annotations.media.*;
-import lombok.Data;
+import lombok.*;
 
 @Data
+@Builder
+@AllArgsConstructor
+@RequiredArgsConstructor
 @Schema(name = "Comment Request DTO",
         description = "New comment data without date")
 public class CommentRequestDto {

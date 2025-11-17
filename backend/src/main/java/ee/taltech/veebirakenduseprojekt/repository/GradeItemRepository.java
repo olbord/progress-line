@@ -19,4 +19,6 @@ public interface GradeItemRepository extends JpaRepository<GradeItem, Long> {
             "AND g.item_name NOT LIKE '% - Defence' " +
             "ORDER BY g.user_id, g.created_at", nativeQuery = true)
     List<GradeItem> findProgressLineDataByCourseId(Long courseId);
+
+    GradeItem findTopByCourseIdAndUserIdOrderByCreatedAtDesc(Long courseId, Long studentId);
 }

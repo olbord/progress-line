@@ -20,5 +20,10 @@
     <include file="db/changelog/013-course-related-data.xml"/>
     <include file="/db/changelog/014-course_id-in-comment-table.xml"/>
     <include file="db/changelog/015-grade-item-dummy-data.xml"/>
+    <include file="/db/changelog/016-create-email-table.xml"/>
+    <include file="/db/changelog/17-local-test-add-pagination-dummy-data.xml"/>
+    <include file="/db/changelog/018-create-feedback-tables.xml"/>
+    <include file="/db/changelog/019-create-feedback-dummy-data.xml"/>
+
 
 </databaseChangeLog>

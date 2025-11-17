@@ -1,22 +1,11 @@
-<script setup>
-import { RouterView, RouterLink } from "vue-router";
-import LoginButton from "@/components/LoginButton.vue";
-import PopupModal from "@/components/PopupModal.vue";
-import LogoutButton from "@/components/LogoutButton.vue";
-import { useAuth } from "@/composables/useAuth";
-import { computed } from "vue";
-
-const auth = useAuth();
-
-const isLoggedIn = computed(() => !!auth.account.value);
-const modalVisible = auth.showForcedLoginModal;
-
-</script>
-
 <template>
+
   <header class="header-bar">
+
     <div class="header-content">
-      <h1>ProgressLine</h1>
+
+      <h1 class="header-logo-text">PROGRESSLINE</h1>
+
       <nav>
         <RouterLink to="/">Algusesse</RouterLink>
         <RouterLink to="/about">Info</RouterLink>
@@ -37,3 +26,19 @@ const modalVisible = auth.showForcedLoginModal;
     <LoginButton />
   </PopupModal>
 </template>
+
+
+<script setup>
+import { RouterLink, RouterView } from 'vue-router'
+import LoginButton from "@/components/LoginButton.vue";
+import PopupModal from "@/components/PopupModal.vue";
+import LogoutButton from "@/components/LogoutButton.vue";
+import { useAuth } from "@/composables/useAuth";
+import { computed } from "vue";
+
+const auth = useAuth();
+
+const isLoggedIn = computed(() => !!auth.account.value);
+const modalVisible = auth.showForcedLoginModal;
+
+</script>

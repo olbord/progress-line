@@ -1,7 +1,7 @@
 package ee.taltech.veebirakenduseprojekt.controller;
 
-import ee.taltech.veebirakenduseprojekt.service.CourseAccessService;
-import ee.taltech.veebirakenduseprojekt.service.CourseService;
+import ee.taltech.veebirakenduseprojekt.dto.*;
+import ee.taltech.veebirakenduseprojekt.service.*;
 import io.swagger.v3.oas.annotations.*;
 import io.swagger.v3.oas.annotations.tags.*;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +19,7 @@ import java.util.List;
 public class CourseGradeController {
 
     private final CourseService courseService;
+    private final GradeItemService gradeItemService;
     private final CourseAccessService accessService;
 
     @Operation(summary = "Require all students grades",
@@ -44,5 +45,17 @@ public class CourseGradeController {
 
         accessService.requireTeacherAccess(email, courseId);
         return courseService.getCourseProgressLineData(courseId);
+    }
+
+    @Operation(summary = "Get the latest grade for a student on a course",
+            description = "Returns the most recent grade item.")
+    @GetMapping("/students/{studentId}/latest-grade")
+    @ResponseStatus(HttpStatus.OK)
+    public LastGradeDto getLastGrade(@PathVariable Long courseId,
+                                     @PathVariable Long studentId,
+                                     @AuthenticationPrincipal(expression = "email") String email) {
+        accessService.requireTeacherAccess(email, courseId);
+
+        return gradeItemService.getLatestGrade(courseId, studentId);
     }
 }
