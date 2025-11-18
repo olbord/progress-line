@@ -1,8 +1,7 @@
 package ee.taltech.veebirakenduseprojekt.mapper;
 
-import ee.taltech.veebirakenduseprojekt.controller.*;
 import ee.taltech.veebirakenduseprojekt.dto.*;
-import ee.taltech.veebirakenduseprojekt.repository.GradeItem;
+import ee.taltech.veebirakenduseprojekt.entity.GradeItem;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

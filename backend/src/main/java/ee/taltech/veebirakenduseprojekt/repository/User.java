@@ -1,11 +1,10 @@
 package ee.taltech.veebirakenduseprojekt.repository;
 
-import io.swagger.v3.oas.annotations.media.*;
+import ee.taltech.veebirakenduseprojekt.entity.*;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.Builder;
 import lombok.Builder.Default;
-import org.mapstruct.*;
 
 import java.util.ArrayList;
 import java.util.List;

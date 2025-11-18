@@ -1,6 +1,7 @@
-package ee.taltech.veebirakenduseprojekt.controller;
+package ee.taltech.veebirakenduseprojekt.dto;
 
 import io.swagger.v3.oas.annotations.media.*;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 
 @Data
@@ -10,13 +11,16 @@ public class CourseDto {
 
     @Schema(description = "The unique ID of the course",
             example = "35065", accessMode = Schema.AccessMode.READ_ONLY)
+    @NotNull(message = "Course ID cannot be null")
     private Long id;
 
     @Schema(description = "The unique short name of the course: code with year",
             example = "ITI0102-2025")
+    @NotNull(message = "Course short name cannot be null")
     private String shortName;
 
     @Schema(description = "The unique full name of the course",
             example = "ITI0102 Programmeerimise algkursus 2025/2026")
+    @NotNull(message = "Course full name cannot be null")
     private String fullName;
 }

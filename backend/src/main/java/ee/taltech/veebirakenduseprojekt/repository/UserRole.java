@@ -1,5 +1,6 @@
 package ee.taltech.veebirakenduseprojekt.repository;
 
+import ee.taltech.veebirakenduseprojekt.entity.*;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

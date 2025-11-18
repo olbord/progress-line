@@ -1,5 +1,6 @@
 package ee.taltech.veebirakenduseprojekt.service;
 
+import ee.taltech.veebirakenduseprojekt.entity.*;
 import ee.taltech.veebirakenduseprojekt.repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
