@@ -1,6 +1,6 @@
 package ee.taltech.veebirakenduseprojekt.mapper;
 
-import ee.taltech.veebirakenduseprojekt.controller.*;
+import ee.taltech.veebirakenduseprojekt.dto.*;
 import ee.taltech.veebirakenduseprojekt.exception.*;
 import ee.taltech.veebirakenduseprojekt.repository.*;
 import org.mapstruct.*;

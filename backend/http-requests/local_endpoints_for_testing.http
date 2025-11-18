@@ -75,10 +75,8 @@ GET http://localhost:8080/api/courses/35065/students/no-declarations
 <> 2025-09-28T222113.200.json
 <> 2025-09-27T083614.200.json
 
-// StudentController
-
 ###
-GET http://localhost:8080/api/students/2
+GET http://localhost:8080/api/courses/35065/students/2
 
 ###
 GET http://localhost:8080/api/courses/35065/students/inactive
