@@ -1,7 +1,7 @@
 package ee.taltech.veebirakenduseprojekt.mapper;
 
-import ee.taltech.veebirakenduseprojekt.controller.CourseDto;
-import ee.taltech.veebirakenduseprojekt.repository.Course;
+import ee.taltech.veebirakenduseprojekt.dto.CourseDto;
+import ee.taltech.veebirakenduseprojekt.entity.Course;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 

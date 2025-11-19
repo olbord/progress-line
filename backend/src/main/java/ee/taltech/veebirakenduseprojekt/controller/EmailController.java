@@ -4,6 +4,7 @@ import ee.taltech.veebirakenduseprojekt.dto.*;
 import ee.taltech.veebirakenduseprojekt.service.*;
 import io.swagger.v3.oas.annotations.*;
 import io.swagger.v3.oas.annotations.tags.*;
+import jakarta.validation.*;
 import lombok.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -28,7 +29,7 @@ public class EmailController {
     public void sendGradeEmail(
             @PathVariable Long courseId,
             @PathVariable Long studentId,
-            @RequestBody EmailRequestDto dto,
+            @Valid @RequestBody EmailRequestDto dto,
             @AuthenticationPrincipal(expression = "email") String senderEmail) {
 
         accessService.requireTeacherAccess(senderEmail, courseId);

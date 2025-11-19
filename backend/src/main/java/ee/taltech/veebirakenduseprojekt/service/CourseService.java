@@ -1,6 +1,5 @@
 package ee.taltech.veebirakenduseprojekt.service;
 
-import ee.taltech.veebirakenduseprojekt.controller.*;
 import ee.taltech.veebirakenduseprojekt.dto.*;
 import ee.taltech.veebirakenduseprojekt.entity.*;
 import ee.taltech.veebirakenduseprojekt.exception.*;

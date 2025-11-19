@@ -1,6 +1,6 @@
 package ee.taltech.veebirakenduseprojekt.repository;
 
-import ee.taltech.veebirakenduseprojekt.controller.*;
+import ee.taltech.veebirakenduseprojekt.entity.*;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 

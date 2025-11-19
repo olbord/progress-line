@@ -1,8 +1,10 @@
 package ee.taltech.veebirakenduseprojekt.controller;
 
+import ee.taltech.veebirakenduseprojekt.dto.*;
 import ee.taltech.veebirakenduseprojekt.service.*;
 import io.swagger.v3.oas.annotations.*;
 import io.swagger.v3.oas.annotations.tags.*;
+import jakarta.validation.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -37,17 +39,8 @@ public class CourseCommentController {
             description = "Adds a new comment describing students progress written by a teacher to the database.")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CommentResponseDto addComment(@RequestBody CommentRequestDto dto) {
+    public CommentResponseDto addComment(@Valid @RequestBody CommentRequestDto dto) {
         return commentService.addComment(dto);
-    }
-
-    // TODO ADD TO FRONTEND OR DELETE
-    @Operation(summary = "[NOT USED] Update a comment",
-            description = "Changes the comment describing a students progress.")
-    @PutMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public CommentResponseDto updateComment(@PathVariable Long id, @RequestBody CommentRequestDto dto) {
-        return commentService.updateComment(id, dto);
     }
 
 }

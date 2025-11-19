@@ -1,7 +1,7 @@
 package ee.taltech.veebirakenduseprojekt.controller;
 
-import ee.taltech.veebirakenduseprojekt.service.CourseAccessService;
-import ee.taltech.veebirakenduseprojekt.service.CourseService;
+import ee.taltech.veebirakenduseprojekt.dto.*;
+import ee.taltech.veebirakenduseprojekt.service.*;
 import io.swagger.v3.oas.annotations.*;
 import io.swagger.v3.oas.annotations.tags.*;
 import jakarta.persistence.EntityNotFoundException;
@@ -22,6 +22,19 @@ public class CourseStudentController {
 
     private final CourseService courseService;
     private final CourseAccessService accessService;
+    private final StudentService studentService;
+
+    @Operation(summary = "Get a specific student's personal data on a course",
+            description = "Gets a single student's name and email by their ID, but only if they are on the specified course.")
+    @GetMapping("/{studentId}")
+    @ResponseStatus(HttpStatus.OK)
+    public StudentPersonalDataResponseDto getStudentOnCourse(
+            @PathVariable Long courseId,
+            @PathVariable Long studentId,
+            @AuthenticationPrincipal(expression = "email") String email) {
+        accessService.requireTeacherAccess(email, courseId);
+        return studentService.getStudentPersonalDataById(studentId);
+    }
 
     @Operation(summary = "Get paginated list of active students with declarations",
             description = "Gets page of students who have declared participation on a specific course and are not inactive.")

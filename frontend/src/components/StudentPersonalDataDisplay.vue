@@ -29,6 +29,10 @@ const props = defineProps({
     type: [Number, String],
     required: true
   },
+  courseId: {
+    type: [Number, String],
+    required: true
+  }
 })
 
 const studentInfo = ref(null)
@@ -45,8 +49,8 @@ function handleEmailClick(event) {
 }
 
 async function fetchStudentInfo() {
-  if (!props.studentId || props.studentId <= 0) {
-    console.warn("Skipping API call: Student ID is invalid/missing.", props.studentId);
+  if (!props.studentId || props.studentId <= 0|| !props.courseId || props.courseId <= 0) {
+    console.warn("Skipping API call: Student or course  ID is invalid/missing.", props.studentId, props.courseId);
     return;
   }
 
@@ -55,7 +59,7 @@ async function fetchStudentInfo() {
   studentInfo.value = null
 
   try {
-    const response = await apiClient.get(`/students/${props.studentId}`)
+    const response = await apiClient.get(`/courses/${props.courseId}/students/${props.studentId}`)
     studentInfo.value = response.data
   } catch (err) {
     console.error("Error fetching student info:", err)
@@ -66,6 +70,6 @@ async function fetchStudentInfo() {
 }
 
 onMounted(fetchStudentInfo)
-watch(() => props.studentId, fetchStudentInfo)
+watch([() => props.courseId, () => props.studentId], fetchStudentInfo, {immediate: true})
 
 </script>
