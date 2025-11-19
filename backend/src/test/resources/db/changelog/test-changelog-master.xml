@@ -1,4 +1,4 @@
-?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <databaseChangeLog
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -21,9 +21,7 @@
     <include file="/db/changelog/014-course_id-in-comment-table.xml"/>
     <include file="/db/changelog/015-grade-item-dummy-data.xml"/>
     <include file="/db/changelog/016-create-email-table.xml"/>
-    <include file="db/changelog/017-local-test-add-pagination-dummy-data-for-testing"/>
+    <include file="db/changelog/017-local-test-add-pagination-dummy-data-for-testing.xml"/>
     <include file="/db/changelog/018-create-feedback-tables.xml"/>
-    <include file="/db/changelog/019-create-feedback-dummy-data.xml"/>
-
 
 </databaseChangeLog>

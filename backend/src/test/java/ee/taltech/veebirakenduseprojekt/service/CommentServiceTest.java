@@ -65,7 +65,7 @@ class CommentServiceTest {
     }
 
     @Test
-    void getAllComments_newCommentsAdded_returnsAllComments() {
+    void getAllComments_whenNewCommentsAdded_returnsAllComments() {
         // Given
         List<Comment> commentsFromDb = List.of(testComment1, testComment2);
         given(commentRepository.findAllWithStudents()).willReturn(commentsFromDb);
