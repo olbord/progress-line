@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
+
 @Tag(name = "Course Controller", description = "Endpoints to manage courses.")
 @RestController
 @RequiredArgsConstructor

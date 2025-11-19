@@ -1,0 +1,80 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.15.xsd">
+
+    <changeSet id="2025-11-19-add-dummy-users" author="KJ">
+        <sql>
+            INSERT INTO "user" (first_name, last_name, email)
+            VALUES
+                ('Anna', 'Aktiivne', 'a.aktiivne@taltech.ee'),
+                ('Dagmar', 'Deklaratsioonita', 'd.deklaratsioonita@taltech.ee'),
+                ('Inno', 'Inaktiivne', 'i.inaktiivne@taltech.ee'),
+                ('Eno', 'Teiseltkursuselt', 'e.mittesellelkursusel@taltech.ee')
+            ON CONFLICT DO NOTHING;
+        </sql>
+    </changeSet>
+
+    <changeSet id="2025-11-19-add-dummy-enrolled-users" author="KJ">
+        <sql>
+            INSERT INTO enrolled_user (course_id, user_id, last_updated, last_course_access)
+            VALUES
+                (35065, (SELECT id FROM "user" WHERE email = 'a.aktiivne@taltech.ee'), '2025-09-27 20:04:03', '2025-09-27 20:04:06'),
+                (35065, (SELECT id FROM "user" WHERE email = 'd.deklaratsioonita@taltech.ee'), '2025-09-27 20:04:03', '2025-09-27 20:04:06'),
+                (35065, (SELECT id FROM "user" WHERE email = 'i.inaktiivne@taltech.ee'), '2025-09-27 20:04:03', '2025-09-27 20:04:06'),
+                (35065, (SELECT id FROM "user" WHERE email = 'e.mittesellelkursusel@taltech.ee'), '2025-09-27 20:04:03', '2025-09-27 20:04:06')
+                ON CONFLICT DO NOTHING;
+        </sql>
+    </changeSet>
+
+    <changeSet id="2025-11-19-add-dummy-user-roles" author="KJ">
+        <sql>
+            INSERT INTO user_role (role_id, user_id, course_id, name, short_name)
+            VALUES
+                (5, (SELECT id FROM "user" WHERE email = 'a.aktiivne@taltech.ee'), 35065, 'Õppija/Student', 'student'),
+                (5, (SELECT id FROM "user" WHERE email = 'd.deklaratsioonita@taltech.ee'), 35065, 'Õppija/Student', 'student'),
+                (5, (SELECT id FROM "user" WHERE email = 'i.inaktiivne@taltech.ee'), 35065, 'Õppija/Student', 'student')
+                ON CONFLICT DO NOTHING;
+        </sql>
+    </changeSet>
+
+    <changeSet id="2025-11-19-add-dummy-declarations" author="KJ">
+        <sql>
+            INSERT INTO declaration (user_id, date_time, course_id)
+            VALUES
+                ((SELECT id FROM "user" WHERE email = 'a.aktiivne@taltech.ee'), '2025-09-27 08:47:59', 35065),
+                ((SELECT id FROM "user" WHERE email = 'i.inaktiivne@taltech.ee'), '2025-09-27 08:47:59', 35065)
+                ON CONFLICT DO NOTHING;
+        </sql>
+    </changeSet>
+
+    <changeSet id="2025-11-15-add-dummy-inactive-for-testing" author="KJ">
+        <sql>
+            INSERT INTO inactive (user_id, date_time)
+            VALUES
+                ((SELECT id FROM "user" WHERE email = 'i.inaktiivne@taltech.ee'), '2025-09-27 08:47:59')
+                ON CONFLICT DO NOTHING;
+        </sql>
+    </changeSet>
+
+    <changeSet id="2025-11-19_add-dummy-grade-items-for-testing" author="KJ">
+        <sql>
+            INSERT INTO grade_item (gradeitem_id, course_id, user_id, created_at, item_name, item_type, item_module, grade)
+            VALUES
+                (146936, 35065, (SELECT id FROM "user" WHERE email = 'a.aktiivne@taltech.ee'), '2025-09-28 13:00:00', 'PR/pr04_animals - Tests', 'mod', 'charon', 1.9),
+                (146936, 35065, (SELECT id FROM "user" WHERE email = 'd.deklaratsioonita@taltech.ee'), '2025-11-21 13:00:00', 'PR/pr04_animals - Tests', 'mod', 'charon', 1.46),
+                (146936, 35065, (SELECT id FROM "user" WHERE email = 'i.inaktiivne@taltech.ee'), '2025-10-05 13:00:00', 'PR/pr04_animals - Tests', 'mod', 'charon', 4.2),
+
+                (165894, 35065, (SELECT id FROM "user" WHERE email = 'a.aktiivne@taltech.ee'), '2025-10-06 09:30:00', 'TK03 - Küsimustik (5p)', 'mod', 'charon', 3.25),
+                (165894, 35065, (SELECT id FROM "user" WHERE email = 'd.deklaratsioonita@taltech.ee'), '2025-12-07 09:30:00', 'TK03 - Küsimustik (5p)', 'mod', 'charon', 0.48),
+                (165894, 35065, (SELECT id FROM "user" WHERE email = 'i.inaktiivne@taltech.ee'), '2025-12-02 09:30:00', 'TK03 - Küsimustik (5p)', 'mod', 'charon', 0.66),
+
+                (999999, 35065, (SELECT id FROM "user" WHERE email = 'a.aktiivne@taltech.ee'), '2025-09-25 16:00:00', 'Eksam 1 - Aktiivsete tudengite töö (100p)', 'mod', 'charon', 83.25),
+                (999999, 35065, (SELECT id FROM "user" WHERE email = 'd.deklaratsioonita@taltech.ee'), '2025-09-26 16:00:00', 'Eksam 1 - Aktiivsete tudengite töö (100p)', 'mod', 'charon', 74.48),
+                (999999, 35065, (SELECT id FROM "user" WHERE email = 'i.inaktiivne@taltech.ee'), '2025-11-27 16:00:00', 'Eksam 1 - Aktiivsete tudengite töö (100p)', 'mod', 'charon', 80.66)
+                ON CONFLICT DO NOTHING;
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
