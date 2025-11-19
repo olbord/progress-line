@@ -8,18 +8,19 @@ import org.junit.jupiter.api.extension.*;
 import org.mockito.*;
 import org.mockito.junit.jupiter.*;
 import java.util.*;
+
+import static org.mockito.BDDMockito.given;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.BDDMockito.then;
 
 @ExtendWith(MockitoExtension.class)
 class CommentServiceTest {
 
     @Mock
     private CommentRepository commentRepository;
-    @Mock
+    @Spy
     private CommentMapper commentMapper;
 
     @InjectMocks
@@ -67,9 +68,9 @@ class CommentServiceTest {
     void getAllComments_newCommentsAdded_returnsAllComments() {
         // Given
         List<Comment> commentsFromDb = List.of(testComment1, testComment2);
-        when(commentRepository.findAllWithStudents()).thenReturn(commentsFromDb);
-        when(commentMapper.mapToResponseDto(testComment1)).thenReturn(dto1);
-        when(commentMapper.mapToResponseDto(testComment2)).thenReturn(dto2);
+        given(commentRepository.findAllWithStudents()).willReturn(commentsFromDb);
+        given(commentMapper.mapToResponseDto(testComment1)).willReturn(dto1);
+        given(commentMapper.mapToResponseDto(testComment2)).willReturn(dto2);
 
         // When
         List<CommentResponseDto> result = commentService.getAllComments();
@@ -79,7 +80,8 @@ class CommentServiceTest {
         assertEquals(2, result.size(), "Oodati kahte kommentaari, aga saadi " + result.size());
         assertEquals("Esimene kommentaar", result.get(0).getCommentText());
         assertEquals("Teine kommentaar", result.get(1).getCommentText());
-        verify(commentRepository, times(1)).findAllWithStudents();
-        verify(commentMapper, times(2)).mapToResponseDto(any(Comment.class));
+
+        then(commentRepository).should(times(1)).findAllWithStudents();
+        then(commentMapper).should(times(2)).mapToResponseDto(any(Comment.class));
     }
 }

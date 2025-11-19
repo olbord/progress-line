@@ -1,0 +1,29 @@
+?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.15.xsd">
+
+    <include file="/db/changelog/001-create-user-table.xml"/>
+    <include file="/db/changelog/002-create-teacher-table.xml"/>
+    <include file="/db/changelog/003-create-comment-table.xml"/>
+    <include file="/db/changelog/004-append-user-table.xml"/>
+    <include file="/db/changelog/005-create-no-declaration-table.xml"/>
+    <include file="/db/changelog/006-create-grades-inactive-rename-declaration-table.xml"/>
+    <include file="/db/changelog/007-update-comment-table-current_timestamp.xml"/>
+    <include file="/db/changelog/008-update-comment-table-teacher-id-from-user-table.xml"/>
+    <include file="/db/changelog/009-create-enrolled-user-table.xml"/>
+    <include file="/db/changelog/010-update-declaration-table-course-id.xml"/>
+    <include file="/db/changelog/011-add-dummy-data.xml"/>
+    <include file="/db/changelog/012-more-student-test-data.xml"/>
+    <include file="/db/changelog/013-course-related-data.xml"/>
+    <include file="/db/changelog/014-course_id-in-comment-table.xml"/>
+    <include file="/db/changelog/015-grade-item-dummy-data.xml"/>
+    <include file="/db/changelog/016-create-email-table.xml"/>
+    <include file="db/changelog/017-local-test-add-pagination-dummy-data-for-testing"/>
+    <include file="/db/changelog/018-create-feedback-tables.xml"/>
+    <include file="/db/changelog/019-create-feedback-dummy-data.xml"/>
+
+
+</databaseChangeLog>
