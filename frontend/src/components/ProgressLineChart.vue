@@ -47,12 +47,13 @@ async function fetchAndRenderChart() {
     );
 
     apiStudentData = response.data;
+    isLoading.value = false;
     await nextTick();
     renderChart(apiStudentData);
 
   } catch (err) {
-    error.value = "Andmete laadimine ebaõnnestus.";
-  } finally {
+    console.error("Viga andmete laadimisel:", err);
+    error.value = "Andmete laadimine ebaõnnestus. Proovi uuesti!";
     isLoading.value = false;
   }
 }

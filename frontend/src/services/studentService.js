@@ -52,5 +52,5 @@ export async function markStudentActive(courseId, studentId) {
         `/courses/${courseId}/students/${studentId}/active`,
         { headers: { Authorization: `Bearer ${token}` } }
     );
-    return res.data;
+    return true;
 }

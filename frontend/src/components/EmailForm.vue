@@ -67,6 +67,7 @@ async function fetchEmailDraft() {
     draft.value = generateEmailDraft(studentResp.data, gradeResp.data);
 
   } catch (e) {
+    console.error('Error fetching email draft data:', e);
     error.value = "Viga andmete laadimisel mustandi koostamiseks.";
   } finally {
     loading.value = false;
@@ -98,8 +99,11 @@ async function sendEmail() {
         { headers: { Authorization: `Bearer ${token}` } }
     );
 
-    successMessage.value = "E-mail edukalt saadetud!";
+    successMessage.value = "E-mail edukalt saadetud! Sulgen akna...";
+    setTimeout(() => emit('email-sent'), 1500);
+
   } catch (e) {
+    console.error('Error sending email:', e);
     errorMessage.value = "Meili saatmine ebaõnnestus.";
   }
 }
