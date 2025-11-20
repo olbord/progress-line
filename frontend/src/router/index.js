@@ -49,7 +49,10 @@ const router = createRouter({
       path: '/courses/:courseId/students/:studentId/grades',
       name: 'students grades',
       component: GradesView,
-      props: true,
+      props: route => ({
+        studentId: Number(route.params.studentId),
+        courseId: Number(route.params.courseId)
+      }),
       meta: { requiresAuth: true }
     },
     {

@@ -1,21 +1,20 @@
 <template>
   <div class="container container--medium">
     <StudentPersonalDataDisplay
-        :student-id="props.studentId"
-        :course-id="props.courseId"
+        :student-id="studentId"
+        :course-id="courseId"
         @email-clicked="openEmailModal"
     />
 
     <PopupModal :visible="showEmailPopup" @close="showEmailPopup = false">
       <EmailForm
-          :course-id="props.courseId"
-          :student-id="props.studentId"
+          :course-id="courseId"
+          :student-id="studentId"
           @email-sent="showEmailPopup = false"
       />
     </PopupModal>
     <div v-if="loading">Laen hinded...</div>
     <div v-else-if="error" class="message message--error">{{ error }}</div>
-
     <table v-else-if="grades.length > 0" class="data-table">
       <thead>
       <tr>
@@ -34,7 +33,6 @@
       </tr>
       </tbody>
     </table>
-
     <div v-else>Hinded puuduvad</div>
 
     <div class="container--narrow">
@@ -47,15 +45,14 @@
     <PopupModal :visible="showCommentPopup" @close="closeCommentPopup">
 
       <CommentForm
-          :course-id="props.courseId"
-          :student-id="props.studentId"
+          :course-id="courseId"
+          :student-id="studentId"
           @comment-added="handleCommentAdded"
       />
     </PopupModal>
 
 </div>
 </template>
-
 
 <script setup>
 import { ref, onMounted, watch } from 'vue'
@@ -154,4 +151,3 @@ function navigateToFeedback() {
   }
 }
 </script>
-

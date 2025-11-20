@@ -62,7 +62,7 @@ async function fetchStudentInfo() {
   try {
     const token = await getToken();
     const response = await apiClient.get(
-        `/students/${props.studentId}`,
+        `/courses/${props.courseId}/students/${props.studentId}`,
         { headers: { Authorization: `Bearer ${token}` } }
     );
 
