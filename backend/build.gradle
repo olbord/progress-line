@@ -31,8 +31,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-cache'
     implementation 'org.springframework.boot:spring-boot-starter-mail'
 
+    // Microsoft Entra login & security
     implementation 'org.springframework.boot:spring-boot-starter-security'
-    // Microsoft Entra login
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 
     implementation 'org.liquibase:liquibase-core'
