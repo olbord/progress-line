@@ -1,6 +1,6 @@
 package ee.taltech.veebirakenduseprojekt.service;
 
-import ee.taltech.veebirakenduseprojekt.controller.*;
+import ee.taltech.veebirakenduseprojekt.dto.*;
 import ee.taltech.veebirakenduseprojekt.mapper.StudentMapper;
 import ee.taltech.veebirakenduseprojekt.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;

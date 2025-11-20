@@ -1,11 +1,12 @@
 package ee.taltech.veebirakenduseprojekt.service;
 
 import java.util.*;
+
+import ee.taltech.veebirakenduseprojekt.dto.*;
 import ee.taltech.veebirakenduseprojekt.exception.*;
 import lombok.*;
 import lombok.extern.slf4j.*;
 import org.springframework.stereotype.*;
-import ee.taltech.veebirakenduseprojekt.controller.*;
 import ee.taltech.veebirakenduseprojekt.mapper.*;
 import ee.taltech.veebirakenduseprojekt.repository.*;
 
@@ -29,14 +30,8 @@ public class CommentService {
 
     public CommentResponseDto addComment(CommentRequestDto dto) {
         Long studentId = dto.getStudentId();
-        if (studentId == null) {
-            throw new ApplicationException("Student ID cannot be null for a new comment");
-        }
         User student = studentMapper.studentIdToEntity(studentId, studentRepository);
         Comment entity = commentMapper.mapToEntity(dto, studentRepository, studentMapper, courseRepository);
-        if (entity.getStudent() == null) {
-            throw new ApplicationException("Student information is required for a comment.");
-        }
         entity.setStudent(student);
         Comment savedComment = commentRepository.save(entity);
         return commentMapper.mapToResponseDto(savedComment);

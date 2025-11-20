@@ -2,6 +2,7 @@
   <div class="container container--medium">
     <StudentPersonalDataDisplay
         :student-id="props.studentId"
+        :course-id="props.courseId"
         @email-clicked="openEmailModal"
     />
 

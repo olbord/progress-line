@@ -1,5 +1,6 @@
 package ee.taltech.veebirakenduseprojekt.controller;
 
+import ee.taltech.veebirakenduseprojekt.dto.*;
 import ee.taltech.veebirakenduseprojekt.service.CourseService;
 import io.swagger.v3.oas.annotations.*;
 import io.swagger.v3.oas.annotations.tags.*;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
+
 
 @Tag(name = "Course Controller", description = "Endpoints to manage courses.")
 @RestController

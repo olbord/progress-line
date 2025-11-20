@@ -1,4 +1,4 @@
-package ee.taltech.veebirakenduseprojekt.controller;
+package ee.taltech.veebirakenduseprojekt.entity;
 
 import io.swagger.v3.oas.annotations.media.*;
 

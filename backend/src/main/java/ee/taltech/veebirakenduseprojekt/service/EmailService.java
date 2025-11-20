@@ -17,7 +17,6 @@ import jakarta.mail.MessagingException;
 public class EmailService {
 
     private final JavaMailSender mailSender;
-    private final EmailRepository emailRepository;
 
     public void sendMail(String recipient, String senderEmail, String subject, String body) {
 

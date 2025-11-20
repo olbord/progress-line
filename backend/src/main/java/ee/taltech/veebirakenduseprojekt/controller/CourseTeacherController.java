@@ -1,5 +1,6 @@
 package ee.taltech.veebirakenduseprojekt.controller;
 
+import ee.taltech.veebirakenduseprojekt.dto.*;
 import ee.taltech.veebirakenduseprojekt.service.CourseService;
 import io.swagger.v3.oas.annotations.*;
 import io.swagger.v3.oas.annotations.tags.*;
@@ -19,8 +20,7 @@ public class CourseTeacherController {
 
     private final CourseService courseService;
 
-    // TODO. ADD TO FRONTEND
-    @Operation(summary = "[ADD TO FRONTEND] Require all teachers on a specific course",
+    @Operation(summary = "Require all teachers on a specific course",
             description = "Gets all teachers on a specific course.")
     @GetMapping
     public List<TeacherDto> getTeachersByCourse(@PathVariable Long courseId) {

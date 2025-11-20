@@ -2,6 +2,7 @@
   <div class="comment-form">
     <StudentPersonalDataDisplay
         :student-id="props.studentId"
+        :course-id="props.courseId"
     />
 
     <div v-if="loading" class="message">Laen andmeid...</div>
