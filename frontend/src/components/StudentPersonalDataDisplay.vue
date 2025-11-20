@@ -67,8 +67,6 @@ async function fetchStudentInfo() {
     );
 
     studentInfo.value = response.data;
-
-    const response = await apiClient.get(`/courses/${props.courseId}/students/${props.studentId}`)
     studentInfo.value = response.data
   } catch (err) {
     console.error("Error fetching student info:", err)
