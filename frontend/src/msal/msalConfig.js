@@ -9,3 +9,7 @@ export const msalConfig = {
         storeAuthStateInCookie: false,
     },
 };
+
+export const loginRequest = {
+    scopes: import.meta.env.VITE_AZURE_SCOPES.split(" ")
+};

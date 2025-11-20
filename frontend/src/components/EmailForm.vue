@@ -30,6 +30,7 @@
 import { ref, onMounted } from 'vue';
 import apiClient from '@/services/api.js';
 import StudentPersonalDataDisplay from '@/components/StudentPersonalDataDisplay.vue'
+import {getToken} from "@/msal/msalInstance.js";
 
 const props = defineProps({
   studentId: { type: [Number, String], required: true },
@@ -49,19 +50,22 @@ async function fetchEmailDraft() {
   loading.value = true;
   error.value = null;
 
-  // Data for email draft
   try {
-    const studentResp = await apiClient.get(`/students/${props.studentId}`);
-    const studentInfo = studentResp.data;
+    const token = await getToken();
 
-    // Last grade
-    const gradeResp = await apiClient.get(`/courses/${props.courseId}/students/${props.studentId}/latest-grade`);
-    const lastGrade = gradeResp.data;
+    const studentResp = await apiClient.get(
+        `/students/${props.studentId}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+    );
 
-    draft.value = generateEmailDraft(studentInfo, lastGrade);
+    const gradeResp = await apiClient.get(
+        `/courses/${props.courseId}/students/${props.studentId}/latest-grade`,
+        { headers: { Authorization: `Bearer ${token}` } }
+    );
+
+    draft.value = generateEmailDraft(studentResp.data, gradeResp.data);
 
   } catch (e) {
-    console.error('Error fetching email draft data:', e);
     error.value = "Viga andmete laadimisel mustandi koostamiseks.";
   } finally {
     loading.value = false;
@@ -83,23 +87,18 @@ abiõppejõud`;
 }
 
 async function sendEmail() {
-  errorMessage.value = null;
-  successMessage.value = null;
-
   try {
-    const payload = {
-      emailBody: draft.value
-    };
-
+    const token = await getToken();
     isSending.value = true;
 
-    await apiClient.post(`/courses/${props.courseId}/students/${props.studentId}/send-email`, payload);
+    await apiClient.post(
+        `/courses/${props.courseId}/students/${props.studentId}/send-email`,
+        { emailBody: draft.value },
+        { headers: { Authorization: `Bearer ${token}` } }
+    );
 
-    successMessage.value = "E-mail edukalt saadetud! Sulgen akna...";
-    setTimeout(() => emit('email-sent'), 1500);
-
+    successMessage.value = "E-mail edukalt saadetud!";
   } catch (e) {
-    console.error('Error sending email:', e);
     errorMessage.value = "Meili saatmine ebaõnnestus.";
   }
 }

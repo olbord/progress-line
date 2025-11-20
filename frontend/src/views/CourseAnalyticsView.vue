@@ -33,6 +33,7 @@ import { useRouter, useRoute } from 'vue-router'
 import ProgressLineChart from '@/components/ProgressLineChart.vue'
 import { ref, onMounted, watch } from 'vue'
 import apiClient from '@/services/api.js'
+import {getToken} from "@/msal/msalInstance.js";
 
 const router = useRouter()
 const route = useRoute()
@@ -51,7 +52,11 @@ async function fetchTeachers() {
   errorTeachers.value = null;
 
   try {
-    const response = await apiClient.get(`/courses/${courseId}/teachers`);
+    const token = await getToken();
+    const response = await apiClient.get(
+        `/courses/${courseId}/teachers`,
+        { headers: { Authorization: `Bearer ${token}` } }
+    );
     teachers.value = response.data;
   } catch (err) {
     console.error("Failed to fetch teachers:", err);

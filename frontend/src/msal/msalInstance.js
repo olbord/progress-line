@@ -1,6 +1,6 @@
 import { PublicClientApplication } from "@azure/msal-browser";
-import { msalConfig } from "./msalConfig.js";
-import { useAuth } from "@/composables/useAuth";
+import {loginRequest, msalConfig} from "./msalConfig.js";
+import { useAuth} from "@/composables/useAuth";
 import router from "@/router";
 
 export const msalInstance = new PublicClientApplication(msalConfig);
@@ -41,3 +41,8 @@ export const initializeMsal = async () => {
 
     return msalInstance;
 };
+
+export async function getToken() {
+    const res = await msalInstance.acquireTokenSilent(loginRequest);
+    return res.accessToken;
+}

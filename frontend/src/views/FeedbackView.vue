@@ -64,6 +64,7 @@ import PopupModal from '@/components/PopupModal.vue'
 import CommentForm from '@/components/CommentForm.vue'
 import StudentPersonalDataDisplay from '@/components/StudentPersonalDataDisplay.vue'
 import EmailForm from "@/components/EmailForm.vue";
+import {getToken} from "@/msal/msalInstance.js";
 
 const router = useRouter()
 
@@ -93,17 +94,20 @@ const courseId = props.courseId
 const studentId = props.studentId
 
 async function fetchFeedback() {
-  loading.value = true
-  error.value = null
-  feedbackResponses.value = [] // Tühjenda eelmised andmed
+  loading.value = true;
+  error.value = null;
+
   try {
-    const response = await apiClient.get(`/courses/${courseId}/students/${studentId}/feedback`)
-    feedbackResponses.value = response.data
+    const token = await getToken();
+    const response = await apiClient.get(
+        `/courses/${courseId}/students/${studentId}/feedback`,
+        { headers: { Authorization: `Bearer ${token}` } }
+    );
+    feedbackResponses.value = response.data;
   } catch (err) {
-    console.error(err)
-    error.value = 'Error while loading student feedback responses'
+    error.value = 'Error while loading student feedback responses';
   } finally {
-    loading.value = false
+    loading.value = false;
   }
 }
 

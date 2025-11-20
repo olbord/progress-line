@@ -60,6 +60,7 @@ import PopupModal from "@/components/PopupModal.vue";
 import CommentForm from '@/components/CommentForm.vue'
 import StudentPersonalDataDisplay from '@/components/StudentPersonalDataDisplay.vue'
 import EmailForm from '@/components/EmailForm.vue'
+import {getToken} from "@/msal/msalInstance.js";
 
 const comments = ref([]);
 const loadingComments = ref(false)
@@ -88,24 +89,25 @@ const fetchComments = async () => {
   const courseId = Number(props.courseId);
   const studentId = Number(props.studentId);
 
-  if (!courseId || !studentId) {
-    console.warn("Skipping API call: Course ID or Student ID is missing.");
-    return;
-  }
+  if (!courseId || !studentId) return;
 
-  loadingComments.value = true
-  errorComments.value = null
+  loadingComments.value = true;
+  errorComments.value = null;
 
   try {
-    const response = await apiClient.get(`/courses/${courseId}/students/${studentId}/comments`)
-    comments.value = response.data
+    const token = await getToken();
+    const response = await apiClient.get(
+        `/courses/${courseId}/students/${studentId}/comments`,
+        { headers: { Authorization: `Bearer ${token}` } }
+    );
+    comments.value = response.data;
   } catch (err) {
-    console.error("Failed to fetch comments:", err)
-    errorComments.value = 'Kommentaaride laadimine ebaõnnestus.'
+    errorComments.value = 'Kommentaaride laadimine ebaõnnestus.';
   } finally {
-    loadingComments.value = false
+    loadingComments.value = false;
   }
-}
+};
+
 
 onMounted(fetchComments)
 

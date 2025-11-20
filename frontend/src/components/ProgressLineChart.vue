@@ -18,11 +18,12 @@
 <script setup>
 import { useRouter } from 'vue-router';
 import { ref, onMounted, nextTick } from 'vue';
-import axios from 'axios';
 import Chart from 'chart.js/auto';
 import 'chartjs-adapter-date-fns';
 import { et } from 'date-fns/locale';
 import {useRoute} from "vue-router";
+import apiClient from "@/services/api.js";
+import {getToken} from "@/msal/msalInstance.js";
 
 const router = useRouter();
 let apiStudentData = [];
@@ -37,15 +38,21 @@ const courseId = route.params.courseId
 async function fetchAndRenderChart() {
   isLoading.value = true;
   error.value = null;
+
   try {
-    const response = await axios.get(`/api/courses/${courseId}/progress-lines`);
+    const token = await getToken();
+    const response = await apiClient.get(
+        `/courses/${courseId}/progress-lines`,
+        { headers: { Authorization: `Bearer ${token}` } }
+    );
+
     apiStudentData = response.data;
-    isLoading.value = false;
     await nextTick();
     renderChart(apiStudentData);
+
   } catch (err) {
-    console.error("Viga andmete laadimisel:", err);
-    error.value = "Andmete laadimine ebaõnnestus. Proovi uuesti!";
+    error.value = "Andmete laadimine ebaõnnestus.";
+  } finally {
     isLoading.value = false;
   }
 }
@@ -53,7 +60,7 @@ async function fetchAndRenderChart() {
 // Draw graph
 function renderChart(apiData) {
 
-  if (!chartCanvas.value || !apiData || apiData.length === 0) {
+  if (!chartCanvas.value) {
     console.error("VIGA: Canvas element ei ole leitav! 'ref' ei tööta.");
     return;
   }

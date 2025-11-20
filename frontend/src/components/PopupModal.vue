@@ -22,6 +22,7 @@ function tryClose() {
 </script>
 
 <style scoped>
+/* Fade animation */
 .fade-enter-active, .fade-leave-active {
   transition: opacity 0.3s;
 }
