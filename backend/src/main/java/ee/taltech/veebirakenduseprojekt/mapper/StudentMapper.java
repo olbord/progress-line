@@ -1,6 +1,8 @@
 package ee.taltech.veebirakenduseprojekt.mapper;
 
 import ee.taltech.veebirakenduseprojekt.dto.*;
+import ee.taltech.veebirakenduseprojekt.entity.Comment;
+import ee.taltech.veebirakenduseprojekt.entity.User;
 import ee.taltech.veebirakenduseprojekt.exception.*;
 import ee.taltech.veebirakenduseprojekt.repository.*;
 import org.mapstruct.*;

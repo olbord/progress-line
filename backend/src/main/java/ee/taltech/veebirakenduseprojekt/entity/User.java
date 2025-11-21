@@ -1,6 +1,5 @@
-package ee.taltech.veebirakenduseprojekt.repository;
+package ee.taltech.veebirakenduseprojekt.entity;
 
-import ee.taltech.veebirakenduseprojekt.entity.*;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.Builder;

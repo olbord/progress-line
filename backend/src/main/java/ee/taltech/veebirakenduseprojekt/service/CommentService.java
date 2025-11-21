@@ -3,6 +3,8 @@ package ee.taltech.veebirakenduseprojekt.service;
 import java.util.*;
 
 import ee.taltech.veebirakenduseprojekt.dto.*;
+import ee.taltech.veebirakenduseprojekt.entity.Comment;
+import ee.taltech.veebirakenduseprojekt.entity.User;
 import ee.taltech.veebirakenduseprojekt.exception.*;
 import lombok.*;
 import lombok.extern.slf4j.*;
