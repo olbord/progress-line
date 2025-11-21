@@ -1,8 +1,7 @@
 <template>
   <transition name="fade">
-    <div v-if="visible" class="modal-overlay" @click.self="close">
+    <div v-if="visible" class="modal-overlay" @click.self="tryClose">
       <div class="modal-content">
-        <button class="modal-close" @click="close">✕</button>
         <slot />
       </div>
     </div>
@@ -11,15 +10,19 @@
 
 <script setup>
 const props = defineProps({
-  visible: { type: Boolean, required: true }
+  visible: Boolean,
+  blockClose: Boolean
 })
 const emit = defineEmits(['close'])
-function close() {
+
+function tryClose() {
+  if (props.blockClose) return
   emit('close')
 }
 </script>
 
 <style scoped>
+/* Fade animation */
 .fade-enter-active, .fade-leave-active {
   transition: opacity 0.3s;
 }

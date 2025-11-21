@@ -31,6 +31,7 @@
 import { ref, onMounted } from 'vue';
 import apiClient from '@/services/api.js';
 import StudentPersonalDataDisplay from '@/components/StudentPersonalDataDisplay.vue'
+import {getToken} from "@/msal/msalInstance.js";
 
 const props = defineProps({
   studentId: { type: [Number, String], required: true },
@@ -50,16 +51,20 @@ async function fetchEmailDraft() {
   loading.value = true;
   error.value = null;
 
-  // Data for email draft
   try {
-    const studentResp = await apiClient.get(`/students/${props.studentId}`);
-    const studentInfo = studentResp.data;
+    const token = await getToken();
 
-    // Last grade
-    const gradeResp = await apiClient.get(`/courses/${props.courseId}/students/${props.studentId}/latest-grade`);
-    const lastGrade = gradeResp.data;
+    const studentResp = await apiClient.get(
+        `/courses/${props.courseId}/students/${props.studentId}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+    );
 
-    draft.value = generateEmailDraft(studentInfo, lastGrade);
+    const gradeResp = await apiClient.get(
+        `/courses/${props.courseId}/students/${props.studentId}/latest-grade`,
+        { headers: { Authorization: `Bearer ${token}` } }
+    );
+
+    draft.value = generateEmailDraft(studentResp.data, gradeResp.data);
 
   } catch (e) {
     console.error('Error fetching email draft data:', e);
@@ -71,30 +76,42 @@ async function fetchEmailDraft() {
 
 function generateEmailDraft(student, grade) {
 
-  const gradeInfo = grade && grade.itemName
-      ? `Märkasin, et viimati said punkte üsna ammu, ${new Date(grade.gradeDateGraded).toLocaleDateString()} ülesande "${grade.itemName}" eest.`
-      : `Märkasin, et sul ei ole sellel kursusel veel hindeid.`;
-
-  return `Tere ${student.firstName}!
-
-Uurin, kuidas sul kursusel läheb? ${gradeInfo} Usun, et saame sind aidata!
+  const footer = `
 
 Parimate soovidega,
 abiõppejõud`;
+
+  // Case: no grade at all
+  if (!grade || !grade.itemName || !grade.gradeDateGraded) {
+    return `Tere ${student.firstName}!
+
+Uurin, kuidas sul kursusel läheb? Märkasin, et sul ei ole sellel kursusel veel hindeid. Usun, et saame sind aidata!${footer}`;
+  }
+
+  // Case: grade exists → try formatting date safely
+  let formattedDate = "";
+  const parsedDate = new Date(grade.gradeDateGraded);
+
+  if (!Number.isNaN(parsedDate)) {
+    formattedDate = parsedDate.getDate().toString().padStart(2, "0") + "." +
+        (parsedDate.getMonth() + 1).toString().padStart(2, "0") + ".";
+  }
+
+  return `Tere ${student.firstName}!
+
+Uurin, kuidas sul kursusel läheb? Märkasin, et viimati said punkte üsna ammu, ${formattedDate} ülesande "${grade.itemName}" eest. Usun, et saame sind aidata!${footer}`;
 }
 
 async function sendEmail() {
-  errorMessage.value = null;
-  successMessage.value = null;
-
   try {
-    const payload = {
-      emailBody: draft.value
-    };
-
+    const token = await getToken();
     isSending.value = true;
 
-    await apiClient.post(`/courses/${props.courseId}/students/${props.studentId}/send-email`, payload);
+    await apiClient.post(
+        `/courses/${props.courseId}/students/${props.studentId}/send-email`,
+        { emailBody: draft.value },
+        { headers: { Authorization: `Bearer ${token}` } }
+    );
 
     successMessage.value = "E-mail edukalt saadetud! Sulgen akna...";
     setTimeout(() => emit('email-sent'), 1500);

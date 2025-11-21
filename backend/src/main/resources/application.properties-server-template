@@ -29,3 +29,6 @@ spring.mail.username=noreply@jairus.ee
 spring.mail.password=ADD PASSWORD HERE, DONT PUSH TO GIT
 spring.mail.properties.mail.smtp.auth=true
 spring.mail.properties.mail.smtp.starttls.enable=true
+
+# Microsoft Entra ID (for authentication)
+azure.tenant-id=

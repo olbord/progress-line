@@ -1,21 +1,20 @@
 <template>
   <div class="container container--medium">
     <StudentPersonalDataDisplay
-        :student-id="props.studentId"
-        :course-id="props.courseId"
+        :student-id="studentId"
+        :course-id="courseId"
         @email-clicked="openEmailModal"
     />
 
     <PopupModal :visible="showEmailPopup" @close="showEmailPopup = false">
       <EmailForm
-          :course-id="props.courseId"
-          :student-id="props.studentId"
+          :course-id="courseId"
+          :student-id="studentId"
           @email-sent="showEmailPopup = false"
       />
     </PopupModal>
     <div v-if="loading">Laen hinded...</div>
     <div v-else-if="error" class="message message--error">{{ error }}</div>
-
     <table v-else-if="grades.length > 0" class="data-table">
       <thead>
       <tr>
@@ -34,7 +33,6 @@
       </tr>
       </tbody>
     </table>
-
     <div v-else>Hinded puuduvad</div>
 
     <div class="container--narrow">
@@ -47,15 +45,14 @@
     <PopupModal :visible="showCommentPopup" @close="closeCommentPopup">
 
       <CommentForm
-          :course-id="props.courseId"
-          :student-id="props.studentId"
+          :course-id="courseId"
+          :student-id="studentId"
           @comment-added="handleCommentAdded"
       />
     </PopupModal>
 
 </div>
 </template>
-
 
 <script setup>
 import { ref, onMounted, watch } from 'vue'
@@ -65,6 +62,7 @@ import PopupModal from '@/components/PopupModal.vue'
 import CommentForm from '@/components/CommentForm.vue'
 import StudentPersonalDataDisplay from '@/components/StudentPersonalDataDisplay.vue'
 import EmailForm from "@/components/EmailForm.vue";
+import {getToken} from "@/msal/msalInstance.js";
 
 const router = useRouter()
 
@@ -94,17 +92,21 @@ const courseId = props.courseId
 const studentId = props.studentId
 
 async function fetchGrades() {
-  loading.value = true
-  error.value = null
-  grades.value = []
+  loading.value = true;
+  error.value = null;
+
   try {
-    const response = await apiClient.get(`/courses/${courseId}/students/${studentId}/grades`)
-    grades.value = response.data
+    const token = await getToken();
+    const response = await apiClient.get(
+        `/courses/${courseId}/students/${studentId}/grades`,
+        { headers: { Authorization: `Bearer ${token}` } }
+    );
+    grades.value = response.data;
   } catch (err) {
-    console.error(err)
-    error.value = 'Error while loading students grades'
+    console.error("Error while loading students grades:", err);
+    error.value = 'Tudengi hinnete laadimine ebaõnnestus';
   } finally {
-    loading.value = false
+    loading.value = false;
   }
 }
 
@@ -150,4 +152,3 @@ function navigateToFeedback() {
   }
 }
 </script>
-

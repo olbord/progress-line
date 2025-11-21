@@ -93,7 +93,7 @@ const pageParam = computed(() => {
 });
 
 const rawPage = Number(route.query[pageParam.value]);
-const initialPage = !isNaN(rawPage) && rawPage >= 1 ? rawPage - 1 : 0;
+const initialPage = !Number.isNaN(rawPage) && rawPage >= 1 ? rawPage - 1 : 0;
 
 const page = ref(initialPage);
 
@@ -109,7 +109,7 @@ function loadFromService(courseId, page, size) {
 }
 
 async function loadStudents() {
-  if (isNaN(page.value) || page.value < 0) {
+  if (Number.isNaN(page.value) || page.value < 0) {
     page.value = 0;
   }
   try {
@@ -159,7 +159,7 @@ async function loadStudents() {
 defineExpose({ loadStudents });
 
 watch(page, (newPage, oldPage) => {
-  if (isNaN(newPage) || newPage < 0) {
+  if (Number.isNaN(newPage) || newPage < 0) {
     page.value = oldPage;
     return;
   }

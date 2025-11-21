@@ -25,7 +25,7 @@ export default defineConfig(async ({command}) => {
         '/api': {
           target: 'http://localhost:8080',
           changeOrigin: true,
-          secure: false
+          secure: false,
         }
       }
     }

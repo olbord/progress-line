@@ -3,9 +3,15 @@ import './assets/main.css'
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
+import {initializeMsal} from "@/msal/msalInstance.js";
 
-const app = createApp(App)
-
-app.use(router)
-
-app.mount('#app')
+initializeMsal().then(() => {
+    const app = createApp(App)
+    app.use(router)
+    app.mount('#app')
+}).catch(error => {
+    console.error('Failed to initialize MSAL:', error)
+    const app = createApp(App)
+    app.use(router)
+    app.mount('#app')
+})

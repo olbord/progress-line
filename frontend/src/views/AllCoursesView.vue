@@ -1,22 +1,38 @@
 <script setup>
 import { ref, onMounted } from 'vue'
-import axios from 'axios'
 import CourseRow from '@/components/CourseRow.vue'
+import {getToken, msalInstance} from '@/msal/msalInstance'
+import axios from "axios";
 
 const courses = ref([])
 const searchQuery = ref('')
 const loading = ref(false)
 const error = ref(null)
 
+const userEmail = ref(null)
+
+onMounted(() => {
+  const account = msalInstance.getActiveAccount()
+  if (account) {
+    handleSearch()
+    userEmail.value = account.idTokenClaims?.email || account.username
+  } else {
+    console.warn("No active MSAL account. User not logged in.")
+  }
+})
+
 const fetchCourses = async (query = '') => {
   loading.value = true
   error.value = null
+  const token = await getToken();
   try {
-    const payload = query ? { query } : {}
-    const response = await axios.get('/api/courses', payload)
+    const response = await axios.get('/api/courses', {
+      headers: { Authorization: `Bearer ${token}` },
+      params: query ? { query } : {}
+    });
     courses.value = response.data
   } catch (err) {
-    error.value = 'Failed to load courses.'
+    error.value = 'Kursuste laadimine ebaõnnestus.'
     console.error(err)
   } finally {
     loading.value = false
@@ -26,10 +42,6 @@ const fetchCourses = async (query = '') => {
 const handleSearch = () => {
   fetchCourses(searchQuery.value.trim())
 }
-
-onMounted(() => {
-  fetchCourses()
-})
 </script>
 
 <template>
@@ -37,6 +49,7 @@ onMounted(() => {
     <h2>Minu kursused</h2>
 
     <div>
+      <p v-if="userEmail">Sisse logitud meiliga: <strong>{{ userEmail }}</strong></p>
       <input
           type="text"
           v-model="searchQuery"
