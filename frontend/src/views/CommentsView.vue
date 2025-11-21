@@ -103,6 +103,7 @@ const fetchComments = async () => {
     );
     comments.value = response.data;
   } catch (err) {
+    console.error("Error while loading comments:", err);
     errorComments.value = 'Kommentaaride laadimine ebaõnnestus.';
   } finally {
     loadingComments.value = false;

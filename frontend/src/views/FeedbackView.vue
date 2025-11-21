@@ -106,7 +106,8 @@ async function fetchFeedback() {
     );
     feedbackResponses.value = response.data;
   } catch (err) {
-    error.value = 'Error while loading student feedback responses';
+    console.error("Error while loading student feedback responses:", err);
+    error.value = 'Tudengi tagasiside laadimine ebaõnnestus';
   } finally {
     loading.value = false;
   }

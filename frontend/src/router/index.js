@@ -20,7 +20,10 @@ const router = createRouter({
       path: '/courses/:courseId/students/:studentId/comments',
       name: 'students comments',
       component: CommentsView,
-      props: true,
+      props: route => ({
+        studentId: Number(route.params.studentId),
+        courseId: Number(route.params.courseId)
+      }),
       meta: { requiresAuth: true }
     },
     {
@@ -34,8 +37,8 @@ const router = createRouter({
       name: 'course students',
       component: CourseStudentsView,
       props: route => ({
-        courseId: route.params.courseId,
-        courseName: route.params.courseName,
+        courseId: Number(route.params.courseId),
+        courseName: route.params.courseName
       }),
       meta: { requiresAuth: true }
     },
@@ -59,7 +62,11 @@ const router = createRouter({
       path: '/courses/:courseId/students/:studentId/feedback',
       name: 'students feedback',
       component: FeedbackView,
-      props: true
+      props: route => ({
+        studentId: Number(route.params.studentId),
+        courseId: Number(route.params.courseId)
+      }),
+      meta: { requiresAuth: true }
     },
     {
       path: '/about',

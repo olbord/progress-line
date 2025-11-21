@@ -32,7 +32,7 @@ const fetchCourses = async (query = '') => {
     });
     courses.value = response.data
   } catch (err) {
-    error.value = 'Failed to load courses.'
+    error.value = 'Kursuste laadimine ebaõnnestus.'
     console.error(err)
   } finally {
     loading.value = false

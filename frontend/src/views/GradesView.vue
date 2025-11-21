@@ -103,7 +103,8 @@ async function fetchGrades() {
     );
     grades.value = response.data;
   } catch (err) {
-    error.value = 'Error while loading students grades';
+    console.error("Error while loading students grades:", err);
+    error.value = 'Tudengi hinnete laadimine ebaõnnestus';
   } finally {
     loading.value = false;
   }

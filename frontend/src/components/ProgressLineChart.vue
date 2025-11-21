@@ -16,12 +16,11 @@
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import { ref, onMounted, nextTick } from 'vue';
 import Chart from 'chart.js/auto';
 import 'chartjs-adapter-date-fns';
 import { et } from 'date-fns/locale';
-import {useRoute} from "vue-router";
 import apiClient from "@/services/api.js";
 import {getToken} from "@/msal/msalInstance.js";
 

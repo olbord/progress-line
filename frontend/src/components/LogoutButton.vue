@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-import { msalInstance } from "/src/msal/msalInstance";
+import { msalInstance } from "@/msal/msalInstance";
 import { useAuth } from "@/composables/useAuth";
 
 const { setAccount } = useAuth();
@@ -22,7 +22,3 @@ const logout = async () => {
   }
 };
 </script>
-
-<style scoped>
-
-</style>

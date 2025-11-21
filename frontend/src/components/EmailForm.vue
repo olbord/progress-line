@@ -55,7 +55,7 @@ async function fetchEmailDraft() {
     const token = await getToken();
 
     const studentResp = await apiClient.get(
-        `/students/${props.studentId}`,
+        `/courses/${props.courseId}/students/${props.studentId}`,
         { headers: { Authorization: `Bearer ${token}` } }
     );
 
@@ -76,16 +76,30 @@ async function fetchEmailDraft() {
 
 function generateEmailDraft(student, grade) {
 
-  const gradeInfo = grade && grade.itemName
-      ? `Märkasin, et viimati said punkte üsna ammu, ${new Date(grade.gradeDateGraded).toLocaleDateString()} ülesande "${grade.itemName}" eest.`
-      : `Märkasin, et sul ei ole sellel kursusel veel hindeid.`;
-
-  return `Tere ${student.firstName}!
-
-Uurin, kuidas sul kursusel läheb? ${gradeInfo} Usun, et saame sind aidata!
+  const footer = `
 
 Parimate soovidega,
 abiõppejõud`;
+
+  // Case: no grade at all
+  if (!grade || !grade.itemName || !grade.gradeDateGraded) {
+    return `Tere ${student.firstName}!
+
+Uurin, kuidas sul kursusel läheb? Märkasin, et sul ei ole sellel kursusel veel hindeid. Usun, et saame sind aidata!${footer}`;
+  }
+
+  // Case: grade exists → try formatting date safely
+  let formattedDate = "";
+  const parsedDate = new Date(grade.gradeDateGraded);
+
+  if (!Number.isNaN(parsedDate)) {
+    formattedDate = parsedDate.getDate().toString().padStart(2, "0") + "." +
+        (parsedDate.getMonth() + 1).toString().padStart(2, "0") + ".";
+  }
+
+  return `Tere ${student.firstName}!
+
+Uurin, kuidas sul kursusel läheb? Märkasin, et viimati said punkte üsna ammu, ${formattedDate} ülesande "${grade.itemName}" eest. Usun, et saame sind aidata!${footer}`;
 }
 
 async function sendEmail() {
