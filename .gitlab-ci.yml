@@ -23,6 +23,10 @@ build-frontend:
   script:
     - cd frontend
     - npm ci
+    - export VITE_AZURE_SCOPES=$VITE_AZURE_SCOPES
+    - export VITE_AZURE_TENANT_ID=$VITE_AZURE_TENANT_ID
+    - export VITE_AZURE_CLIENT_ID=$VITE_AZURE_CLIENT_ID
+    - export VITE_AZURE_AUTHORITY=$VITE_AZURE_AUTHORITY
     - npm run build
   artifacts:
     paths:
