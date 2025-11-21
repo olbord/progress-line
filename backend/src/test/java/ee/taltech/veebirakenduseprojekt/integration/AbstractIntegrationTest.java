@@ -1,4 +1,4 @@
-package ee.taltech.veebirakenduseprojekt;
+package ee.taltech.veebirakenduseprojekt.integration;
 
 import org.springframework.test.context.*;
 import org.testcontainers.containers.PostgreSQLContainer;
