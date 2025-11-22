@@ -29,27 +29,35 @@ public interface StudentRepository extends JpaRepository<User, Long> {
 
     @Query(
             value = """
-            SELECT u.*
-            FROM "user" u
-            JOIN user_role r ON u.id = r.user_id
-            JOIN declaration d ON u.id = d.user_id
-            WHERE r.course_id = :courseId
-              AND r.role_id = 5
-              AND d.course_id = :courseId
-              AND u.id NOT IN (SELECT i.user_id FROM inactive i)
-            ORDER BY u.first_name ASC
-            """, countQuery = """
-            SELECT COUNT(*)
-            FROM "user" u
-            JOIN user_role r ON u.id = r.user_id
-            JOIN declaration d ON u.id = d.user_id
-            WHERE r.course_id = :courseId
-              AND r.role_id = 5
-              AND d.course_id = :courseId
-              AND u.id NOT IN (SELECT i.user_id FROM inactive i)
-            """, nativeQuery = true
+    SELECT DISTINCT
+      u.id AS user_id,
+      :courseId AS course_id,
+      u.first_name,
+      u.last_name,
+      u.email,
+      v.total_points
+    FROM "user" u
+    JOIN user_role r ON u.id = r.user_id AND r.course_id = :courseId
+    JOIN declaration d ON u.id = d.user_id AND d.course_id = :courseId
+    LEFT JOIN student_view v
+            ON v.user_id = u.id AND v.course_id = :courseId
+    WHERE r.course_id = :courseId
+      AND r.role_id = 5
+      AND d.course_id = :courseId
+      AND u.id NOT IN (SELECT i.user_id FROM inactive i WHERE u.id= i.user_id AND i.course_id = :courseId)
+    ORDER BY u.first_name ASC
+    """, countQuery = """
+    SELECT COUNT(DISTINCT u.id)
+    FROM "user" u
+    JOIN user_role r ON u.id = r.user_id AND r.course_id = :courseId
+    JOIN declaration d ON u.id = d.user_id AND d.course_id = :courseId
+    WHERE r.course_id = :courseId
+      AND r.role_id = 5
+      AND d.course_id = :courseId
+      AND u.id NOT IN (SELECT i.user_id FROM inactive i WHERE u.id = i.user_id AND i.course_id = :courseId)
+    """, nativeQuery = true
     )
-    Page<User> findPaginatedActiveWithDeclarationByCourse(
+    Page<StudentView> findPaginatedActiveWithDeclarationByCourse(
             @Param("courseId") Long courseId,
             Pageable pageable);
 
@@ -71,7 +79,7 @@ public interface StudentRepository extends JpaRepository<User, Long> {
       AND u.id NOT IN (
           SELECT d.user_id
           FROM declaration d
-          WHERE d.course_id = :courseId)
+          WHERE u.id = d.user_id AND d.course_id = :courseId)
     ORDER BY u.first_name ASC
     """, countQuery = """
     SELECT COUNT(DISTINCT u.id)
@@ -82,7 +90,7 @@ public interface StudentRepository extends JpaRepository<User, Long> {
       AND u.id NOT IN (
           SELECT d.user_id
           FROM declaration d
-          WHERE d.course_id = :courseId)
+          WHERE u.id = d.user_id AND d.course_id = :courseId)
     """, nativeQuery = true
     )
     Page<StudentView> findPaginatedWithoutDeclarationByCourse(@Param("courseId") Long courseId,
