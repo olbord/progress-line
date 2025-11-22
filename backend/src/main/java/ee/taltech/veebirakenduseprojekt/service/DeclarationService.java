@@ -4,6 +4,7 @@ import ee.taltech.veebirakenduseprojekt.entity.*;
 import ee.taltech.veebirakenduseprojekt.exception.*;
 import ee.taltech.veebirakenduseprojekt.repository.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Service;
 import java.time.*;
 
@@ -14,6 +15,8 @@ import java.time.*;
 public class DeclarationService {
 
     private final DeclarationRepository declarationRepository;
+    private final CourseRepository courseRepository;
+    private final StudentRepository studentRepository;
 
     public void deleteStudentDeclarationById(Long studentId, Long courseId) {
         declarationRepository.deleteDeclarationByStudentIdAndCourseId(studentId, courseId);
@@ -25,13 +28,9 @@ public class DeclarationService {
             throw new ApplicationException("Student already declared for this course");
         }
         Declaration declaration = new Declaration();
-        Course course = new Course();
-        course.setId(courseId);
-        User student = new User();
-        student.setId(studentId);
         declaration.setDateTime(LocalDateTime.now());
-        declaration.setCourse(course);
-        declaration.setStudent(student);
+        declaration.setCourse(courseRepository.getReferenceById(courseId));
+        declaration.setStudent(studentRepository.getReferenceById(studentId));
         declarationRepository.save(declaration);
     }
 }
