@@ -141,6 +141,12 @@ The hostname `postgres-db` MUST match the database service name in `docker-compo
 nano docker-compose.yml
 ```
 * Add content based on the `docker-compose-server-template.yml` file.
+* Enable Docker:
+```sh
+sudo apt update
+sudo apt install docker-compose
+sudo usermod -aG docker ${USER}
+```
 
 #### 1.2. Configure Nginx Reverse Proxy
 
@@ -186,25 +192,18 @@ sudo nginx -t
 ```sh
 sudo systemctl restart nginx
 ```
-* Create ssh key for server (CMD in your local machine) without password:
+#### 1.3. Configure certbot
+
+* Add certbot (https://certbot.eff.org/) to enable https and Microsoft login:
 ```sh
-ssh-keygen -t rsa -b 4096 -C "gitlab-ci-deploy-key" -f %USERPROFILE%\.ssh\gitlab_ci_deploy_key
+sudo snap install --classic certbot
+sudo certbot --nginx
 ```
-* Inside server create directory .ssh
+* Select domain:
 ```sh
-mkdir -p ~/.ssh
-chmod 700 ~/.ssh
+1: api.jairus.ee
 ```
-* Show public key (CMD in your local machine):
-```sh
-type %USERPROFILE%\.ssh\gitlab_ci_deploy_key.pub
-```
-* Copy public key to server
-```sh
-echo "PASTE_YOUR_PUBLIC_KEY_HERE" >> ~/.ssh/authorized_keys
-chmod 600 ~/.ssh/authorized_keys
-```
-* Copy private key (in your local machine) to CI/CD variables in Git
+After waiting, https: is enabled and will be renewed automatically in the future.
 
 #### 1. Enable frontend
 
@@ -231,6 +230,26 @@ When using Microsoft login, then also specify:
 * VITE_AZURE_TENANT_ID
 * VITE_AZURE_CLIENT_ID
 * VITE_AZURE_AUTHORITY
+
+* For SSH_PRIVATE_KEY create ssh key for server (CMD in your local machine) without password:
+```sh
+ssh-keygen -t rsa -b 4096 -C "gitlab-ci-deploy-key" -f %USERPROFILE%\.ssh\gitlab_ci_deploy_key
+```
+* Inside server create directory .ssh
+```sh
+mkdir -p ~/.ssh
+chmod 700 ~/.ssh
+```
+* Show public key (CMD in your local machine):
+```sh
+type %USERPROFILE%\.ssh\gitlab_ci_deploy_key.pub
+```
+* Copy public key to server
+```sh
+echo "PASTE_YOUR_PUBLIC_KEY_HERE" >> ~/.ssh/authorized_keys
+chmod 600 ~/.ssh/authorized_keys
+```
+* Copy private key (in your local machine) to CI/CD variables in Git
 
 Application is now be accessible in a web browser via your server's 
 IP address: `http://<your_server_ip>` or `http://<your_server_name>`
