@@ -23,11 +23,7 @@ build-frontend:
   script:
     - cd frontend
     - npm ci
-    - export VITE_AZURE_SCOPES=$VITE_AZURE_SCOPES
-    - export VITE_AZURE_TENANT_ID=$VITE_AZURE_TENANT_ID
-    - export VITE_AZURE_CLIENT_ID=$VITE_AZURE_CLIENT_ID
-    - export VITE_AZURE_AUTHORITY=$VITE_AZURE_AUTHORITY
-    - npm run build
+    - VITE_AZURE_SCOPES=$VITE_AZURE_SCOPES VITE_AZURE_TENANT_ID=$VITE_AZURE_TENANT_ID VITE_AZURE_CLIENT_ID=$VITE_AZURE_CLIENT_ID VITE_AZURE_AUTHORITY=$VITE_AZURE_AUTHORITY VITE_API_BASE_URL=https://api.jairus.ee/api VITE_AZURE_REDIRECT_URI=https://api.jairus.ee/ npm run build
   artifacts:
     paths:
       - frontend/dist/
