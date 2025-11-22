@@ -15,11 +15,11 @@
     <include file="/db/changelog/008-update-comment-table-teacher-id-from-user-table.xml"/>
     <include file="/db/changelog/009-create-enrolled-user-table.xml"/>
     <include file="/db/changelog/010-update-declaration-table-course-id.xml"/>
-    <include file="/db/changelog/011-add-dummy-data.xml"/>
-    <include file="/db/changelog/012-more-student-test-data.xml"/>
+    <include file="db/changelog/011-add-dummy-data-for-testing.xml"/>
+    <!--include file="/db/changelog/012-more-student-test-data.xml"/-->
     <include file="/db/changelog/013-course-related-data.xml"/>
     <include file="/db/changelog/014-course_id-in-comment-table.xml"/>
-    <include file="/db/changelog/015-grade-item-dummy-data.xml"/>
+    <!--include file="/db/changelog/015-grade-item-dummy-data.xml"/-->
     <include file="/db/changelog/016-create-email-table.xml"/>
     <include file="db/changelog/017-local-test-add-pagination-dummy-data-for-testing.xml"/>
     <include file="/db/changelog/018-create-feedback-tables.xml"/>

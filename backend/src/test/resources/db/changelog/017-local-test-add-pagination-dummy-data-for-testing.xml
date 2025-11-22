@@ -16,6 +16,15 @@
         </sql>
     </changeSet>
 
+    <changeSet id="2025-11-19-add-dummy-other-course" author="KJ">
+        <sql>
+            INSERT INTO "course" (id, short_name, full_name)
+            VALUES
+                (66066, 'Muu kursus', 'Muu kursus ilma õpetajata')
+                ON CONFLICT DO NOTHING;
+        </sql>
+    </changeSet>
+
     <changeSet id="2025-11-19-add-dummy-enrolled-users" author="KJ">
         <sql>
             INSERT INTO enrolled_user (course_id, user_id, last_updated, last_course_access)
@@ -23,7 +32,8 @@
                 (35065, (SELECT id FROM "user" WHERE email = 'a.aktiivne@taltech.ee'), '2025-09-27 20:04:03', '2025-09-27 20:04:06'),
                 (35065, (SELECT id FROM "user" WHERE email = 'd.deklaratsioonita@taltech.ee'), '2025-09-27 20:04:03', '2025-09-27 20:04:06'),
                 (35065, (SELECT id FROM "user" WHERE email = 'i.inaktiivne@taltech.ee'), '2025-09-27 20:04:03', '2025-09-27 20:04:06'),
-                (35065, (SELECT id FROM "user" WHERE email = 'e.mittesellelkursusel@taltech.ee'), '2025-09-27 20:04:03', '2025-09-27 20:04:06')
+
+                (66066, (SELECT id FROM "user" WHERE email = 'e.mittesellelkursusel@taltech.ee'), '2025-09-27 20:04:03', '2025-09-27 20:04:06')
                 ON CONFLICT DO NOTHING;
         </sql>
     </changeSet>

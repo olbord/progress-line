@@ -1,5 +1,6 @@
-package ee.taltech.veebirakenduseprojekt.integration;
+package ee.taltech.veebirakenduseprojekt.integration.controller;
 
+import ee.taltech.veebirakenduseprojekt.integration.*;
 import ee.taltech.veebirakenduseprojekt.repository.*;
 import jakarta.transaction.*;
 import org.junit.jupiter.api.*;
