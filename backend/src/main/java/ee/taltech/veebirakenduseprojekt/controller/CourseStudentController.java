@@ -112,4 +112,16 @@ public class CourseStudentController {
         accessService.requireTeacherAccess(email, courseId);
         courseService.markStudentActive(courseId, studentId);
     }
+
+    @Operation(summary = "Get student's status", description = "Returns if student is declared and active.")
+    @GetMapping("/{studentId}/status")
+    @ResponseStatus(HttpStatus.OK)
+    public StudentStatusDto getStudentStatus(
+            @PathVariable Long courseId,
+            @PathVariable Long studentId,
+            @AuthenticationPrincipal(expression = "email") String email) {
+        accessService.requireTeacherAccess(email, courseId);
+        return studentService.getStudentStatus(courseId, studentId);
+    }
+
 }

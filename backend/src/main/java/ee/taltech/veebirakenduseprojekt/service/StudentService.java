@@ -43,4 +43,18 @@ public class StudentService {
                 .findPaginatedInactiveWithDeclarationByCourse(courseId, pageable)
                 .map(studentMapper::mapToDto);
     }
+
+    public StudentStatusDto getStudentStatus(Long courseId, Long studentId) {
+        boolean declared = studentRepository
+                .findWithDeclarationByCourseAndId(courseId, studentId)
+                .isPresent();
+
+        boolean inactive = studentRepository
+                .findInactiveStudentByCourseAndId(courseId, studentId)
+                .isPresent();
+
+        boolean active = !inactive;
+
+        return studentMapper.mapStudentStatusDto(studentId, courseId, declared, active);
+    }
 }
