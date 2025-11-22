@@ -7,8 +7,8 @@ import lombok.*;
 @Data
 @Schema(name = "Student status DTO",
         description = "Students status: declaration and activity")
+@Builder
 @AllArgsConstructor
-@NoArgsConstructor
 public class StudentStatusDto {
 
     @Schema(description = "The unique ID of the student",
