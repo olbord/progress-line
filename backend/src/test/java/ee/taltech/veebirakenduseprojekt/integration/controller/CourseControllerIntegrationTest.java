@@ -1,5 +1,6 @@
-package ee.taltech.veebirakenduseprojekt.integration;
+package ee.taltech.veebirakenduseprojekt.integration.controller;
 
+import ee.taltech.veebirakenduseprojekt.integration.*;
 import ee.taltech.veebirakenduseprojekt.repository.*;
 import jakarta.transaction.*;
 import org.junit.jupiter.api.Test;
@@ -28,6 +29,9 @@ class CourseControllerIntegrationTest extends AbstractIntegrationTest {
     @Autowired
     private MockMvc mvc;
 
+    // ----------------------------------------------------------------------
+    // GET /api/courses/{courseId}
+    // ----------------------------------------------------------------------
     @Test
     void getCourses_whenUserIsTeacher_returnsCoursesArray() throws Exception {
         mvc.perform(get("/api/courses"))
@@ -48,7 +52,16 @@ class CourseControllerIntegrationTest extends AbstractIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$[*].id").value(not(hasItem(666L))))
+                .andExpect(jsonPath("$[*].id").value(not(hasItem(66006L))))
                 .andExpect(jsonPath("$[*].id").value(hasItem(35065)));
     }
 
+    @Test
+    void getCourses_whenTeacherHasNoAccessToOtherCourse_doesNotReturnOtherCourseInArray() throws Exception {
+        mvc.perform(get("/api/courses"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$[*].id").value(not(hasItem(66006L))))
+                .andExpect(jsonPath("$[*].id").value(hasItem(35065)));
+    }
 }
