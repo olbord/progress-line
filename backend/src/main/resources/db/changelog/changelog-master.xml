@@ -24,6 +24,7 @@
     <include file="/db/changelog/17-local-test-add-pagination-dummy-data.xml"/>
     <include file="/db/changelog/018-create-feedback-tables.xml"/>
     <include file="/db/changelog/019-create-feedback-dummy-data.xml"/>
+    <include file="/db/changelog/020-create-student-view.xml"/>
 
 
 </databaseChangeLog>

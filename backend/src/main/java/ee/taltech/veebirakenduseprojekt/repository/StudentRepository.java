@@ -1,5 +1,6 @@
 package ee.taltech.veebirakenduseprojekt.repository;
 
+import ee.taltech.veebirakenduseprojekt.entity.StudentView;
 import ee.taltech.veebirakenduseprojekt.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -83,17 +84,25 @@ public interface StudentRepository extends JpaRepository<User, Long> {
 
     @Query(
             value = """
-        SELECT u.*
+SELECT
+                        u.id AS user_id,
+                        :courseId AS course_id,
+                        u.first_name,
+                        u.last_name,
+                        u.email,
+                        v.total_points
         FROM "user" u
         JOIN user_role r ON u.id = r.user_id
         JOIN declaration d ON u.id = d.user_id
         JOIN inactive i ON u.id = i.user_id
+        LEFT JOIN student_view v 
+               ON v.user_id = u.id 
+              AND v.course_id = :courseId
         WHERE r.course_id = :courseId
           AND r.role_id = 5
           AND d.course_id = :courseId
         ORDER BY u.first_name ASC
-        """,
-            countQuery = """
+        """, countQuery = """
         SELECT COUNT(*)
         FROM "user" u
         JOIN user_role r ON u.id = r.user_id
@@ -104,7 +113,7 @@ public interface StudentRepository extends JpaRepository<User, Long> {
           AND d.course_id = :courseId
         """, nativeQuery = true
     )
-    Page<User> findPaginatedInactiveWithDeclarationByCourse(
+    Page<StudentView> findPaginatedInactiveWithDeclarationByCourse(
             @Param("courseId") Long courseId,
             Pageable pageable
     );

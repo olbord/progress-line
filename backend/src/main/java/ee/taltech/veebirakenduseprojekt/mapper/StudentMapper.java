@@ -2,6 +2,7 @@ package ee.taltech.veebirakenduseprojekt.mapper;
 
 import ee.taltech.veebirakenduseprojekt.dto.*;
 import ee.taltech.veebirakenduseprojekt.entity.Comment;
+import ee.taltech.veebirakenduseprojekt.entity.StudentView;
 import ee.taltech.veebirakenduseprojekt.entity.User;
 import ee.taltech.veebirakenduseprojekt.exception.*;
 import ee.taltech.veebirakenduseprojekt.repository.*;
@@ -14,6 +15,9 @@ public interface StudentMapper {
 
 
     StudentDto mapToDto(User student);
+
+    @Mapping(target = "id", source = "id.userId")
+    StudentDto mapToDto(StudentView student);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "comments", ignore = true)
