@@ -40,3 +40,14 @@ export async function markStudentActive(courseId, studentId) {
     await apiClient.delete(`/courses/${courseId}/students/${studentId}/active`);
     return true;
 }
+
+export async function searchActiveStudents(courseId, query) {
+    const res = await apiClient.get(
+        `/courses/${courseId}/students/search-active`,
+        {
+            params: { input: query }
+        }
+    );
+
+    return res.data;
+}
