@@ -1,29 +1,29 @@
 import { getToken } from "../msal/msalInstance.js"
 import apiClient from "@/services/api.js";
 
-export async function fetchStudentsWithDeclaration(courseId, page = 0, size = 10) {
+export async function fetchStudentsWithDeclaration(courseId, page = 0, size = 10, search = "", sort = "firstName,asc") {
     const token = await getToken();
     const res = await apiClient.get(`/courses/${courseId}/students/with-declarations`, {
         headers: { Authorization: `Bearer ${token}` },
-        params: { page, size }
+        params: { page, size, search, sort }
     });
     return res.data;
 }
 
-export async function fetchInactiveStudents(courseId, page = 0, size = 10) {
+export async function fetchInactiveStudents(courseId, page = 0, size = 10, search = "", sort = "firstName,asc") {
     const token = await getToken();
     const res = await apiClient.get(`/courses/${courseId}/students/inactive`, {
         headers: { Authorization: `Bearer ${token}` },
-        params: { page, size }
+        params: { page, size, search, sort }
     });
     return res.data;
 }
 
-export async function fetchStudentsWithoutDeclaration(courseId, page = 0, size = 10) {
+export async function fetchStudentsWithoutDeclaration(courseId, page = 0, size = 10, search = "", sort = "firstName,asc") {
     const token = await getToken();
     const res = await apiClient.get(`/courses/${courseId}/students/no-declarations`, {
         headers: { Authorization: `Bearer ${token}` },
-        params: { page, size }
+        params: { page, size, search, sort }
     });
     return res.data;
 }
