@@ -5,6 +5,8 @@
         :course-id="courseId"
         @email-clicked="openEmailModal"
     />
+    <br>
+    <h2>Hinded</h2>
 
     <PopupModal :visible="showEmailPopup" @close="showEmailPopup = false">
       <EmailForm
@@ -34,8 +36,10 @@
       </tbody>
     </table>
     <div v-else>Hinded puuduvad</div>
-
+    <br>
     <div class="container--narrow">
+
+      <h2>Tudengi tagasiside</h2>
       <br>
       <button class="btn btn--link" @click="navigateToComments" style="margin-right: 1rem;">Loe kommentaare</button>
       <button class="btn btn--link" @click="openCommentPopup" style="margin-right: 1rem;">Lisa kommentaar</button>
@@ -51,6 +55,41 @@
       />
     </PopupModal>
 
+    <br>
+
+    <h2>Tudengi deklaratsioon</h2>
+
+    <p v-if="studentStatus">
+      <strong>Tudengi kategooria:</strong>
+      {{ studentStatus.active ? 'aktiivne' : 'inaktiivne' }}
+      {{ studentStatus.declared ? 'deklaratsiooniga' : 'ilma deklaratsioonita' }}
+    </p>
+
+    <div class="actions" v-if="studentStatus">
+      <!-- Declaration buttons -->
+      <button
+          v-if="studentStatus.declared"
+          class="btn btn--link"
+          @click="handleRemoveDeclaration"
+      >
+        Eemalda deklaratsioon
+      </button>
+
+      <button
+          v-else
+          class="btn btn--link"
+          @click="handleAddDeclaration"
+      >
+        Lisa deklaratsioon
+      </button>
+      <p v-if="successMessage" class="message message--success">{{ successMessage }}</p>
+      <p v-if="errorMessage" class="message message--error">{{ errorMessage }}</p>
+      <br>
+      <br>
+
+    </div>
+
+
 </div>
 </template>
 
@@ -63,8 +102,12 @@ import CommentForm from '@/components/CommentForm.vue'
 import StudentPersonalDataDisplay from '@/components/StudentPersonalDataDisplay.vue'
 import EmailForm from "@/components/EmailForm.vue";
 import {getToken} from "@/msal/msalInstance.js";
+import {markStudentActive, markStudentInactive} from "@/services/studentService.js";
 
 const router = useRouter()
+
+const successMessage = ref('');
+const errorMessage = ref('');
 
 // Must be used with StudentPersonalDataDisplay component to make email clickable
 const showEmailPopup = ref(false)
@@ -110,8 +153,18 @@ async function fetchGrades() {
   }
 }
 
-onMounted(fetchGrades)
-watch(() => [props.courseId, props.studentId], fetchGrades)
+onMounted(() => {
+  if (props.courseId && props.studentId) {
+    fetchGrades();
+    fetchStudentStatus();
+  } else {
+    console.warn("Props not ready yet", props.courseId, props.studentId)
+  }
+})
+watch(() => [props.courseId, props.studentId], () => {
+  fetchGrades()
+  fetchStudentStatus()
+})
 
 const showCommentPopup = ref(false)
 
@@ -149,6 +202,71 @@ function navigateToFeedback() {
     router.push(`/courses/${props.courseId}/students/${props.studentId}/feedback`)
   } else {
     console.error("Unable to navigate: no student ID or no course ID.", props)
+  }
+}
+
+const studentStatus = ref(null)
+
+async function fetchStudentStatus() {
+  try {
+    const token = await getToken()
+    const response = await apiClient.get(
+        `/courses/${courseId}/students/${studentId}/status`,
+        { headers: { Authorization: `Bearer ${token}` } }
+    )
+    studentStatus.value = response.data
+  } catch (err) {
+    console.error('Error fetching student status:', err)
+  }
+}
+
+const emit = defineEmits(["updated"]);
+
+async function handleRemoveDeclaration() {
+  successMessage.value = '';
+  errorMessage.value = '';
+  try {
+    const token = await getToken();
+    await apiClient.delete(
+        `/courses/${courseId}/declarations/student/${studentId}/no-declaration`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          },
+          responseType: 'text' // tell Axios not to expect JSON
+        }
+    );
+    successMessage.value = 'Deklaratsioon on eemaldatud!';
+    await fetchStudentStatus();
+    emit("updated");
+
+    setTimeout(() => successMessage.value = '', 3000);
+  } catch (e) {
+    console.error("Failed to remove declaration:", e);
+    errorMessage.value = 'Deklaratsiooni eemaldamine ebaõnnestus.';
+    setTimeout(() => errorMessage.value = '', 4000);
+  }
+}
+
+async function handleAddDeclaration() {
+  successMessage.value = '';
+  errorMessage.value = '';
+  try {
+    const token = await getToken();
+    await apiClient.post(
+        `/courses/${courseId}/declarations/student/${studentId}`,
+        {},
+        { headers: { Authorization: `Bearer ${token}` }, responseType: 'text' }
+    );
+    successMessage.value = 'Deklaratsioon on lisatud!';
+    await fetchStudentStatus();
+    emit("updated");
+
+    setTimeout(() => successMessage.value = '', 3000);
+  } catch (e) {
+    console.error("Failed to add declaration:", e);
+    errorMessage.value = 'Deklaratsiooni lisamine ebaõnnestus.';
+    setTimeout(() => errorMessage.value = '', 4000);
   }
 }
 </script>

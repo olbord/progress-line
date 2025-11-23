@@ -42,5 +42,14 @@ public interface StudentMapper {
     }
 
     StudentPersonalDataResponseDto mapToPersonalDataResponseDto(User entity);
+
+
+    @Named("mapStudentStatusDto")
+    default StudentStatusDto mapStudentStatusDto(Long studentId,
+                                                 Long courseId,
+                                                 boolean declared,
+                                                 boolean active) {
+        return new StudentStatusDto(studentId, courseId, active, declared);
+    }
 }
 

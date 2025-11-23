@@ -1,0 +1,36 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.15.xsd">
+
+    <changeSet id="2025-11-22-clear-and-add-dummy-data-for-testing" author="KJ">
+        <sql>
+            TRUNCATE TABLE comment RESTART IDENTITY CASCADE;
+            TRUNCATE TABLE declaration RESTART IDENTITY CASCADE;
+            TRUNCATE TABLE enrolled_user RESTART IDENTITY CASCADE;
+            TRUNCATE TABLE grade_item RESTART IDENTITY CASCADE;
+            TRUNCATE TABLE user_role RESTART IDENTITY CASCADE;
+            TRUNCATE TABLE "user" RESTART IDENTITY CASCADE;
+            TRUNCATE TABLE course RESTART IDENTITY CASCADE;
+
+            INSERT INTO "user" (first_name, last_name, email)
+            VALUES ('Kadi', 'Jairus', 'kadi.jairus@taltech.ee')
+                ON CONFLICT DO NOTHING;
+
+            INSERT INTO course (id, last_updated, short_name, full_name, display_name, enrolled_user_count, visible, category_id, is_completed, start_date, end_date)
+            VALUES (35065, '2025-09-27 19:52:39', 'ITI0102-2025', 'ITI0102 Programmeerimise algkursus (2025/2026)', 'ITI0102-2025', 511, true, 1927,false,'2025-08-31 19:52:39','2026-01-31 19:54:58')
+                ON CONFLICT DO NOTHING;
+
+            INSERT INTO enrolled_user (course_id, user_id, last_updated, last_course_access)
+            VALUES (35065, (SELECT id FROM "user" WHERE email = 'kadi.jairus@taltech.ee'), '2025-09-27 20:04:03', '2025-09-27 20:04:06')
+                ON CONFLICT DO NOTHING;
+
+            INSERT INTO user_role (role_id, user_id, course_id, name, short_name)
+            VALUES (3, (SELECT id FROM "user" WHERE email = 'kadi.jairus@taltech.ee'), 35065, 'Õpetaja/Teacher', 'editingteacher')
+                ON CONFLICT DO NOTHING;
+
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

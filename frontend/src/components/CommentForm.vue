@@ -74,6 +74,7 @@ const props = defineProps({
   }
 });
 
+
 const commentTypes = ['EMAIL', 'DISCORD', 'STUDY_GROUP', 'CONSULTATION', 'OTHER'];
 const successMessage = ref('');
 const errorMessage = ref('');

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(ApplicationException.class)
+    @ResponseBody
     public ResponseEntity<ErrorResponse> handleApplicationException(ApplicationException e) {
         ErrorResponse response = new ErrorResponse();
         response.setMessage(e.getMessage());
@@ -17,6 +18,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
+    @ResponseBody
     public ResponseEntity<ErrorResponse> handleException(Exception e) {
         log.error("Internal server error", e);
         ErrorResponse response = new ErrorResponse();
