@@ -10,8 +10,6 @@ const router = useRouter();
 const courseId = Number(route.params.courseId);
 const courseName = route.query.courseName ?? "";
 
-// ===== SEARCH synced with URL =====
-
 // initial from URL
 const initialSearch = route.query.search ?? "";
 const searchQuery = ref(initialSearch);
@@ -26,12 +24,10 @@ watch(searchQuery, (val) => {
   });
 });
 
-// table refs
 const withDeclRef = ref(null);
 const inactiveRef = ref(null);
 const withoutDeclRef = ref(null);
 
-// manual search trigger (Enter or button)
 const handleSearch = () => {
   router.replace({
     query: {
@@ -74,7 +70,6 @@ onMounted(async () => {
       <button class="search-button" @click="handleSearch">Otsi</button>
     </div>
 
-    <!-- Active students -->
     <StudentTable
         ref="withDeclRef"
         title="Aktiivsed tudengid"

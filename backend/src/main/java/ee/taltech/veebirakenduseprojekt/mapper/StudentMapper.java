@@ -19,6 +19,9 @@ public interface StudentMapper {
     @Mapping(target = "id", source = "id.userId")
     StudentDto mapToDto(StudentView student);
 
+    @Mapping(target = "id", source = "id.userId")
+    StudentDto mapFromView(StudentView view);
+
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "comments", ignore = true)
     User mapToEntity(StudentDto dto);

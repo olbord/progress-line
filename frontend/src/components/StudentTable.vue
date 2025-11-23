@@ -76,12 +76,10 @@ import {
   fetchStudentsWithoutDeclaration
 } from "@/services/studentService.js";
 
-// ===== ROUTER =====
 const route = useRoute();
 const router = useRouter();
 const emit = defineEmits(["updated"]);
 
-// ===== PROPS =====
 const props = defineProps({
   title: { type: String, required: true },
   courseId: { type: Number, required: true },
@@ -97,15 +95,11 @@ const props = defineProps({
   }
 });
 
-// ===== STATE =====
 const isLoading = ref(false);
 const internalStudents = ref([]);
 const size = ref(10);
 const totalPages = ref(0);
 
-// ===== URL PARAMS =====
-
-// Pagination param name
 const pageParam = computed(() => {
   switch (props.type) {
     case "with-declarations": return "withDeclPage";
@@ -139,7 +133,6 @@ const sortDirection = computed(() =>
     sort.value.endsWith("asc") ? "↑" : "↓"
 );
 
-// ===== SERVICE ROUTING =====
 function loadFromService(courseId, page, size, search, sort) {
   switch (props.type) {
     case "with-declarations":
@@ -151,8 +144,6 @@ function loadFromService(courseId, page, size, search, sort) {
   }
 }
 
-// ===== MAIN LOAD FUNCTION =====
-// ===== MAIN LOAD FUNCTION =====
 async function loadStudents() {
   try {
     isLoading.value = true;
@@ -165,13 +156,10 @@ async function loadStudents() {
         sort.value
     );
 
-    // <<< --- ДОБАВЛЯЕМ ЭТУ ПРОВЕРКУ --- >>>
-    // если текущая страница больше чем totalPages — пересылаем на последнюю
     if (data.totalPages > 0 && page.value >= data.totalPages) {
       page.value = data.totalPages - 1;
       updateQuery();
 
-      // загружаем снова — уже корректную страницу
       const fixed = await loadFromService(
           props.courseId,
           page.value,
@@ -185,7 +173,6 @@ async function loadStudents() {
       return;
     }
 
-    // обычная загрузка
     internalStudents.value = data.content ?? [];
     totalPages.value = data.totalPages ?? 1;
 
@@ -199,7 +186,6 @@ async function loadStudents() {
 }
 
 
-// ===== SORTING =====
 function toggleSort(field) {
   const [currentField, direction] = sort.value.split(",");
 
@@ -214,7 +200,6 @@ function toggleSort(field) {
   loadStudents();
 }
 
-// ===== UPDATE URL =====
 function updateQuery() {
   router.replace({
     query: {
@@ -226,17 +211,12 @@ function updateQuery() {
 });
 }
 
-
-// ===== EXPOSE FOR PARENT =====
 defineExpose({ loadStudents });
 
-// ===== EVENTS =====
 function onRowUpdated() {
   loadStudents();
   emit("updated");
 }
-
-// ===== WATCHERS =====
 
 // Page → load & update URL
 watch(page, () => {

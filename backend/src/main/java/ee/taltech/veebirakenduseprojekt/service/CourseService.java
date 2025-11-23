@@ -43,9 +43,9 @@ public class CourseService {
         return courseMapper.toDtoList(courses);
     }
 
-    public Page<StudentDto> getPaginatedActiveStudentsWithDeclarations(Long courseId, Pageable pageable) {
+    public Page<StudentDto> getPaginatedActiveStudentsWithDeclarations(Long courseId, String search, Pageable pageable) {
         validateCourseExists(courseId);
-        return studentService.getPaginatedActiveStudentsWithDeclarationByCourse(courseId, pageable);
+        return studentService.getPaginatedActiveStudentsWithDeclarationByCourse(courseId, search, pageable);
     }
 
     public Page<StudentDto> getPaginatedStudentsWithoutDeclarations(Long courseId, Pageable pageable) {

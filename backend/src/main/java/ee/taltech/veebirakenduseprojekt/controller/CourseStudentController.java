@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,19 +37,21 @@ public class CourseStudentController {
         return studentService.getStudentPersonalDataById(studentId);
     }
 
-    @Operation(summary = "Get paginated list of active students with declarations",
-            description = "Gets page of students who have declared participation on a specific course and are not inactive.")
+    @Operation(summary = "Get paginated list of active students with declarations with the ability to sort",
+            description = "Gets page of students who have declared participation on a specific course and are not inactive with the ability to sort by 'firstName,asc', 'firstName,desc', 'lastName,asc', 'lastName,desc', 'email,asc', 'email,desc', 'totalPoints,asc' ja 'totalPoints,desc'.")
     @GetMapping("/with-declarations")
     @ResponseStatus(HttpStatus.OK)
     public Page<StudentDto> getActiveStudentsWithDeclarations(
             @PathVariable Long courseId,
             @AuthenticationPrincipal(expression = "email") String email,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "") String search,
+            @RequestParam(defaultValue = "firstName,asc") String sort
+    ) {
         accessService.requireTeacherAccess(email, courseId);
-        Pageable pageable = PageRequest.of(page, size);
-        return courseService.getPaginatedActiveStudentsWithDeclarations(courseId, pageable);
+        Pageable pageable = PageRequest.of(page, size, sortParams(sort));
+        return courseService.getPaginatedActiveStudentsWithDeclarations(courseId, search, pageable);
     }
 
     @Operation(summary = "Get paginated list of students without declaration",
@@ -111,5 +114,10 @@ public class CourseStudentController {
                                          @AuthenticationPrincipal(expression = "email") String email) {
         accessService.requireTeacherAccess(email, courseId);
         courseService.markStudentActive(courseId, studentId);
+    }
+
+    private Sort sortParams(String sort) {
+        String[] parts = sort.split(",");
+        return Sort.by(Sort.Direction.fromString(parts[1]), parts[0]);
     }
 }
