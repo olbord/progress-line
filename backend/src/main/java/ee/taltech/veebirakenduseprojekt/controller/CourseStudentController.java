@@ -54,34 +54,40 @@ public class CourseStudentController {
         return courseService.getPaginatedActiveStudentsWithDeclarations(courseId, search, pageable);
     }
 
-    @Operation(summary = "Get paginated list of students without declaration",
-            description = "Gets page of students who have not declared participation on a specific course.")
+    @Operation(summary = "Get paginated list of students without declaration with the ability to sort",
+            description = "Gets page of students who have not declared participation on a specific course with the ability to sort by 'firstName,asc', 'firstName,desc', 'lastName,asc', 'lastName,desc', 'email,asc', 'email,desc', 'totalPoints,asc' ja 'totalPoints,desc'.")
     @GetMapping("/no-declarations")
     @ResponseStatus(HttpStatus.OK)
     public Page<StudentDto> getStudentsWithoutDeclarations(
             @PathVariable Long courseId,
             @AuthenticationPrincipal(expression = "email") String email,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "") String search,
+            @RequestParam(defaultValue = "firstName,asc") String sort
+    ) {
 
         accessService.requireTeacherAccess(email, courseId);
-        Pageable pageable = PageRequest.of(page, size);
-        return courseService.getPaginatedStudentsWithoutDeclarations(courseId, pageable);
+        Pageable pageable = PageRequest.of(page, size, sortParams(sort));
+        return courseService.getPaginatedStudentsWithoutDeclarations(courseId, search, pageable);
     }
 
-    @Operation(summary = "Get paginated list of inactive students",
-            description = "Gets page of students who are marked as inactive on a specific course.")
+    @Operation(summary = "Get paginated list of inactive students with the ability to sort",
+            description = "Gets page of students who are marked as inactive on a specific course with the ability to sort by 'firstName,asc', 'firstName,desc', 'lastName,asc', 'lastName,desc', 'email,asc', 'email,desc', 'totalPoints,asc' ja 'totalPoints,desc'.\"")
     @GetMapping("/inactive")
     @ResponseStatus(HttpStatus.OK)
     public Page<StudentDto> getInactiveStudents(
             @PathVariable Long courseId,
             @AuthenticationPrincipal(expression = "email") String email,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "") String search,
+            @RequestParam(defaultValue = "firstName,asc") String sort
+    ) {
 
         accessService.requireTeacherAccess(email, courseId);
-        Pageable pageable = PageRequest.of(page, size);
-        return courseService.getPaginatedInactiveStudents(courseId, pageable);
+        Pageable pageable = PageRequest.of(page, size, sortParams(sort));
+        return courseService.getPaginatedInactiveStudents(courseId, search, pageable);
     }
 
     @Operation(summary = "Mark a student as inactive",

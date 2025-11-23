@@ -10,15 +10,15 @@
       <thead>
       <tr>
         <th class="col-medium">
-          <span @click="toggleSort('firstName')" class="sortable">
-            Eesnimi
-            <span v-if="sort.startsWith('firstName')">({{ sortDirection }})</span>
-          </span>
+            <span @click="toggleSort('firstName')" class="sortable">
+              Eesnimi
+              <span v-if="sort.startsWith('firstName')">({{ sortDirection }})</span>
+            </span>
           /
           <span @click="toggleSort('lastName')" class="sortable">
-            Perekonnanimi
-            <span v-if="sort.startsWith('lastName')">({{ sortDirection }})</span>
-          </span>
+              Perekonnanimi
+              <span v-if="sort.startsWith('lastName')">({{ sortDirection }})</span>
+            </span>
         </th>
 
         <th class="col-wide sortable" @click="toggleSort('email')">
@@ -53,7 +53,10 @@
     </table>
 
     <div v-else-if="!isLoading && internalStudents.length === 0">
-      {{ props.type === 'with-declarations' && props.search ? "Otsingu tulemused puuduvad" : "Tudengeid ei leitud" }}
+      {{ props.type === "with-declarations" && props.search
+        ? "Otsingu tulemused puuduvad"
+        : "Tudengeid ei leitud"
+      }}
     </div>
 
     <Pagination
@@ -100,28 +103,21 @@ const internalStudents = ref([]);
 const size = ref(10);
 const totalPages = ref(0);
 
-const pageParam = computed(() => {
-  switch (props.type) {
-    case "with-declarations": return "withDeclPage";
-    case "inactive": return "inactivePage";
-    case "no-declarations": return "noDeclPage";
-  }
-});
+const pageParam = computed(() => ({
+  "with-declarations": "withDeclPage",
+  "inactive": "inactivePage",
+  "no-declarations": "noDeclPage"
+}[props.type]));
 
-// Sorting param name
-const sortParam = computed(() => {
-  switch (props.type) {
-    case "with-declarations": return "withDeclSort";
-    case "inactive": return "inactiveSort";
-    case "no-declarations": return "noDeclSort";
-  }
-});
+const sortParam = computed(() => ({
+  "with-declarations": "withDeclSort",
+  "inactive": "inactiveSort",
+  "no-declarations": "noDeclSort"
+}[props.type]));
 
-// Initial page
 const rawPage = Number(route.query[pageParam.value]);
 const page = ref(!isNaN(rawPage) && rawPage > 0 ? rawPage - 1 : 0);
 
-// Initial sorting
 const initialSort = route.query[sortParam.value];
 const sort = ref(
     typeof initialSort === "string" && initialSort.includes(",")
@@ -138,9 +134,9 @@ function loadFromService(courseId, page, size, search, sort) {
     case "with-declarations":
       return fetchStudentsWithDeclaration(courseId, page, size, search, sort);
     case "inactive":
-      return fetchInactiveStudents(courseId, page, size);
+      return fetchInactiveStudents(courseId, page, size, search, sort);
     case "no-declarations":
-      return fetchStudentsWithoutDeclaration(courseId, page, size);
+      return fetchStudentsWithoutDeclaration(courseId, page, size, search, sort);
   }
 }
 
@@ -185,7 +181,6 @@ async function loadStudents() {
   }
 }
 
-
 function toggleSort(field) {
   const [currentField, direction] = sort.value.split(",");
 
@@ -201,14 +196,12 @@ function toggleSort(field) {
 }
 
 function updateQuery() {
-  router.replace({
-    query: {
-          ...route.query,
-          [pageParam.value]: page.value + 1,
-          [sortParam.value]: sort.value,
-          search: props.search || undefined
-}
-});
+  const newQuery = { ...route.query };
+
+  newQuery[pageParam.value] = page.value + 1;
+  newQuery[sortParam.value] = sort.value;
+
+  router.replace({ query: newQuery });
 }
 
 defineExpose({ loadStudents });
@@ -218,28 +211,22 @@ function onRowUpdated() {
   emit("updated");
 }
 
-// Page → load & update URL
 watch(page, () => {
   updateQuery();
   loadStudents();
 });
 
-// Search → reload only active table
 watch(() => props.search, () => {
-  if (props.type === "with-declarations") {
-    page.value = 0;
-    loadStudents();
-  }
+  page.value = 0;
+  loadStudents();
 });
 
-// Type or course change → reset pagination
 watch(() => [props.courseId, props.type], () => {
   page.value = 0;
   updateQuery();
   loadStudents();
 });
 
-// Initial load
 onMounted(() => {
   updateQuery();
   loadStudents();

@@ -7,16 +7,16 @@ export async function fetchStudentsWithDeclaration(courseId, page = 0, size = 10
     return res.data;
 }
 
-export async function fetchInactiveStudents(courseId, page = 0, size = 10) {
-    const res = await apiClient.get(`/courses/${courseId}/students/inactive`, {
-        params: { page, size }
+export async function fetchStudentsWithoutDeclaration(courseId, page = 0, size = 10, search = "", sort = "firstName,asc") {
+    const res = await apiClient.get(`/courses/${courseId}/students/no-declarations`, {
+        params: { page, size, search, sort }
     });
     return res.data;
 }
 
-export async function fetchStudentsWithoutDeclaration(courseId, page = 0, size = 10) {
-    const res = await apiClient.get(`/courses/${courseId}/students/no-declarations`, {
-        params: { page, size }
+export async function fetchInactiveStudents(courseId, page = 0, size = 10, search = "", sort = "firstName,asc") {
+    const res = await apiClient.get(`/courses/${courseId}/students/inactive`, {
+        params: { page, size, search, sort }
     });
     return res.data;
 }

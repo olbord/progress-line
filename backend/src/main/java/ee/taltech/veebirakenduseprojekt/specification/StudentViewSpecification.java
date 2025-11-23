@@ -2,15 +2,10 @@ package ee.taltech.veebirakenduseprojekt.specification;
 
 import ee.taltech.veebirakenduseprojekt.entity.*;
 import jakarta.persistence.criteria.Join;
-import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Root;
 import jakarta.persistence.criteria.Subquery;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
 
 public class StudentViewSpecification {
 
@@ -55,6 +50,45 @@ public class StudentViewSpecification {
                     cb.equal(role.get("roleId"), 5),
                     cb.equal(dec.get("course").get("id"), courseId),
                     cb.not(cb.exists(inactiveSub))
+            );
+        };
+    }
+
+
+    public static Specification<User> studentsWithoutDeclaration(Long courseId) {
+        return (root, query, cb) -> {
+
+            Join<User, UserRole> role = root.join("roles");
+
+            Subquery<Long> declarationSub = query.subquery(Long.class);
+            Root<Declaration> decRoot = declarationSub.from(Declaration.class);
+            declarationSub.select(decRoot.get("student").get("id"))
+                    .where(
+                            cb.equal(decRoot.get("course").get("id"), courseId),
+                            cb.equal(decRoot.get("student").get("id"), root.get("id"))
+                    );
+
+            return cb.and(
+                    cb.equal(role.get("course").get("id"), courseId),
+                    cb.equal(role.get("roleId"), 5),
+                    cb.not(cb.exists(declarationSub))
+            );
+        };
+    }
+
+    public static Specification<User> inactiveStudentsWithDeclaration(Long courseId) {
+        return (root, query, cb) -> {
+            query.distinct(true);
+
+            Join<User, UserRole> role = root.join("roles");
+            Join<User, Declaration> dec = root.join("declarations");
+            Join<User, Inactive> inactive = root.join("inactiveRecords");
+
+            return cb.and(
+                    cb.equal(role.get("course").get("id"), courseId),
+                    cb.equal(role.get("roleId"), 5),
+                    cb.equal(dec.get("course").get("id"), courseId),
+                    cb.equal(inactive.get("course").get("id"), courseId)
             );
         };
     }
