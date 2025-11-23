@@ -2,6 +2,7 @@
   <div class="comment-form">
     <StudentPersonalDataDisplay
         :student-id="props.studentId"
+        :course-id="props.courseId"
     />
     <form @submit.prevent="submitComment">
       <div class="comment-form__group">
@@ -73,6 +74,7 @@ const props = defineProps({
   }
 });
 
+
 const commentTypes = ['EMAIL', 'DISCORD', 'STUDY_GROUP', 'CONSULTATION', 'OTHER'];
 const successMessage = ref('');
 const errorMessage = ref('');
@@ -80,7 +82,7 @@ const newComment = ref({
   commentText: '',
   type: 'EMAIL',
   studentId: props.studentId,
-  teacherId: 1,  // TODO: pass teacherId from JWT token?
+  teacherId: 1,  // Educational mistake: pass teacherId from JWT token
   courseId: props.courseId
 });
 
@@ -101,7 +103,10 @@ async function submitComment() {
     return;
   }
   try {
-    await apiClient.post("/courses/${courseId}/students/${studentId}/comments", newComment.value);
+    await apiClient.post(
+        `/courses/${props.courseId}/students/${props.studentId}/comments`,
+        newComment.value
+    );
     successMessage.value = 'Kommentaar on edukalt salvestatud!';
     newComment.value.commentText = '';
     setTimeout(() => {

@@ -15,22 +15,30 @@ import org.springframework.web.bind.annotation.*;
         description = "Endpoints to manage students declarations to a specific course.")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/declarations")
+@RequestMapping("api/courses/{courseId}/declarations")
 public class DeclarationController {
 
     private final DeclarationService declarationService;
     private final CourseAccessService accessService;
 
-
-    // TODO: ADD TO FRONTEND
-    @Operation(summary = "[ADD TO FRONTEND] Delete declaration",
+    @Operation(summary = "Delete declaration",
             description = "Removes the declaration to the course if student has changed their study plan.")
-    @DeleteMapping("/{courseId}/student/{studentId}")
+    @DeleteMapping("/student/{studentId}/no-declaration")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteStudentDeclaration(@PathVariable Long courseId,
                                          @PathVariable Long studentId,
                                          @AuthenticationPrincipal(expression = "email") String email) {
         accessService.requireTeacherAccess(email, courseId);
         declarationService.deleteStudentDeclarationById(studentId, courseId);
+    }
+
+    @Operation(summary = "Add declaration", description = "Adds student to the declaration list for a course.")
+    @PostMapping("/student/{studentId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void addStudentDeclaration(@PathVariable Long courseId,
+                                      @PathVariable Long studentId,
+                                      @AuthenticationPrincipal(expression = "email") String email) {
+        accessService.requireTeacherAccess(email, courseId);
+        declarationService.addStudentToDeclaration(courseId, studentId);
     }
 }

@@ -23,6 +23,7 @@
 <script setup>
 import { ref, onMounted, watch } from 'vue'
 import apiClient from '@/services/api.js'
+import {getToken} from "@/msal/msalInstance.js";
 
 const props = defineProps({
   studentId: {
@@ -59,7 +60,13 @@ async function fetchStudentInfo() {
   studentInfo.value = null
 
   try {
-    const response = await apiClient.get(`/courses/${props.courseId}/students/${props.studentId}`)
+    const token = await getToken();
+    const response = await apiClient.get(
+        `/courses/${props.courseId}/students/${props.studentId}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+    );
+
+    studentInfo.value = response.data;
     studentInfo.value = response.data
   } catch (err) {
     console.error("Error fetching student info:", err)

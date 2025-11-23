@@ -23,15 +23,13 @@ build-frontend:
   script:
     - cd frontend
     - npm ci
-    - npm run build
+    - VITE_AZURE_SCOPES=$VITE_AZURE_SCOPES VITE_AZURE_TENANT_ID=$VITE_AZURE_TENANT_ID VITE_AZURE_CLIENT_ID=$VITE_AZURE_CLIENT_ID VITE_AZURE_AUTHORITY=$VITE_AZURE_AUTHORITY VITE_AZURE_REDIRECT_URI=$VITE_AZURE_REDIRECT_URI npm run build
   artifacts:
     paths:
       - frontend/dist/
   rules:
-    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
-      changes:
-        - frontend/**/*
     - if: $CI_COMMIT_BRANCH == 'master'
+      when: always
 
 dockerize:
   stage: dockerize

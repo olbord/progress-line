@@ -131,4 +131,17 @@ public interface StudentRepository extends JpaRepository<User, Long>, JpaSpecifi
             @Param("courseId") Long courseId,
             Pageable pageable
     );
+
+    @Query(value = """
+    SELECT u.*
+    FROM "user" u
+    JOIN user_role r ON u.id = r.user_id
+    JOIN inactive i ON u.id = i.user_id
+    WHERE r.course_id = :courseId
+      AND r.role_id = 5
+      AND i.course_id = :courseId
+      AND u.id = :studentId
+    """, nativeQuery = true)
+    Optional<User> findInactiveStudentByCourseAndId(@Param("courseId") Long courseId,
+                                                    @Param("studentId") Long studentId);
 }

@@ -122,6 +122,18 @@ public class CourseStudentController {
         courseService.markStudentActive(courseId, studentId);
     }
 
+    @Operation(summary = "Get student's status", description = "Returns if student is declared and active.")
+    @GetMapping("/{studentId}/status")
+    @ResponseStatus(HttpStatus.OK)
+    public StudentStatusDto getStudentStatus(
+            @PathVariable Long courseId,
+            @PathVariable Long studentId,
+            @AuthenticationPrincipal(expression = "email") String email) {
+        accessService.requireTeacherAccess(email, courseId);
+        return studentService.getStudentStatus(courseId, studentId);
+    }
+
+
     private Sort sortParams(String sort) {
         String[] parts = sort.split(",");
         return Sort.by(Sort.Direction.fromString(parts[1]), parts[0]);

@@ -6,6 +6,7 @@ import jakarta.servlet.ServletResponse;
 import jakarta.servlet.FilterChain;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -20,12 +21,9 @@ import java.util.List;
  * Use for development only.
  */
 @Configuration
-//@Profile("local")
+@Profile("dev")
 @EnableWebSecurity
 public class DevSecurityConfig {
-
-    // this will be used as the user's email to check DB, whether
-    // they are a teacher for queried courses and course-related info
 
     // this specific user is a teacher for the Python course (courseId = 35065)
     private static final String MOCK_TEACHER_EMAIL = "kadi.jairus@taltech.ee";

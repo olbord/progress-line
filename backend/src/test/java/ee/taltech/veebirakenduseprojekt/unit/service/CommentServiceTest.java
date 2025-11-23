@@ -1,9 +1,10 @@
-package ee.taltech.veebirakenduseprojekt.service;
+package ee.taltech.veebirakenduseprojekt.unit.service;
 
 import ee.taltech.veebirakenduseprojekt.dto.*;
 import ee.taltech.veebirakenduseprojekt.entity.*;
 import ee.taltech.veebirakenduseprojekt.mapper.*;
 import ee.taltech.veebirakenduseprojekt.repository.*;
+import ee.taltech.veebirakenduseprojekt.service.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.*;
 import org.mockito.*;

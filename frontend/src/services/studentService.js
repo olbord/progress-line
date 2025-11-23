@@ -1,42 +1,56 @@
-import apiClient from './api';
+import { getToken } from "../msal/msalInstance.js"
+import apiClient from "@/services/api.js";
 
-export async function fetchStudentsWithDeclaration(courseId, page = 0, size = 10, search = "", sort = "firstName,asc") {
+export async function fetchStudentsWithDeclaration(courseId, page = 0, size = 10) {
+    const token = await getToken();
     const res = await apiClient.get(`/courses/${courseId}/students/with-declarations`, {
-        params: { page, size, search, sort }
+        headers: { Authorization: `Bearer ${token}` },
+        params: { page, size }
     });
     return res.data;
 }
 
-export async function fetchStudentsWithoutDeclaration(courseId, page = 0, size = 10, search = "", sort = "firstName,asc") {
-    const res = await apiClient.get(`/courses/${courseId}/students/no-declarations`, {
-        params: { page, size, search, sort }
-    });
-    return res.data;
-}
-
-export async function fetchInactiveStudents(courseId, page = 0, size = 10, search = "", sort = "firstName,asc") {
+export async function fetchInactiveStudents(courseId, page = 0, size = 10) {
+    const token = await getToken();
     const res = await apiClient.get(`/courses/${courseId}/students/inactive`, {
-        params: { page, size, search, sort }
+        headers: { Authorization: `Bearer ${token}` },
+        params: { page, size }
+    });
+    return res.data;
+}
+
+export async function fetchStudentsWithoutDeclaration(courseId, page = 0, size = 10) {
+    const token = await getToken();
+    const res = await apiClient.get(`/courses/${courseId}/students/no-declarations`, {
+        headers: { Authorization: `Bearer ${token}` },
+        params: { page, size }
     });
     return res.data;
 }
 
 export async function fetchAllStudentsData(courseId, page = 0, size = 10) {
-    const [withDecl, inactive, withoutDecl] = await Promise.all([
-        fetchStudentsWithDeclaration(courseId, page, size),
-        fetchInactiveStudents(courseId, page, size),
-        fetchStudentsWithoutDeclaration(courseId, page, size),
-    ]);
-
-    return { withDecl, inactive, withoutDecl };
+    return {
+        withDecl: await fetchStudentsWithDeclaration(courseId, page, size),
+        inactive: await fetchInactiveStudents(courseId, page, size),
+        withoutDecl: await fetchStudentsWithoutDeclaration(courseId, page, size)
+    };
 }
 
 export async function markStudentInactive(courseId, studentId) {
-    const res = await apiClient.post(`/courses/${courseId}/students/${studentId}/inactive`);
+    const token = await getToken();
+    const res = await apiClient.post(
+        `/courses/${courseId}/students/${studentId}/inactive`,
+        {},
+        { headers: { Authorization: `Bearer ${token}` } }
+    );
     return res.data;
 }
 
 export async function markStudentActive(courseId, studentId) {
-    await apiClient.delete(`/courses/${courseId}/students/${studentId}/active`);
+    const token = await getToken();
+    const res = await apiClient.delete(
+        `/courses/${courseId}/students/${studentId}/active`,
+        { headers: { Authorization: `Bearer ${token}` } }
+    );
     return true;
 }

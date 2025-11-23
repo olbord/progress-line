@@ -106,6 +106,12 @@ Prerequisites:
 * A Docker Hub account to host the backend image.
 * The server's firewall configured to allow incoming traffic on port 80 (HTTP).
 
+### 1. One-Time Server Configuration
+
+These steps must be performed **once** on the production server to prepare it for deployment.
+
+#### 1.1. Configure Backend Services
+
 * Install Nginx to server:
 ```sh
 sudo apt update
@@ -116,13 +122,7 @@ sudo apt install nginx
 sudo service nginx start
 ```
 
-### 1. One-Time Server Configuration
-
-These steps must be performed **once** on the production server to prepare it for deployment.
-
-#### 1.1. Configure Backend Services
-
-First you must create the backend configuration directory and necessary files.
+Create the backend configuration directory and necessary files.
 * Create directory and set permissions:
 ```sh
 sudo mkdir /opt/progress-line
@@ -130,17 +130,23 @@ sudo chown $USER:$USER /opt/progress-line
 ```
 * Create the properties file:
 ```sh
-nano /opt/progress-line/application.properties
+cd /opt/progress-line
+nano application.properties
 ```
 * Add content based on the `application.properties-server-template.yml` file. 
 The hostname `postgres-db` MUST match the database service name in `docker-compose.yml`.
 
 * Create the docker-compose.yml file:
 ```sh
-cd /opt/progress-line
 nano docker-compose.yml
 ```
 * Add content based on the `docker-compose-server-template.yml` file.
+* Enable Docker:
+```sh
+sudo apt update
+sudo apt install docker-compose
+sudo usermod -aG docker ${USER}
+```
 
 #### 1.2. Configure Nginx Reverse Proxy
 
@@ -186,6 +192,18 @@ sudo nginx -t
 ```sh
 sudo systemctl restart nginx
 ```
+#### 1.3. Configure certbot
+
+* Add certbot (https://certbot.eff.org/) to enable https and Microsoft login:
+```sh
+sudo snap install --classic certbot
+sudo certbot --nginx
+```
+* Select domain:
+```sh
+1: api.jairus.ee
+```
+After waiting, https: is enabled and will be renewed automatically in the future.
 
 #### 1. Enable frontend
 
@@ -206,6 +224,32 @@ For the pipeline to work, set the following CI/CD variables in your GitLab proje
 * SSH_PRIVATE_KEY
 * SERVER_IP
 * SERVER_USER
+
+When using Microsoft login, then also specify:
+* VITE_AZURE_SCOPES
+* VITE_AZURE_TENANT_ID
+* VITE_AZURE_CLIENT_ID
+* VITE_AZURE_AUTHORITY
+
+* For SSH_PRIVATE_KEY create ssh key for server (CMD in your local machine) without password:
+```sh
+ssh-keygen -t rsa -b 4096 -C "gitlab-ci-deploy-key" -f %USERPROFILE%\.ssh\gitlab_ci_deploy_key
+```
+* Inside server create directory .ssh
+```sh
+mkdir -p ~/.ssh
+chmod 700 ~/.ssh
+```
+* Show public key (CMD in your local machine):
+```sh
+type %USERPROFILE%\.ssh\gitlab_ci_deploy_key.pub
+```
+* Copy public key to server
+```sh
+echo "PASTE_YOUR_PUBLIC_KEY_HERE" >> ~/.ssh/authorized_keys
+chmod 600 ~/.ssh/authorized_keys
+```
+* Copy private key (in your local machine) to CI/CD variables in Git
 
 Application is now be accessible in a web browser via your server's 
 IP address: `http://<your_server_ip>` or `http://<your_server_name>`
