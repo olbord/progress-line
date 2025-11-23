@@ -1,7 +1,7 @@
 <script setup>
 import { ref, watch, onMounted } from "vue";
 import { useRoute } from "vue-router";
-import { searchActiveStudents, fetchAllStudentsData } from "@/services/studentService.js";
+import { fetchAllStudentsData } from "@/services/studentService.js";
 import StudentTable from "@/components/StudentTable.vue";
 
 // Route data
@@ -9,22 +9,22 @@ const route = useRoute();
 const courseId = Number(route.params.courseId);
 const courseName = route.query.courseName ?? "";
 
-// Search state
+// Search (single source of truth)
 const searchQuery = ref("");
-const filteredActiveStudents = ref(null);
 
-// Table refs for refresh
+// Refs to tables
 const withDeclRef = ref(null);
 const inactiveRef = ref(null);
 const withoutDeclRef = ref(null);
 
+// refresh all tables after updates
 function refreshAll() {
   withDeclRef.value?.loadStudents();
   inactiveRef.value?.loadStudents();
   withoutDeclRef.value?.loadStudents();
 }
 
-// Initial data loading (if needed elsewhere)
+// Preload data if needed
 onMounted(async () => {
   try {
     await fetchAllStudentsData(courseId);
@@ -33,32 +33,17 @@ onMounted(async () => {
   }
 });
 
-// Search logic
-const handleSearch = async () => {
-  if (!searchQuery.value || searchQuery.value.trim() === "") {
-    filteredActiveStudents.value = null;
-    return;
-  }
-
-  try {
-    const response = await searchActiveStudents(courseId, searchQuery.value);
-
-    if (Array.isArray(response)) {
-      filteredActiveStudents.value = response;
-    } else if (response && response.content) {
-      filteredActiveStudents.value = response.content;
-    } else {
-      filteredActiveStudents.value = [];
-    }
-  } catch (err) {
-    console.error("Viga otsingul:", err);
-    filteredActiveStudents.value = [];
-  }
+// Called on click OR Enter
+const handleSearch = () => {
+  // only active students use search
+  withDeclRef.value?.loadStudents();
 };
 
-// Reset search results when searchQuery empties
+// Auto-refresh on clearing input
 watch(searchQuery, (val) => {
-  if (!val) filteredActiveStudents.value = null;
+  if (!val) {
+    withDeclRef.value?.loadStudents();
+  }
 });
 </script>
 
@@ -78,13 +63,13 @@ watch(searchQuery, (val) => {
       <button class="search-button" @click="handleSearch">Otsi</button>
     </div>
 
-    <!-- Active students (searchable) -->
+    <!-- Active students (with search + sort + pagination) -->
     <StudentTable
         ref="withDeclRef"
         title="Aktiivsed tudengid"
         type="with-declarations"
         :courseId="courseId"
-        :searchResults="filteredActiveStudents"
+        :search="searchQuery"
         @updated="refreshAll"
     />
 

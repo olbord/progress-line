@@ -1,8 +1,8 @@
 import apiClient from './api';
 
-export async function fetchStudentsWithDeclaration(courseId, page = 0, size = 10) {
+export async function fetchStudentsWithDeclaration(courseId, page = 0, size = 10, search = "", sort = "firstName,asc") {
     const res = await apiClient.get(`/courses/${courseId}/students/with-declarations`, {
-        params: { page, size }
+        params: { page, size, search, sort }
     });
     return res.data;
 }
@@ -39,15 +39,4 @@ export async function markStudentInactive(courseId, studentId) {
 export async function markStudentActive(courseId, studentId) {
     await apiClient.delete(`/courses/${courseId}/students/${studentId}/active`);
     return true;
-}
-
-export async function searchActiveStudents(courseId, query) {
-    const res = await apiClient.get(
-        `/courses/${courseId}/students/search-active`,
-        {
-            params: { input: query }
-        }
-    );
-
-    return res.data;
 }

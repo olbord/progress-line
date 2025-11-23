@@ -6,18 +6,37 @@
       Laadimine...
     </div>
 
-    <table v-if="!isLoading && displayedStudents.length > 0" class="data-table">
+    <table v-if="!isLoading && internalStudents.length > 0" class="data-table">
       <thead>
       <tr>
-        <th class="col-medium">Eesnimi / Perekonnanimi</th>
-        <th class="col-wide">Email</th>
-        <th class="col-narrow">Punktide summa</th>
+        <th class="col-medium">
+      <span @click="toggleSort('firstName')" class="sortable">
+        Eesnimi
+        <span v-if="sort.startsWith('firstName')">({{ sortDirection }})</span>
+      </span>
+          /
+          <span @click="toggleSort('lastName')" class="sortable">
+        Perekonnanimi
+        <span v-if="sort.startsWith('lastName')">({{ sortDirection }})</span>
+      </span>
+        </th>
+
+        <th class="col-wide" @click="toggleSort('email')">
+          Email
+          <span v-if="sort.startsWith('email')">({{ sortDirection }})</span>
+        </th>
+
+        <th class="col-narrow" @click="toggleSort('totalPoints')">
+          Punktide summa
+          <span v-if="sort.startsWith('totalPoints')">({{ sortDirection }})</span>
+        </th>
+
         <th class="col-narrow">Tegevus</th>
       </tr>
       </thead>
 
       <tbody>
-      <tr v-for="student in displayedStudents" :key="student.id">
+      <tr v-for="student in internalStudents" :key="student.id">
         <td>{{ student.firstName }} {{ student.lastName }}</td>
         <td>{{ student.email }}</td>
         <td>{{ (student.totalPoints ?? 0).toFixed(2) }}</td>
@@ -33,12 +52,12 @@
       </tbody>
     </table>
 
-    <div v-else-if="!isLoading && displayedStudents.length === 0">
-      {{ isSearchMode ? "Otsingu tulemused puuduvad" : "Tudengeid ei leitud" }}
+    <div v-else-if="!isLoading && internalStudents.length === 0">
+      {{ props.type === 'with-declarations' && props.search ? "Otsingu tulemused puuduvad" : "Tudengeid ei leitud" }}
     </div>
 
     <Pagination
-        v-if="!isSearchMode && !isLoading && internalStudents.length > 0"
+        v-if="!isLoading && totalPages > 1"
         v-model="page"
         :totalPages="totalPages"
     />
@@ -71,27 +90,23 @@ const props = defineProps({
     validator: (v) =>
         ["with-declarations", "inactive", "no-declarations"].includes(v)
   },
-  searchResults: {
-    type: Array,
-    default: null
+  search: {
+    type: String,
+    default: ""
   }
 });
 
-// Loading + internal pagination state
+// STATE
 const isLoading = ref(false);
 const internalStudents = ref([]);
 const size = ref(10);
 const totalPages = ref(0);
 
-// Search mode flag
-const isSearchMode = computed(() => props.searchResults !== null);
+// SORT
+const sort = ref("firstName,asc");
+const sortDirection = computed(() => sort.value.endsWith("asc") ? "↑" : "↓");
 
-// Students to display
-const displayedStudents = computed(() => {
-  return isSearchMode.value ? props.searchResults : internalStudents.value;
-});
-
-// Determine query param name
+// QUERY PAGE
 const pageParam = computed(() => {
   switch (props.type) {
     case "with-declarations": return "withDeclPage";
@@ -100,43 +115,36 @@ const pageParam = computed(() => {
   }
 });
 
-// Initial page from query
 const rawPage = Number(route.query[pageParam.value]);
 const page = ref(!isNaN(rawPage) && rawPage > 0 ? rawPage - 1 : 0);
 
-// Service loader
-function loadFromService(courseId, page, size) {
+// SERVICE
+function loadFromService(courseId, page, size, search, sort) {
   switch (props.type) {
-    case "with-declarations": return fetchStudentsWithDeclaration(courseId, page, size);
-    case "inactive": return fetchInactiveStudents(courseId, page, size);
-    case "no-declarations": return fetchStudentsWithoutDeclaration(courseId, page, size);
+    case "with-declarations":
+      return fetchStudentsWithDeclaration(courseId, page, size, search, sort);
+    case "inactive":
+      return fetchInactiveStudents(courseId, page, size);
+    case "no-declarations":
+      return fetchStudentsWithoutDeclaration(courseId, page, size);
   }
 }
 
-// Main paginated load
+// MAIN LOADER
 async function loadStudents() {
-  if (isSearchMode.value) return; // disable during search
-
   try {
     isLoading.value = true;
 
-    const data = await loadFromService(props.courseId, page.value, size.value);
+    const data = await loadFromService(
+        props.courseId,
+        page.value,
+        size.value,
+        props.search,
+        sort.value
+    );
 
-    // Ensure page never exceeds last page (URL fixes)
-    if (data.content.length === 0 && data.totalPages > 0 && page.value >= data.totalPages) {
-      page.value = data.totalPages - 1;
-
-      await router.replace({
-        query: { ...route.query, [pageParam.value]: page.value + 1 }
-      });
-
-      const fixedData = await loadFromService(props.courseId, page.value, size.value);
-      internalStudents.value = fixedData.content;
-      totalPages.value = fixedData.totalPages;
-    } else {
-      internalStudents.value = data.content;
-      totalPages.value = data.totalPages;
-    }
+    internalStudents.value = data.content ?? [];
+    totalPages.value = data.totalPages ?? 1;
 
   } catch (err) {
     console.error("Viga tudengite laadimisel:", err);
@@ -147,43 +155,62 @@ async function loadStudents() {
   }
 }
 
-// Expose method for parent refreshAll()
+// SORT CLICK HANDLER
+function toggleSort(field) {
+  const [currentField, direction] = sort.value.split(",");
+
+  if (currentField === field) {
+    sort.value = `${field},${direction === "asc" ? "desc" : "asc"}`;
+  } else {
+    sort.value = `${field},asc`;
+  }
+
+  page.value = 0;
+  updateQuery();
+  loadStudents();
+}
+
+// UPDATE URL
+function updateQuery() {
+  router.replace({
+    query: {
+      ...route.query,
+      [pageParam.value]: page.value + 1
+    }
+  });
+}
+
+// EXPOSE FOR PARENT
 defineExpose({ loadStudents });
 
-// When row updates (declaration changed etc.)
+// ROW UPDATED
 function onRowUpdated() {
   loadStudents();
   emit("updated");
 }
 
-// Pagination change watcher
-watch(page, async (newPage, oldPage) => {
-  if (isSearchMode.value) return;
-
-  if (isNaN(newPage) || newPage < 0) {
-    page.value = oldPage;
-    return;
-  }
-
-  await router.replace({
-    query: { ...route.query, [pageParam.value]: newPage + 1 }
-  });
-
+// WATCH PAGE CHANGE
+watch(page, () => {
+  updateQuery();
   loadStudents();
 });
 
-// Reload on type/course change
+// WATCH SEARCH CHANGE (ONLY ACTIVE TABLE)
+watch(() => props.search, () => {
+  if (props.type === "with-declarations") {
+    page.value = 0;
+    loadStudents();
+  }
+});
+
+// WATCH COURSE OR TYPE CHANGE
 watch(() => [props.courseId, props.type], () => {
   page.value = 0;
-
-  router.replace({
-    query: { ...route.query, [pageParam.value]: 1 }
-  });
-
+  updateQuery();
   loadStudents();
 });
 
-// Initial load
+// INITIAL LOAD
 onMounted(loadStudents);
 </script>
 
@@ -202,6 +229,10 @@ onMounted(loadStudents);
   border: 1px solid #ccc;
   padding: 8px;
   text-align: left;
+}
+.data-table th {
+  cursor: pointer;
+  user-select: none;
 }
 .loading {
   text-align: center;
