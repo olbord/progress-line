@@ -24,9 +24,6 @@ watch(searchQuery, (val) => {
       search: val || undefined // remove if empty
     }
   });
-
-  // reload only active table
-  withDeclRef.value?.loadStudents();
 });
 
 // table refs
