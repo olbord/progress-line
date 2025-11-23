@@ -152,6 +152,7 @@ function loadFromService(courseId, page, size, search, sort) {
 }
 
 // ===== MAIN LOAD FUNCTION =====
+// ===== MAIN LOAD FUNCTION =====
 async function loadStudents() {
   try {
     isLoading.value = true;
@@ -164,17 +165,39 @@ async function loadStudents() {
         sort.value
     );
 
+    // <<< --- ДОБАВЛЯЕМ ЭТУ ПРОВЕРКУ --- >>>
+    // если текущая страница больше чем totalPages — пересылаем на последнюю
+    if (data.totalPages > 0 && page.value >= data.totalPages) {
+      page.value = data.totalPages - 1;
+      updateQuery();
+
+      // загружаем снова — уже корректную страницу
+      const fixed = await loadFromService(
+          props.courseId,
+          page.value,
+          size.value,
+          props.search,
+          sort.value
+      );
+
+      internalStudents.value = fixed.content ?? [];
+      totalPages.value = fixed.totalPages ?? 1;
+      return;
+    }
+
+    // обычная загрузка
     internalStudents.value = data.content ?? [];
     totalPages.value = data.totalPages ?? 1;
 
   } catch (err) {
-    console.error("Viga tudengите laadimisel:", err);
+    console.error("Viga tudengite laadimisel:", err);
     internalStudents.value = [];
     totalPages.value = 0;
   } finally {
     isLoading.value = false;
   }
 }
+
 
 // ===== SORTING =====
 function toggleSort(field) {
