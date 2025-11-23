@@ -10,23 +10,23 @@
       <thead>
       <tr>
         <th class="col-medium">
-      <span @click="toggleSort('firstName')" class="sortable">
-        Eesnimi
-        <span v-if="sort.startsWith('firstName')">({{ sortDirection }})</span>
-      </span>
+          <span @click="toggleSort('firstName')" class="sortable">
+            Eesnimi
+            <span v-if="sort.startsWith('firstName')">({{ sortDirection }})</span>
+          </span>
           /
           <span @click="toggleSort('lastName')" class="sortable">
-        Perekonnanimi
-        <span v-if="sort.startsWith('lastName')">({{ sortDirection }})</span>
-      </span>
+            Perekonnanimi
+            <span v-if="sort.startsWith('lastName')">({{ sortDirection }})</span>
+          </span>
         </th>
 
-        <th class="col-wide" @click="toggleSort('email')">
+        <th class="col-wide sortable" @click="toggleSort('email')">
           Email
           <span v-if="sort.startsWith('email')">({{ sortDirection }})</span>
         </th>
 
-        <th class="col-narrow" @click="toggleSort('totalPoints')">
+        <th class="col-narrow sortable" @click="toggleSort('totalPoints')">
           Punktide summa
           <span v-if="sort.startsWith('totalPoints')">({{ sortDirection }})</span>
         </th>
@@ -76,18 +76,19 @@ import {
   fetchStudentsWithoutDeclaration
 } from "@/services/studentService.js";
 
+// ===== ROUTER =====
 const route = useRoute();
 const router = useRouter();
-
 const emit = defineEmits(["updated"]);
 
+// ===== PROPS =====
 const props = defineProps({
   title: { type: String, required: true },
   courseId: { type: Number, required: true },
   type: {
     type: String,
     required: true,
-    validator: (v) =>
+    validator: v =>
         ["with-declarations", "inactive", "no-declarations"].includes(v)
   },
   search: {
@@ -96,17 +97,15 @@ const props = defineProps({
   }
 });
 
-// STATE
+// ===== STATE =====
 const isLoading = ref(false);
 const internalStudents = ref([]);
 const size = ref(10);
 const totalPages = ref(0);
 
-// SORT
-const sort = ref("firstName,asc");
-const sortDirection = computed(() => sort.value.endsWith("asc") ? "↑" : "↓");
+// ===== URL PARAMS =====
 
-// QUERY PAGE
+// Pagination param name
 const pageParam = computed(() => {
   switch (props.type) {
     case "with-declarations": return "withDeclPage";
@@ -115,10 +114,32 @@ const pageParam = computed(() => {
   }
 });
 
+// Sorting param name
+const sortParam = computed(() => {
+  switch (props.type) {
+    case "with-declarations": return "withDeclSort";
+    case "inactive": return "inactiveSort";
+    case "no-declarations": return "noDeclSort";
+  }
+});
+
+// Initial page
 const rawPage = Number(route.query[pageParam.value]);
 const page = ref(!isNaN(rawPage) && rawPage > 0 ? rawPage - 1 : 0);
 
-// SERVICE
+// Initial sorting
+const initialSort = route.query[sortParam.value];
+const sort = ref(
+    typeof initialSort === "string" && initialSort.includes(",")
+        ? initialSort
+        : "firstName,asc"
+);
+
+const sortDirection = computed(() =>
+    sort.value.endsWith("asc") ? "↑" : "↓"
+);
+
+// ===== SERVICE ROUTING =====
 function loadFromService(courseId, page, size, search, sort) {
   switch (props.type) {
     case "with-declarations":
@@ -130,7 +151,7 @@ function loadFromService(courseId, page, size, search, sort) {
   }
 }
 
-// MAIN LOADER
+// ===== MAIN LOAD FUNCTION =====
 async function loadStudents() {
   try {
     isLoading.value = true;
@@ -147,7 +168,7 @@ async function loadStudents() {
     totalPages.value = data.totalPages ?? 1;
 
   } catch (err) {
-    console.error("Viga tudengite laadimisel:", err);
+    console.error("Viga tudengите laadimisel:", err);
     internalStudents.value = [];
     totalPages.value = 0;
   } finally {
@@ -155,7 +176,7 @@ async function loadStudents() {
   }
 }
 
-// SORT CLICK HANDLER
+// ===== SORTING =====
 function toggleSort(field) {
   const [currentField, direction] = sort.value.split(",");
 
@@ -170,32 +191,37 @@ function toggleSort(field) {
   loadStudents();
 }
 
-// UPDATE URL
+// ===== UPDATE URL =====
 function updateQuery() {
   router.replace({
     query: {
-      ...route.query,
-      [pageParam.value]: page.value + 1
-    }
-  });
+          ...route.query,
+          [pageParam.value]: page.value + 1,
+          [sortParam.value]: sort.value,
+          search: props.search || undefined
+}
+});
 }
 
-// EXPOSE FOR PARENT
+
+// ===== EXPOSE FOR PARENT =====
 defineExpose({ loadStudents });
 
-// ROW UPDATED
+// ===== EVENTS =====
 function onRowUpdated() {
   loadStudents();
   emit("updated");
 }
 
-// WATCH PAGE CHANGE
+// ===== WATCHERS =====
+
+// Page → load & update URL
 watch(page, () => {
   updateQuery();
   loadStudents();
 });
 
-// WATCH SEARCH CHANGE (ONLY ACTIVE TABLE)
+// Search → reload only active table
 watch(() => props.search, () => {
   if (props.type === "with-declarations") {
     page.value = 0;
@@ -203,15 +229,18 @@ watch(() => props.search, () => {
   }
 });
 
-// WATCH COURSE OR TYPE CHANGE
+// Type or course change → reset pagination
 watch(() => [props.courseId, props.type], () => {
   page.value = 0;
   updateQuery();
   loadStudents();
 });
 
-// INITIAL LOAD
-onMounted(loadStudents);
+// Initial load
+onMounted(() => {
+  updateQuery();
+  loadStudents();
+});
 </script>
 
 <style scoped>
@@ -230,7 +259,7 @@ onMounted(loadStudents);
   padding: 8px;
   text-align: left;
 }
-.data-table th {
+.data-table th.sortable {
   cursor: pointer;
   user-select: none;
 }
