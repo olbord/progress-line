@@ -77,6 +77,25 @@ a:hover {
     background: #c9056f;
 }
 
+.search-button {
+    background: #e4067e;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: inline-block;
+    white-space: nowrap;
+    padding: 8px 16px;
+}
+
+.search-input {
+    width: 300px;
+    padding: 8px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
 @font-face {
     font-family: 'Proxima Nova Heavy';
     src: url('@/assets/fonts/proxima-nova-heavy.woff2') format('woff2');

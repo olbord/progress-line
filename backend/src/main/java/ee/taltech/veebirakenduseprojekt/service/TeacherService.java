@@ -1,6 +1,7 @@
 package ee.taltech.veebirakenduseprojekt.service;
 
 import ee.taltech.veebirakenduseprojekt.dto.TeacherDto;
+import ee.taltech.veebirakenduseprojekt.entity.User;
 import ee.taltech.veebirakenduseprojekt.mapper.TeacherMapper;
 import ee.taltech.veebirakenduseprojekt.repository.*;
 import lombok.RequiredArgsConstructor;

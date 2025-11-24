@@ -1,6 +1,5 @@
-package ee.taltech.veebirakenduseprojekt.repository;
+package ee.taltech.veebirakenduseprojekt.entity;
 
-import ee.taltech.veebirakenduseprojekt.entity.*;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.Builder;
@@ -39,4 +38,10 @@ public class User {
     @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
     @Default
     private List<GradeItem> grades = new ArrayList<>();
+
+    @OneToMany(mappedBy = "student")
+    private List<Declaration> declarations;
+
+    @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
+    private List<Inactive> inactiveRecords;
 }

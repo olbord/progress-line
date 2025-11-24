@@ -1,5 +1,6 @@
 package ee.taltech.veebirakenduseprojekt.repository;
 
+import ee.taltech.veebirakenduseprojekt.entity.Comment;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.*;

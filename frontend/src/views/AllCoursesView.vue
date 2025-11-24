@@ -52,10 +52,11 @@ const handleSearch = () => {
       <p v-if="userEmail">Sisse logitud meiliga: <strong>{{ userEmail }}</strong></p>
       <input
           type="text"
+          class="search-input"
           v-model="searchQuery"
           placeholder="Kursuse nimi või kood"
       />
-      <button @click="handleSearch">Otsi</button>
+      <button class="search-button" @click="handleSearch">Otsi</button>
     </div>
 
     <div v-if="loading">Laadimine...</div>

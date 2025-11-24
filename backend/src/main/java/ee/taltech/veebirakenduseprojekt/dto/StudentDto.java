@@ -38,17 +38,6 @@ public class StudentDto {
     private List<GradeItemDto> grades;
 
     @Schema(description = "The number of students total grade points")
-    @JsonProperty("totalPoints")
-    @Min(value = 0, message = "Total points must be positive value")
-    public BigDecimal getTotalPoints() {
-        if (grades == null || grades.isEmpty()) {
-            return BigDecimal.ZERO;
-        }
-
-        return grades.stream()
-                .map(GradeItemDto::getGrade)
-                .filter(Objects::nonNull)
-                .reduce(BigDecimal.ZERO, BigDecimal::add)
-                .setScale(2, RoundingMode.HALF_UP);
-    }
+    @Min(value = 0, message = "Total points must be not-negative value")
+    private BigDecimal totalPoints;
 }
