@@ -54,6 +54,8 @@ The database is now available on localhost:5432.
 * **(Recommended) Connect IDE to Database:** 
  To easily view the schema, run queries, and inspect data during development, it is recommended to connect your IDE's database tool 
  (e.g., IntelliJ's "Database" panel) to the running Docker container.
+* Make sure you set "dev" Spring profile in the `VeebirakenduseProjektApplication.java` run config
+* If using `application-local.properties`, also set the "local" profile
 * Run the application by executing the main method in `VeebirakenduseProjektApplication.java`.
 
 The backend API is now running at http://localhost:8080.
