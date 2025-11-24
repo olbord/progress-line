@@ -62,6 +62,7 @@ import apiClient from '@/services/api.js';
 import StudentPersonalDataDisplay from '@/components/StudentPersonalDataDisplay.vue'
 import PopupModal from '@/components/PopupModal.vue'
 import EmailForm from '@/components/EmailForm.vue'
+import { getToken } from "@/msal/msalInstance.js";
 
 const props = defineProps({
   studentId: {
@@ -103,9 +104,16 @@ async function submitComment() {
     return;
   }
   try {
+    const token = await getToken();
+
     await apiClient.post(
         `/courses/${props.courseId}/students/${props.studentId}/comments`,
-        newComment.value
+        newComment.value,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
     );
     successMessage.value = 'Kommentaar on edukalt salvestatud!';
     newComment.value.commentText = '';
