@@ -26,7 +26,8 @@ public class CourseController {
     @ResponseStatus(HttpStatus.OK)
     public List<CourseDto> getCourses(
             @AuthenticationPrincipal(expression = "email") String email,
-            @RequestBody(required = false) CourseRequestDto searchRequest) {
+            @ModelAttribute CourseRequestDto searchRequest
+    ) {
         return courseService.getCourses(email, searchRequest);
     }
 }

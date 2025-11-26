@@ -9,6 +9,5 @@ import lombok.Data;
         description = "Query to request course data")
 public class CourseRequestDto {
     @Schema(description = "Optional query")
-    @NotNull(message = "Query cannot be null")
     private String query;
 }
