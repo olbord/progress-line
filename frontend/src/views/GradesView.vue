@@ -45,15 +45,6 @@
       <button class="btn btn--link" @click="navigateToFeedback">Vaata tagasisidet</button>
     </div>
 
-    <PopupModal :visible="showCommentPopup" @close="closeCommentPopup">
-
-      <CommentForm
-          :course-id="courseId"
-          :student-id="studentId"
-          @comment-added="handleCommentAdded"
-      />
-    </PopupModal>
-
     <br>
 
     <h2>Tudengi deklaratsioon</h2>
@@ -97,7 +88,6 @@ import { ref, onMounted, watch } from 'vue'
 import apiClient from '@/services/api.js'
 import { useRouter } from 'vue-router'
 import PopupModal from '@/components/PopupModal.vue'
-import CommentForm from '@/components/CommentForm.vue'
 import StudentPersonalDataDisplay from '@/components/StudentPersonalDataDisplay.vue'
 import EmailForm from "@/components/EmailForm.vue";
 import {getToken} from "@/msal/msalInstance.js";
@@ -164,16 +154,6 @@ watch(() => [props.courseId, props.studentId], () => {
   fetchStudentStatus()
 })
 
-const showCommentPopup = ref(false)
-
-function closeCommentPopup() {
-  showCommentPopup.value = false
-}
-
-function handleCommentAdded() {
-  closeCommentPopup()
-}
-
 function navigateToComments() {
   if (props.courseId && props.studentId) {
     router.push({
@@ -238,7 +218,7 @@ async function handleRemoveDeclaration() {
           headers: {
             Authorization: `Bearer ${token}`
           },
-          responseType: 'text' // tell Axios not to expect JSON
+          responseType: 'text'
         }
     );
     successMessage.value = 'Deklaratsioon on eemaldatud!';
