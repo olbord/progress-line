@@ -86,19 +86,19 @@ class CourseStudentControllerTest {
 
         Page<StudentDto> page = new PageImpl<>(List.of(s1, s2));
 
-        given(courseService.getPaginatedActiveStudentsWithDeclarations(eq(courseId), any(Pageable.class)))
+        given(courseService.getPaginatedActiveStudentsWithDeclarations(eq(courseId), eq(""), any(Pageable.class)))
                 .willReturn(page);
 
         // When
         Page<StudentDto> result =
-                controller.getActiveStudentsWithDeclarations(courseId, email, 0, 10);
+                controller.getActiveStudentsWithDeclarations(courseId, email, 0, 10, "", "firstName,asc");
 
         // Then
         assertNotNull(result);
         assertEquals(2, result.getContent().size());
 
         then(accessService).should().requireTeacherAccess(email, courseId);
-        then(courseService).should().getPaginatedActiveStudentsWithDeclarations(eq(courseId), any(Pageable.class));
+        then(courseService).should().getPaginatedActiveStudentsWithDeclarations(eq(courseId), eq(""), any(Pageable.class));
     }
 
     @Test
