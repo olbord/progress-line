@@ -42,7 +42,6 @@
       <h2>Tudengi tagasiside</h2>
       <br>
       <button class="btn btn--link" @click="navigateToComments" style="margin-right: 1rem;">Loe kommentaare</button>
-      <button class="btn btn--link" @click="openCommentPopup" style="margin-right: 1rem;">Lisa kommentaar</button>
       <button class="btn btn--link" @click="navigateToFeedback">Vaata tagasisidet</button>
     </div>
 
@@ -102,7 +101,6 @@ import CommentForm from '@/components/CommentForm.vue'
 import StudentPersonalDataDisplay from '@/components/StudentPersonalDataDisplay.vue'
 import EmailForm from "@/components/EmailForm.vue";
 import {getToken} from "@/msal/msalInstance.js";
-import {markStudentActive, markStudentInactive} from "@/services/studentService.js";
 
 const router = useRouter()
 
@@ -168,17 +166,10 @@ watch(() => [props.courseId, props.studentId], () => {
 
 const showCommentPopup = ref(false)
 
-// Open pop-up
-function openCommentPopup() {
-  showCommentPopup.value = true
-}
-
-// Close pop-up
 function closeCommentPopup() {
   showCommentPopup.value = false
 }
 
-// New comment
 function handleCommentAdded() {
   closeCommentPopup()
 }
@@ -190,6 +181,10 @@ function navigateToComments() {
       params: {
         courseId: props.courseId,
         studentId: props.studentId
+      },
+      query: {
+        studentName: router.currentRoute.value.query.studentName,
+        courseName: router.currentRoute.value.query.courseName
       }
     })
   } else {
@@ -199,7 +194,17 @@ function navigateToComments() {
 
 function navigateToFeedback() {
   if (props.courseId && props.studentId) {
-    router.push(`/courses/${props.courseId}/students/${props.studentId}/feedback`)
+    router.push({
+      name: 'students feedback',
+      params: {
+        courseId: props.courseId,
+        studentId: props.studentId
+      },
+      query: {
+        studentName: router.currentRoute.value.query.studentName,
+        courseName: router.currentRoute.value.query.courseName
+      }
+    })
   } else {
     console.error("Unable to navigate: no student ID or no course ID.", props)
   }

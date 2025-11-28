@@ -1,14 +1,12 @@
 <template>
   <div class="container container--wide">
-    <h1>Kursuse {{ courseName }} ülevaade </h1>
+    <h1> {{ courseName }} ülevaade </h1>
 
     <h2>Kursuse tudengid</h2>
 
       <main>
         <ProgressLineChart />
       </main>
-
-    <button class="btn btn--link" @click="goToStudents">Vaata tudengite tabelit</button>
 
     <h2 style="margin-top: 2rem;">Kursuse õppejõud</h2>
 
@@ -70,11 +68,4 @@ onMounted(fetchTeachers);
 
 watch(() => route.params.courseId, fetchTeachers);
 
-const goToStudents = () => {
-  router.push({
-    name: 'course students',
-    params: { courseId },
-    query: { courseName }
-  })
-}
 </script>
