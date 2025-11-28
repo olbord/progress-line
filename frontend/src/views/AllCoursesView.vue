@@ -54,9 +54,9 @@ const handleSearch = () => {
           type="text"
           class="search-input"
           v-model="searchQuery"
+          @input="handleSearch"
           placeholder="Kursuse nimi või kood"
       />
-      <button class="search-button" @click="handleSearch">Otsi</button>
     </div>
 
     <div v-if="loading">Laadimine...</div>
