@@ -1,6 +1,6 @@
 <template>
   <button @click="logout" class="logout-btn">
-    Logout
+    Logi välja
   </button>
 </template>
 

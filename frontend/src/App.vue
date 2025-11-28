@@ -47,16 +47,3 @@ const showCourseNav = computed(() => {
   return route.params.courseId !== undefined;
 });
 </script>
-
-<style scoped>
-/* keeps the tree navbar on the side */
-.main-layout {
-  display: flex;
-  min-height: calc(100vh - 60px);
-}
-
-.main-content {
-  flex: 1;
-  padding: 1rem;
-}
-</style>

@@ -413,5 +413,16 @@ a:hover {
 
 .login-btn:hover {
     filter: brightness(115%);
-    background-color: #255aa3; /* Slightly darker on hover */
+    background-color: #255aa3;
+}
+
+/* keeps the tree navbar on the side */
+.main-layout {
+    display: flex;
+    min-height: calc(100vh - 60px);
+}
+
+.main-content {
+    flex: 1;
+    padding: 1rem;
 }
