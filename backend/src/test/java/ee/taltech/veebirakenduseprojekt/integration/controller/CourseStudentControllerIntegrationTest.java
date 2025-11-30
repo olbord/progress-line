@@ -9,10 +9,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.*;
 import org.springframework.test.context.*;
 import org.springframework.test.web.servlet.*;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.not;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -63,10 +68,32 @@ class CourseStudentControllerIntegrationTest extends AbstractIntegrationTest {
                 .andExpect(jsonPath("$.content[*].email", hasItem("a.aktiivne@taltech.ee")))
                 // Must NOT contain inactive student with declaration
                 .andExpect(jsonPath("$.content[*].email", not(hasItem("i.inaktiivne@taltech.ee"))))
-                // Must NOT contain student without declaration
+                // Must NOT contain students without declaration
                 .andExpect(jsonPath("$.content[*].email", not(hasItem("d.deklaratsioonita@taltech.ee"))))
-                // Must NOT contain student from other course
-                .andExpect(jsonPath("$.content[*].email", not(hasItem("d.mitteselleltkursuselt@taltech.ee"))));
+                .andExpect(jsonPath("$.content[*].email", not(hasItem("c.inaktiivnedeklaratsioonita@taltech.ee"))))
+                // Must NOT contain students from other course
+                .andExpect(jsonPath("$.content[*].email", not(hasItem("g.mittesellelkursuseltaktiivne@taltech.ee"))))
+                .andExpect(jsonPath("$.content[*].email", not(hasItem("e.mittesellelkursuseltdeklaratsioonita@taltech.ee"))))
+                .andExpect(jsonPath("$.content[*].email", not(hasItem("õ.mittesellelkursuseltinaktiivne@taltech.ee"))))
+                .andExpect(jsonPath("$.content[*].email", not(hasItem("h.mittesellelkursuseltinaktiivneeklaratsioonita@taltech.ee"))))
+                // Must NOT contain student without course
+                .andExpect(jsonPath("$.content[*].email", not(hasItem("r.lihtsaltkasutaja@taltech.ee"))))
+                // Must NOT contain student duplicates
+                .andExpect(result -> {
+                ObjectMapper mapper = new ObjectMapper();
+                JsonNode root = mapper.readTree(result.getResponse().getContentAsString());
+                JsonNode content = root.path("content");
+
+                List<String> emails = new ArrayList<>();
+                for (JsonNode node : content) {
+                    emails.add(node.get("email").asText());
+                }
+
+                long uniqueCount = emails.stream().distinct().count();
+                if (emails.size() != uniqueCount) {
+                    fail("Duplicate students returned: " + emails);
+                }
+        });
     }
 
     // ----------------------------------------------------------------------
@@ -80,10 +107,33 @@ class CourseStudentControllerIntegrationTest extends AbstractIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content").isArray())
                 .andExpect(jsonPath("$.content[*].email", hasItem("d.deklaratsioonita@taltech.ee")))
-                // Should NOT include declared or inactive or from other course
+                .andExpect(jsonPath("$.content[*].email", hasItem("c.inaktiivnedeklaratsioonita@taltech.ee")))
+                // Should NOT include declared or inactive
                 .andExpect(jsonPath("$.content[*].email", not(hasItem("a.aktiivne@taltech.ee"))))
                 .andExpect(jsonPath("$.content[*].email", not(hasItem("i.inaktiivne@taltech.ee"))))
-                .andExpect(jsonPath("$.content[*].email", not(hasItem("e.mittesellelkursusel@taltech.ee"))));
+                // Must NOT contain students from other course
+                .andExpect(jsonPath("$.content[*].email", not(hasItem("g.mittesellelkursuseltaktiivne@taltech.ee"))))
+                .andExpect(jsonPath("$.content[*].email", not(hasItem("e.mittesellelkursuseltdeklaratsioonita@taltech.ee"))))
+                .andExpect(jsonPath("$.content[*].email", not(hasItem("õ.mittesellelkursuseltinaktiivne@taltech.ee"))))
+                .andExpect(jsonPath("$.content[*].email", not(hasItem("h.mittesellelkursuseltinaktiivneeklaratsioonita@taltech.ee"))))
+                // Must NOT contain student without course
+                .andExpect(jsonPath("$.content[*].email", not(hasItem("r.lihtsaltkasutaja@taltech.ee"))))
+                // Must NOT contain student duplicates
+                .andExpect(result -> {
+                    ObjectMapper mapper = new ObjectMapper();
+                    JsonNode root = mapper.readTree(result.getResponse().getContentAsString());
+                    JsonNode content = root.path("content");
+
+                    List<String> emails = new ArrayList<>();
+                    for (JsonNode node : content) {
+                        emails.add(node.get("email").asText());
+                    }
+
+                    long uniqueCount = emails.stream().distinct().count();
+                    if (emails.size() != uniqueCount) {
+                        fail("Duplicate students returned: " + emails);
+                    }
+                });
     }
 
     // ----------------------------------------------------------------------
@@ -97,8 +147,32 @@ class CourseStudentControllerIntegrationTest extends AbstractIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content").isArray())
                 .andExpect(jsonPath("$.content[*].email", hasItem("i.inaktiivne@taltech.ee")))
+                .andExpect(jsonPath("$.content[*].email", not(hasItem("c.inaktiivnedeklaratsioonita@taltech.ee"))))
                 .andExpect(jsonPath("$.content[*].email", not(hasItem("a.aktiivne@taltech.ee"))))
-                .andExpect(jsonPath("$.content[*].email", not(hasItem("d.deklaratsioonita@taltech.ee"))));
+                .andExpect(jsonPath("$.content[*].email", not(hasItem("d.deklaratsioonita@taltech.ee"))))
+                // Must NOT contain students from other course
+                .andExpect(jsonPath("$.content[*].email", not(hasItem("g.mittesellelkursuseltaktiivne@taltech.ee"))))
+                .andExpect(jsonPath("$.content[*].email", not(hasItem("e.mittesellelkursuseltdeklaratsioonita@taltech.ee"))))
+                .andExpect(jsonPath("$.content[*].email", not(hasItem("õ.mittesellelkursuseltinaktiivne@taltech.ee"))))
+                .andExpect(jsonPath("$.content[*].email", not(hasItem("h.mittesellelkursuseltinaktiivneeklaratsioonita@taltech.ee"))))
+                // Must NOT contain student without course
+                .andExpect(jsonPath("$.content[*].email", not(hasItem("r.lihtsaltkasutaja@taltech.ee"))))
+                // Must NOT contain student duplicates
+                .andExpect(result -> {
+                    ObjectMapper mapper = new ObjectMapper();
+                    JsonNode root = mapper.readTree(result.getResponse().getContentAsString());
+                    JsonNode content = root.path("content");
+
+                    List<String> emails = new ArrayList<>();
+                    for (JsonNode node : content) {
+                        emails.add(node.get("email").asText());
+                    }
+
+                    long uniqueCount = emails.stream().distinct().count();
+                    if (emails.size() != uniqueCount) {
+                        fail("Duplicate students returned: " + emails);
+                    }
+                });
     }
 
     // ----------------------------------------------------------------------
@@ -119,7 +193,7 @@ class CourseStudentControllerIntegrationTest extends AbstractIntegrationTest {
     @Test
     void markInactive_whenStudentNotInCourse_returnsNotFound() throws Exception {
 
-        long studentId = getUserId("e.mittesellelkursusel@taltech.ee");
+        long studentId = getUserId("e.mittesellelkursuseltdeklaratsioonita@taltech.ee");
 
         mvc.perform(post("/api/courses/{cid}/students/{sid}/inactive",
                         TEST_COURSE_ID, studentId))
@@ -151,6 +225,65 @@ class CourseStudentControllerIntegrationTest extends AbstractIntegrationTest {
         mvc.perform(delete("/api/courses/{cid}/students/{sid}/active",
                         TEST_COURSE_ID, studentId))
                 .andExpect(status().isNoContent());
+    }
+
+    // ----------------------------------------------------------------------
+    // GET /api/courses/{courseId}/students/{studentId}/status
+    // ----------------------------------------------------------------------
+    @Test
+    void getStudentStatus_whenUsersActiveWithDeclaration_returnsActiveTrueDeclaredTrue() throws Exception {
+        long activeWithDeclarationStudentId = getUserId("a.aktiivne@taltech.ee");
+
+        mvc.perform(get("/api/courses/{cid}/students/{sid}/status",
+                        TEST_COURSE_ID, activeWithDeclarationStudentId))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.studentId").value(activeWithDeclarationStudentId))
+                .andExpect(jsonPath("$.courseId").value(TEST_COURSE_ID))
+                .andExpect(jsonPath("$.active").value(true))
+                .andExpect(jsonPath("$.declared").value(true));
+    }
+
+    @Test
+    void getStudentStatus_whenUsersActiveWithoutDeclaration_returnsActiveTrueDeclaredFalse() throws Exception {
+        long activeWithoutDeclarationStudentId = getUserId("d.deklaratsioonita@taltech.ee");
+
+        mvc.perform(get("/api/courses/{cid}/students/{sid}/status",
+                        TEST_COURSE_ID, activeWithoutDeclarationStudentId))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.studentId").value(activeWithoutDeclarationStudentId))
+                .andExpect(jsonPath("$.courseId").value(TEST_COURSE_ID))
+                .andExpect(jsonPath("$.active").value(true))
+                .andExpect(jsonPath("$.declared").value(false));
+    }
+
+    @Test
+    void getStudentStatus_whenUsersInactiveWithDeclaration_returnsActiveFalseDeclaredTrue() throws Exception {
+        long inactiveWithDeclarationStudentId = getUserId("i.inaktiivne@taltech.ee");
+
+        mvc.perform(get("/api/courses/{cid}/students/{sid}/status",
+                        TEST_COURSE_ID, inactiveWithDeclarationStudentId))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.studentId").value(inactiveWithDeclarationStudentId))
+                .andExpect(jsonPath("$.courseId").value(TEST_COURSE_ID))
+                .andExpect(jsonPath("$.active").value(false))
+                .andExpect(jsonPath("$.declared").value(true));
+    }
+
+    @Test
+    void getStudentStatus_whenUsersInactiveWithoutDeclaration_returnsActiveFalseDeclaredFalse() throws Exception {
+        long inactiveWithoutDeclarationStudentId = getUserId("c.inaktiivnedeklaratsioonita@taltech.ee");
+
+        mvc.perform(get("/api/courses/{cid}/students/{sid}/status",
+                        TEST_COURSE_ID, inactiveWithoutDeclarationStudentId))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.studentId").value(inactiveWithoutDeclarationStudentId))
+                .andExpect(jsonPath("$.courseId").value(TEST_COURSE_ID))
+                .andExpect(jsonPath("$.active").value(false))
+                .andExpect(jsonPath("$.declared").value(false));
     }
 
     // ----------------------------------------------------------------------
