@@ -78,7 +78,6 @@ public class StudentViewSpecification {
 
     public static Specification<User> inactiveStudentsWithDeclaration(Long courseId) {
         return (root, query, cb) -> {
-            query.distinct(true);
 
             Join<User, UserRole> role = root.join("roles");
             Join<User, Declaration> dec = root.join("declarations");
