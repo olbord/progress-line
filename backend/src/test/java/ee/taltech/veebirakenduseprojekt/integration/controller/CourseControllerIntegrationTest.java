@@ -29,9 +29,6 @@ class CourseControllerIntegrationTest extends AbstractIntegrationTest {
     @Autowired
     private MockMvc mvc;
 
-    // ----------------------------------------------------------------------
-    // GET /api/courses/{courseId}
-    // ----------------------------------------------------------------------
     @Test
     void getCourses_whenUserIsTeacher_returnsCoursesArray() throws Exception {
         mvc.perform(get("/api/courses"))

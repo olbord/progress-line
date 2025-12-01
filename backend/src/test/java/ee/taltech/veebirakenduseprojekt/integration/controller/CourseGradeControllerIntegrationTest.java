@@ -1,6 +1,5 @@
 package ee.taltech.veebirakenduseprojekt.integration.controller;
 
-import ee.taltech.veebirakenduseprojekt.VeebirakenduseProjektApplication;
 import ee.taltech.veebirakenduseprojekt.integration.AbstractIntegrationTest;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
@@ -9,7 +8,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -144,12 +142,11 @@ class CourseGradeControllerIntegrationTest extends AbstractIntegrationTest {
                 String x = p.get("x").asText();
 
                 // Check sorted ascending by date
-                if (!lastDate.isEmpty()) {
-                    if (x.compareTo(lastDate) < 0) {
+                if (!lastDate.isEmpty() && x.compareTo(lastDate) < 0) {
                         fail("Data points are not sorted by time for studentId=" +
                                 student.get("studentId"));
                     }
-                }
+
 
                 // Check cumulative
                 if (y < lastValue) {

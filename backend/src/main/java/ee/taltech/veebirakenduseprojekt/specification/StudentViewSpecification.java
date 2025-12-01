@@ -37,6 +37,7 @@ public class StudentViewSpecification {
             Join<User, UserRole> role = root.join("roles");
             Join<User, Declaration> dec = root.join("declarations");
 
+            assert query != null;
             Subquery<Long> inactiveSub = query.subquery(Long.class);
             Root<Inactive> inactiveRoot = inactiveSub.from(Inactive.class);
             inactiveSub.select(inactiveRoot.get("student").get("id"))
@@ -60,6 +61,7 @@ public class StudentViewSpecification {
 
             Join<User, UserRole> role = root.join("roles");
 
+            assert query != null;
             Subquery<Long> declarationSub = query.subquery(Long.class);
             Root<Declaration> decRoot = declarationSub.from(Declaration.class);
             declarationSub.select(decRoot.get("student").get("id"))

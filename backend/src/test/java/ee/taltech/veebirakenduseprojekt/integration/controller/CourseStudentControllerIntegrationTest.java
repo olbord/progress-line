@@ -34,9 +34,6 @@ class CourseStudentControllerIntegrationTest extends AbstractIntegrationTest {
     @Autowired
     private MockMvc mvc;
 
-    // ----------------------------------------------------------------------
-    // GET /api/courses/{courseId}/students/{studentId}
-    // ----------------------------------------------------------------------
     @Test
     void getStudentOnCourse_whenUserIsTeacher_returnsCorrectStudentDto() throws Exception {
 
@@ -49,9 +46,6 @@ class CourseStudentControllerIntegrationTest extends AbstractIntegrationTest {
                 .andExpect(jsonPath("$.firstName").value("Anna"));
     }
 
-    // ----------------------------------------------------------------------
-    // GET /api/courses/{courseId}/students/with-declarations
-    // ----------------------------------------------------------------------
     @Test
     void getActiveStudentsWithDeclarations_whenUsersWithAndWithoutDeclarations_returnsOnlyExpectedStudents() throws Exception {
 
@@ -91,9 +85,6 @@ class CourseStudentControllerIntegrationTest extends AbstractIntegrationTest {
         });
     }
 
-    // ----------------------------------------------------------------------
-    // GET /api/courses/{courseId}/students/no-declarations
-    // ----------------------------------------------------------------------
     @Test
     void getStudentsWithoutDeclarations_whenUsersWithAndWithoutDeclarations_returnsOnlyCorrectStudent() throws Exception {
 
@@ -131,9 +122,6 @@ class CourseStudentControllerIntegrationTest extends AbstractIntegrationTest {
                 });
     }
 
-    // ----------------------------------------------------------------------
-    // GET /api/courses/{courseId}/students/inactive
-    // ----------------------------------------------------------------------
     @Test
     void getInactiveStudents_whenUsersActiveAndInactive_returnsOnlyInactiveStudent() throws Exception {
 
@@ -170,9 +158,6 @@ class CourseStudentControllerIntegrationTest extends AbstractIntegrationTest {
                 });
     }
 
-    // ----------------------------------------------------------------------
-    // POST /api/courses/{cid}/students/{sid}/inactive
-    // ----------------------------------------------------------------------
     @Test
     void markInactive_whenStudentActive_marksStudentAsInactive() throws Exception {
 
@@ -209,9 +194,6 @@ class CourseStudentControllerIntegrationTest extends AbstractIntegrationTest {
                 .andExpect(content().string(containsString("inactive")));
     }
 
-    // ----------------------------------------------------------------------
-    // DELETE /api/courses/{cid}/students/{sid}/active
-    // ----------------------------------------------------------------------
     @Test
     void markActive_whenStudentInactive_marksInactiveStudentActive() throws Exception {
 
@@ -222,9 +204,6 @@ class CourseStudentControllerIntegrationTest extends AbstractIntegrationTest {
                 .andExpect(status().isNoContent());
     }
 
-    // ----------------------------------------------------------------------
-    // GET /api/courses/{courseId}/students/{studentId}/status
-    // ----------------------------------------------------------------------
     @Test
     void getStudentStatus_whenUsersActiveWithDeclaration_returnsActiveTrueDeclaredTrue() throws Exception {
         long activeWithDeclarationStudentId = getUserId("a.aktiivne@taltech.ee");

@@ -1,7 +1,6 @@
 package ee.taltech.veebirakenduseprojekt.service;
 
 import ee.taltech.veebirakenduseprojekt.exception.*;
-import ee.taltech.veebirakenduseprojekt.repository.*;
 import jakarta.transaction.*;
 import lombok.*;
 import org.springframework.mail.*;

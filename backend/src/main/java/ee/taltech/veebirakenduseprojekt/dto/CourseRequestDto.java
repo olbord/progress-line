@@ -1,7 +1,6 @@
 package ee.taltech.veebirakenduseprojekt.dto;
 
 import io.swagger.v3.oas.annotations.media.*;
-import jakarta.validation.constraints.*;
 import lombok.Data;
 
 @Data

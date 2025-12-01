@@ -26,9 +26,6 @@ class DeclarationControllerIntegrationTest extends AbstractIntegrationTest {
     @Autowired
     private MockMvc mvc;
 
-    // ----------------------------------------------------------------------
-    // POST /api/courses/{courseId}/declarations/student/{studentId}
-    // ----------------------------------------------------------------------
     @Test
     void addStudentDeclaration_whenStudentHasNoDeclaration_addsDeclaration() throws Exception {
 
