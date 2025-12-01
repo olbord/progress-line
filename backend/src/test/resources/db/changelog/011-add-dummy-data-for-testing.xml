@@ -30,6 +30,7 @@
             VALUES (3, (SELECT id FROM "user" WHERE email = 'kadi.jairus@taltech.ee'), 35065, 'Õpetaja/Teacher', 'editingteacher')
                 ON CONFLICT DO NOTHING;
 
+
         </sql>
     </changeSet>
 

@@ -24,6 +24,7 @@
     <include file="db/changelog/017-local-test-add-pagination-dummy-data-for-testing.xml"/>
     <include file="/db/changelog/018-create-feedback-tables.xml"/>
     <!--include file="/db/changelog/019-create-feedback-dummy-data.xml"/-->
+    <include file="/db/changelog/019-create-feedback-test-dummy-data.xml"/>
     <include file="/db/changelog/020-create-student-view.xml"/>
     <!--include file="/db/changelog/021-add-developers-as-teachers-and-test-data-for-2-more-courses.xml" /-->
 </databaseChangeLog>

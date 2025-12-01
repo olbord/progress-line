@@ -18,7 +18,9 @@
                 ('Õie', 'Teiseltkursuseltinaktiivne', 'õ.mittesellelkursuseltinaktiivne@taltech.ee'),
                 ('Hardo', 'Teiseltkursuseltinaktiivneeklaratsioonita', 'h.mittesellelkursuseltinaktiivneeklaratsioonita@taltech.ee'),
 
-                ('Rahel', 'Lihtsaltkasutaja', 'r.lihtsaltkasutaja@taltech.ee')
+                ('Rahel', 'Lihtsaltkasutaja', 'r.lihtsaltkasutaja@taltech.ee'),
+
+                ('Aada', 'Feedbacktestimiseks', 'aa.feedbacktestimiseks@taltech.ee')
             ON CONFLICT DO NOTHING;
         </sql>
     </changeSet>
@@ -28,6 +30,14 @@
             INSERT INTO "course" (id, short_name, full_name)
             VALUES
                 (66066, 'Muu kursus', 'Muu kursus ilma õpetajata')
+                ON CONFLICT DO NOTHING;
+
+            INSERT INTO enrolled_user (course_id, user_id, last_updated, last_course_access)
+            VALUES (66066, (SELECT id FROM "user" WHERE email = 'kadi.jairus@taltech.ee'), '2025-09-27 20:04:03', '2025-09-27 20:04:06')
+                ON CONFLICT DO NOTHING;
+
+            INSERT INTO user_role (role_id, user_id, course_id, name, short_name)
+            VALUES (3, (SELECT id FROM "user" WHERE email = 'kadi.jairus@taltech.ee'), 66066, 'Õpetaja/Teacher', 'editingteacher')
                 ON CONFLICT DO NOTHING;
         </sql>
     </changeSet>
@@ -108,7 +118,7 @@
         </sql>
     </changeSet>
 
-    <changeSet id="2025-11-19_add-dummy-grade-items-for-testing" author="KJ">
+    <changeSet id="2025-11-19-add-dummy-grade-items-for-testing" author="KJ">
         <sql>
             INSERT INTO grade_item (gradeitem_id, course_id, user_id, created_at, item_name, item_type, item_module, grade)
             VALUES
@@ -135,6 +145,26 @@
                 (999999, 66066, (SELECT id FROM "user" WHERE email = 'a.aktiivne@taltech.ee'), '2025-09-25 16:00:00', 'Eksam 1 - Aktiivsete tudengite töö (100p)', 'mod', 'charon', 83.25),
                 (999999, 66066, (SELECT id FROM "user" WHERE email = 'd.deklaratsioonita@taltech.ee'), '2025-09-26 16:00:00', 'Eksam 1 - Aktiivsete tudengite töö (100p)', 'mod', 'charon', 74.48),
                 (999999, 66066, (SELECT id FROM "user" WHERE email = 'i.inaktiivne@taltech.ee'), '2025-11-27 16:00:00', 'Eksam 1 - Aktiivsete tudengite töö (100p)', 'mod', 'charon', 80.66)
+                ON CONFLICT DO NOTHING;
+        </sql>
+    </changeSet>
+
+    <changeSet id="2025-11-19-add-dummy-comments-for-testing" author="DM">
+        <sql>
+            INSERT INTO comment (user_id, date_time, type, comment, teacher_id, course_id)
+            VALUES ((SELECT id FROM "user" WHERE email = 'a.aktiivne@taltech.ee'), '2025-09-24 15:00:00', 'EMAIL', 'Meeldetuletus. Parandatud kuupäev.', (SELECT id FROM "user" WHERE email = 'kadijairus@gmail.com'), 35065)
+                ON CONFLICT DO NOTHING;
+
+            INSERT INTO comment (user_id, date_time, type, comment, teacher_id, course_id)
+            VALUES ((SELECT id FROM "user" WHERE email = 'a.aktiivne@taltech.ee'), '2025-09-27 14:45:00', 'EMAIL', 'Teine meeldetuletus.', (SELECT id FROM "user" WHERE email = 'kadijairus@gmail.com'), 35065)
+                ON CONFLICT DO NOTHING;
+
+            INSERT INTO comment (user_id, date_time, type, comment, teacher_id, course_id)
+            VALUES ((SELECT id FROM "user" WHERE email = 'i.inaktiivne@taltech.ee'), '2025-09-27 14:45:00', 'EMAIL', 'Esimene meeldetuletus.', (SELECT id FROM "user" WHERE email = 'kadijairus@gmail.com'), 35065)
+                ON CONFLICT DO NOTHING;
+
+            INSERT INTO comment (user_id, date_time, type, comment, teacher_id, course_id)
+            VALUES ((SELECT id FROM "user" WHERE email = 'g.mittesellelkursuseltaktiivne@taltech.ee'), '2025-09-27 14:45:00', 'EMAIL', 'Teise kursuse kommentaar.', (SELECT id FROM "user" WHERE email = 'kadijairus@gmail.com'), 66066)
                 ON CONFLICT DO NOTHING;
         </sql>
     </changeSet>

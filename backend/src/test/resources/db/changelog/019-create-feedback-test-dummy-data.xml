@@ -1,0 +1,94 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.15.xsd">
+
+    <changeSet id="2025-12-01-insert-feedback-w1-w3" author="KJ">
+        <sql>
+            -- 1. nädal (ID 1)
+            INSERT INTO feedback (id, course_id, name, intro, introformat, lang, anonymous, email_notification, multiple_submit, autonumbering, page_after_submit_format, publish_stats, time_open, time_close, time_modified, completion_submit, course_module, created_at, updated_at)
+            VALUES (1, 35065, 'Iganädalane tagasiside - 1. nädal', 'Soovitame täita küsimustiku kohe peale ülesannete lahendamist', 1, '', 2, FALSE, FALSE, FALSE, 1, FALSE, '2025-09-01 07:32:48', '2026-01-30 07:33:05', '2025-11-16 07:33:30', TRUE, 839222, '2025-11-16 07:34:00', '2025-11-16 07:34:05');
+
+            -- 2. nädal (ID 2)
+            INSERT INTO feedback (id, course_id, name, intro, introformat, lang, anonymous, email_notification, multiple_submit, autonumbering, page_after_submit_format, publish_stats, time_open, time_close, time_modified, completion_submit, course_module, created_at, updated_at)
+            VALUES (2, 35065, 'Iganädalane tagasiside - 2. nädal', 'Soovitame täita küsimustiku kohe peale ülesannete lahendamist', 1, '', 2, FALSE, FALSE, FALSE, 1, FALSE, '2025-09-08 07:32:48', '2026-01-30 07:33:05', '2025-11-16 07:33:30', TRUE, 839223, '2025-11-16 07:34:00', '2025-11-16 07:34:05');
+
+            -- 3. nädal (ID 3)
+            INSERT INTO feedback (id, course_id, name, intro, introformat, lang, anonymous, email_notification, multiple_submit, autonumbering, page_after_submit_format, publish_stats, time_open, time_close, time_modified, completion_submit, course_module, created_at, updated_at)
+            VALUES (3, 66066, 'Iganädalane tagasiside - 3. nädal', 'Soovitame täita küsimustiku kohe peale ülesannete lahendamist', 1, '', 2, FALSE, FALSE, FALSE, 1, FALSE, '2025-09-15 07:32:48', '2026-01-30 07:33:05', '2025-11-16 07:33:30', TRUE, 839224, '2025-11-16 07:34:00', '2025-11-16 07:34:05');
+
+            -- Update serial
+            SELECT setval('feedback_id_seq', (SELECT MAX(id) FROM feedback));
+        </sql>
+        <rollback>
+            DELETE FROM feedback WHERE id IN (1, 2, 3);
+        </rollback>
+    </changeSet>
+
+
+    <changeSet id="2025-12-01-insert-feedback_item" author="KJ">
+        <sql>
+            -- 1. week
+            INSERT INTO feedback_item (id, feedback_id, template, name, label, presentation, typ, has_value, position, required, depend_item, depend_value, options, item_number, created_at, updated_at)
+            VALUES (1, 1, 0, 'Milline on aine tempo?', '', 'r>>>>>Liiga kiire. |Paras. |Pisut aeglane.', 'multichoice', 1, 1, FALSE, NULL, NULL, NULL, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+            INSERT INTO feedback_item (id, feedback_id, template, name, label, presentation, typ, has_value, position, required, depend_item, depend_value, options, item_number, created_at, updated_at)
+            VALUES (2, 1, 0, 'Kui kaua sul ülesannete lahendamiseks aega läks (tundides)?', '', '-|-', 'numeric', 1, 2, FALSE, NULL, NULL, NULL, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+            -- 2. week
+            INSERT INTO feedback_item (id, feedback_id, template, name, label, presentation, typ, has_value, position, required, depend_item, depend_value, options, item_number, created_at, updated_at)
+            VALUES (3, 2, 0, 'Milline on aine tempo?', '', 'r>>>>>Liiga kiire. |Paras. |Pisut aeglane.', 'multichoice', 1, 1, FALSE, NULL, NULL, NULL, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+            INSERT INTO feedback_item (id, feedback_id, template, name, label, presentation, typ, has_value, position, required, depend_item, depend_value, options, item_number, created_at, updated_at)
+            VALUES (4, 2, 0, 'Kui kaua sul ülesannete lahendamiseks aega läks (tundides)?', '', '-|-', 'numeric', 1, 2, FALSE, NULL, NULL, NULL, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+            -- Update serial
+            SELECT setval('feedback_item_id_seq', (SELECT MAX(id) FROM feedback_item));
+        </sql>
+        <rollback>
+            DELETE FROM feedback_item WHERE id IN (1, 2, 3, 4);
+        </rollback>
+    </changeSet>
+
+
+    <changeSet id="2025-12-01-insert-feedback_attempt" author="KJ">
+        <sql>
+            INSERT INTO feedback_attempt (id, feedback_id, user_id, time_modified, created_at, updated_at)
+            VALUES (1, 1, (SELECT id FROM "user" WHERE email = 'h.mittesellelkursuseltinaktiivneeklaratsioonita@taltech.ee'), '2025-11-16 07:50:55', '2025-11-16 07:50:59', '2025-11-16 07:51:00');
+
+            INSERT INTO feedback_attempt (id, feedback_id, user_id, time_modified, created_at, updated_at)
+            VALUES (2, 2, (SELECT id FROM "user" WHERE email = 'h.mittesellelkursuseltinaktiivneeklaratsioonita@taltech.ee'), '2025-11-16 08:10:00', '2025-11-16 08:10:05', '2025-11-16 08:10:10');
+
+            -- Update serial
+            SELECT setval('feedback_attempt_id_seq', (SELECT MAX(id) FROM feedback_attempt));
+        </sql>
+        <rollback>
+            DELETE FROM feedback_attempt WHERE id IN (1, 2);
+        </rollback>
+    </changeSet>
+
+
+    <changeSet id="2025-12-01-insert-feedback_response" author="KJ">
+        <sql>
+            INSERT INTO feedback_response (id, attempt_id, name, printval, rawval, created_at, updated_at)
+            VALUES (2, 1, 'Milline on aine tempo?', 'Paras', '3', '2025-11-16 07:54:21', '2025-11-16 07:54:23');
+
+            INSERT INTO feedback_response (id, attempt_id, name, printval, rawval, created_at, updated_at)
+            VALUES (3, 1, 'Kui kaua sul ülesannete lahendamiseks aega läks (tundides)?', '16', '16', '2025-11-16 07:55:35', '2025-11-16 07:55:37');
+
+            INSERT INTO feedback_response (id, attempt_id, name, printval, rawval, created_at, updated_at)
+            VALUES (4, 2, 'Milline on aine tempo?', 'Liiga kiire', '1', '2025-11-16 08:11:00', '2025-11-16 08:11:02');
+
+            INSERT INTO feedback_response (id, attempt_id, name, printval, rawval, created_at, updated_at)
+            VALUES (5, 2, 'Kui kaua sul ülesannete lahendamiseks aega läks (tundides)?', '2', '2', '2025-11-16 08:12:00', '2025-11-16 08:12:02');
+
+            -- Update serial
+            SELECT setval('feedback_response_id_seq', (SELECT MAX(id) FROM feedback_response));
+        </sql>
+        <rollback>
+            DELETE FROM feedback_response WHERE id IN (2, 3, 4, 5);
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>
