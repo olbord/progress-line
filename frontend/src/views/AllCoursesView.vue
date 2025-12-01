@@ -48,6 +48,7 @@ const handleSearch = () => {
   <div>
     <h2>Minu kursused</h2>
 
+    <div class="container container--medium">
     <div>
       <p v-if="userEmail">Sisse logitud meiliga: <strong>{{ userEmail }}</strong></p>
       <input
@@ -70,6 +71,7 @@ const handleSearch = () => {
         />
       </ul>
       <p v-else>Ei leitud sobivaid kursusi.</p>
+    </div>
     </div>
   </div>
 </template>

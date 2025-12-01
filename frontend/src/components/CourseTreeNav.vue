@@ -9,7 +9,7 @@
         }"
           class="tree-link"
       >
-        {{ courseName || 'Kursuse analüütika' }}
+        {{ courseName || 'Kursus' }}
       </RouterLink>
     </div>
 
@@ -71,8 +71,7 @@
 
 <script setup>
 import { computed } from 'vue'
-import { useRoute } from 'vue-router'
-import { RouterLink } from 'vue-router'
+import { useRoute, RouterLink } from 'vue-router'
 
 const route = useRoute()
 
@@ -92,6 +91,7 @@ const selectedStudentName = computed(() => {
 .course-tree-nav {
   padding: 1rem;
   min-width: 250px;
+  grid-area: course-tree-nav;
 }
 
 .tree-item {
@@ -108,11 +108,6 @@ const selectedStudentName = computed(() => {
 
 .tree-link:hover {
   background-color: rgba(0, 0, 0, 0.05);
-}
-
-.tree-link.router-link-active {
-  background-color: rgba(0, 0, 0, 0.1);
-  font-weight: bold;
 }
 
 .indent-1 {

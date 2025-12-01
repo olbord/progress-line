@@ -1,8 +1,6 @@
 <template>
-  <div class="container container--wide">
+  <div class="container container--medium">
     <h1> {{ courseName }} ülevaade </h1>
-
-    <h2>Kursuse tudengid</h2>
 
       <main>
         <ProgressLineChart />
@@ -27,13 +25,12 @@
 </template>
 
 <script setup>
-import { useRouter, useRoute } from 'vue-router'
+import { useRoute } from 'vue-router'
 import ProgressLineChart from '@/components/ProgressLineChart.vue'
 import { ref, onMounted, watch } from 'vue'
 import apiClient from '@/services/api.js'
 import {getToken} from "@/msal/msalInstance.js";
 
-const router = useRouter()
 const route = useRoute()
 
 const teachers = ref([]);

@@ -37,13 +37,10 @@
     </table>
     <div v-else>Hinded puuduvad</div>
     <br>
-    <div class="container--narrow">
-
       <h2>Tudengi tagasiside</h2>
       <br>
       <button class="btn btn--link" @click="navigateToComments" style="margin-right: 1rem;">Loe kommentaare</button>
       <button class="btn btn--link" @click="navigateToFeedback">Vaata tagasisidet</button>
-    </div>
 
     <br>
 
