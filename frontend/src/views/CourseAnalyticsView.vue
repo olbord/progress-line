@@ -1,14 +1,10 @@
 <template>
-  <div class="container container--wide">
-    <h1>Kursuse {{ courseName }} ülevaade </h1>
-
-    <h2>Kursuse tudengid</h2>
+  <div class="container container--medium">
+    <h1> {{ courseName }} ülevaade </h1>
 
       <main>
         <ProgressLineChart />
       </main>
-
-    <button class="btn btn--link" @click="goToStudents">Vaata tudengite tabelit</button>
 
     <h2 style="margin-top: 2rem;">Kursuse õppejõud</h2>
 
@@ -29,13 +25,12 @@
 </template>
 
 <script setup>
-import { useRouter, useRoute } from 'vue-router'
+import { useRoute } from 'vue-router'
 import ProgressLineChart from '@/components/ProgressLineChart.vue'
 import { ref, onMounted, watch } from 'vue'
 import apiClient from '@/services/api.js'
 import {getToken} from "@/msal/msalInstance.js";
 
-const router = useRouter()
 const route = useRoute()
 
 const teachers = ref([]);
@@ -70,11 +65,4 @@ onMounted(fetchTeachers);
 
 watch(() => route.params.courseId, fetchTeachers);
 
-const goToStudents = () => {
-  router.push({
-    name: 'course students',
-    params: { courseId },
-    query: { courseName }
-  })
-}
 </script>

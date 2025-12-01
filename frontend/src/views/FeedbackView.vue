@@ -41,17 +41,8 @@
     <div class="container--narrow">
       <br>
       <button class="btn btn--link" @click="navigateToComments" style="margin-right: 1rem;">Loe kommentaare</button>
-      <button class="btn btn--link" @click="openCommentPopup" style="margin-right: 1rem;">Lisa kommentaar</button>
       <button class="btn btn--link" @click="navigateToGrades">Vaata hindeid</button>
     </div>
-
-    <PopupModal :visible="showCommentPopup" @close="closeCommentPopup">
-      <CommentForm
-          :course-id="props.courseId"
-          :student-id="props.studentId"
-          @comment-added="handleCommentAdded"
-      />
-    </PopupModal>
 
   </div>
 </template>
@@ -62,7 +53,6 @@ import { ref, onMounted, watch } from 'vue'
 import apiClient from '@/services/api.js'
 import { useRouter } from 'vue-router'
 import PopupModal from '@/components/PopupModal.vue'
-import CommentForm from '@/components/CommentForm.vue'
 import StudentPersonalDataDisplay from '@/components/StudentPersonalDataDisplay.vue'
 import EmailForm from "@/components/EmailForm.vue";
 import {getToken} from "@/msal/msalInstance.js";
@@ -115,20 +105,6 @@ async function fetchFeedback() {
 
 onMounted(fetchFeedback)
 watch(() => [props.courseId, props.studentId], fetchFeedback)
-
-const showCommentPopup = ref(false)
-
-function openCommentPopup() {
-  showCommentPopup.value = true
-}
-
-function closeCommentPopup() {
-  showCommentPopup.value = false
-}
-
-function handleCommentAdded() {
-  closeCommentPopup()
-}
 
 function navigateToComments() {
   if (props.courseId && props.studentId) {

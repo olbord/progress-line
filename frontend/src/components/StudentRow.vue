@@ -35,7 +35,17 @@ const router = useRouter();
 
 function navigateToGrades() {
   if (props.courseId && props.student?.id) {
-    router.push(`/courses/${props.courseId}/students/${props.student.id}/grades`);
+    router.push({
+      name: 'students grades',
+      params: {
+        courseId: props.courseId,
+        studentId: props.student.id
+      },
+      query: {
+        studentName: `${props.student.firstName} ${props.student.lastName}`,
+        courseName: router.currentRoute.value.query.courseName
+      }
+    });
   } else {
     console.error("Unable to navigate: missing course or student ID", props);
   }

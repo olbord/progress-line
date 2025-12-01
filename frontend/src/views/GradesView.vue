@@ -37,23 +37,10 @@
     </table>
     <div v-else>Hinded puuduvad</div>
     <br>
-    <div class="container--narrow">
-
       <h2>Tudengi tagasiside</h2>
       <br>
       <button class="btn btn--link" @click="navigateToComments" style="margin-right: 1rem;">Loe kommentaare</button>
-      <button class="btn btn--link" @click="openCommentPopup" style="margin-right: 1rem;">Lisa kommentaar</button>
       <button class="btn btn--link" @click="navigateToFeedback">Vaata tagasisidet</button>
-    </div>
-
-    <PopupModal :visible="showCommentPopup" @close="closeCommentPopup">
-
-      <CommentForm
-          :course-id="courseId"
-          :student-id="studentId"
-          @comment-added="handleCommentAdded"
-      />
-    </PopupModal>
 
     <br>
 
@@ -98,11 +85,9 @@ import { ref, onMounted, watch } from 'vue'
 import apiClient from '@/services/api.js'
 import { useRouter } from 'vue-router'
 import PopupModal from '@/components/PopupModal.vue'
-import CommentForm from '@/components/CommentForm.vue'
 import StudentPersonalDataDisplay from '@/components/StudentPersonalDataDisplay.vue'
 import EmailForm from "@/components/EmailForm.vue";
 import {getToken} from "@/msal/msalInstance.js";
-import {markStudentActive, markStudentInactive} from "@/services/studentService.js";
 
 const router = useRouter()
 
@@ -166,23 +151,6 @@ watch(() => [props.courseId, props.studentId], () => {
   fetchStudentStatus()
 })
 
-const showCommentPopup = ref(false)
-
-// Open pop-up
-function openCommentPopup() {
-  showCommentPopup.value = true
-}
-
-// Close pop-up
-function closeCommentPopup() {
-  showCommentPopup.value = false
-}
-
-// New comment
-function handleCommentAdded() {
-  closeCommentPopup()
-}
-
 function navigateToComments() {
   if (props.courseId && props.studentId) {
     router.push({
@@ -190,6 +158,10 @@ function navigateToComments() {
       params: {
         courseId: props.courseId,
         studentId: props.studentId
+      },
+      query: {
+        studentName: router.currentRoute.value.query.studentName,
+        courseName: router.currentRoute.value.query.courseName
       }
     })
   } else {
@@ -199,7 +171,17 @@ function navigateToComments() {
 
 function navigateToFeedback() {
   if (props.courseId && props.studentId) {
-    router.push(`/courses/${props.courseId}/students/${props.studentId}/feedback`)
+    router.push({
+      name: 'students feedback',
+      params: {
+        courseId: props.courseId,
+        studentId: props.studentId
+      },
+      query: {
+        studentName: router.currentRoute.value.query.studentName,
+        courseName: router.currentRoute.value.query.courseName
+      }
+    })
   } else {
     console.error("Unable to navigate: no student ID or no course ID.", props)
   }
@@ -233,7 +215,7 @@ async function handleRemoveDeclaration() {
           headers: {
             Authorization: `Bearer ${token}`
           },
-          responseType: 'text' // tell Axios not to expect JSON
+          responseType: 'text'
         }
     );
     successMessage.value = 'Deklaratsioon on eemaldatud!';

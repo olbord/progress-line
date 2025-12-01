@@ -1,0 +1,23 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.15.xsd">
+
+    <changeSet id="2025-12-01 add Siim and Ago as teachers for 35065" author="NK">
+        <sql>
+            INSERT INTO user_role (role_id, user_id, course_id, name, short_name)
+            VALUES (3, 102, 35065, 'Õpetaja/Teacher', 'editingteacher')
+                ON CONFLICT DO NOTHING;
+
+            INSERT INTO user_role (role_id, user_id, course_id, name, short_name)
+            VALUES (3, 103, 35065, 'Õpetaja/Teacher', 'editingteacher')
+                ON CONFLICT DO NOTHING;
+
+            INSERT INTO user_role (role_id, user_id, course_id, name, short_name)
+            VALUES (3, 104, 35065, 'Õpetaja/Teacher', 'editingteacher')
+                ON CONFLICT DO NOTHING;
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
