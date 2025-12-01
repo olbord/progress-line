@@ -6,9 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -541,7 +539,7 @@ class CourseStudentControllerIntegrationTest extends AbstractIntegrationTest {
                 .andExpect(jsonPath("$.content[0].email", is("h.mittesellelkursuseltinaktiivneeklaratsioonita@taltech.ee")))
                 .andExpect(jsonPath("$.content[1].email", is("e.mittesellelkursuseltdeklaratsioonita@taltech.ee")))
                 .andExpect(jsonPath("$.content[2].email", is("d.deklaratsioonita@taltech.ee")))
-                .andExpect(jsonPath("$.content[3].email", is("c.inaktiivnedeklaratsioonita@taltech.eee")));
+                .andExpect(jsonPath("$.content[3].email", is("c.inaktiivnedeklaratsioonita@taltech.ee")));
     }
 
     @Test
