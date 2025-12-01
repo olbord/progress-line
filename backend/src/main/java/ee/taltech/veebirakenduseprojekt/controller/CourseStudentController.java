@@ -37,8 +37,8 @@ public class CourseStudentController {
         return studentService.getStudentPersonalDataById(studentId);
     }
 
-    @Operation(summary = "Get paginated list of active students with declarations with the ability to sort",
-            description = "Gets page of students who have declared participation on a specific course and are not inactive with the ability to sort by 'firstName,asc', 'firstName,desc', 'lastName,asc', 'lastName,desc', 'email,asc', 'email,desc', 'totalPoints,asc' ja 'totalPoints,desc'.")
+    @Operation(summary = "Get paginated list of active students with declarations with the ability to sort and search",
+            description = "Gets page of students who have declared participation on a specific course and are not inactive with the ability to search and sort by 'firstName,asc', 'firstName,desc', 'lastName,asc', 'lastName,desc', 'email,asc', 'email,desc', 'totalPoints,asc' ja 'totalPoints,desc'.")
     @GetMapping("/with-declarations")
     @ResponseStatus(HttpStatus.OK)
     public Page<StudentDto> getActiveStudentsWithDeclarations(
@@ -54,8 +54,8 @@ public class CourseStudentController {
         return courseService.getPaginatedActiveStudentsWithDeclarations(courseId, search, pageable);
     }
 
-    @Operation(summary = "Get paginated list of students without declaration with the ability to sort",
-            description = "Gets page of students who have not declared participation on a specific course with the ability to sort by 'firstName,asc', 'firstName,desc', 'lastName,asc', 'lastName,desc', 'email,asc', 'email,desc', 'totalPoints,asc' ja 'totalPoints,desc'.")
+    @Operation(summary = "Get paginated list of students without declaration with the ability to sort and search",
+            description = "Gets page of students who have not declared participation on a specific course with the ability to search and sort by 'firstName,asc', 'firstName,desc', 'lastName,asc', 'lastName,desc', 'email,asc', 'email,desc', 'totalPoints,asc' ja 'totalPoints,desc'.")
     @GetMapping("/no-declarations")
     @ResponseStatus(HttpStatus.OK)
     public Page<StudentDto> getStudentsWithoutDeclarations(
@@ -72,8 +72,8 @@ public class CourseStudentController {
         return courseService.getPaginatedStudentsWithoutDeclarations(courseId, search, pageable);
     }
 
-    @Operation(summary = "Get paginated list of inactive students with the ability to sort",
-            description = "Gets page of students who are marked as inactive on a specific course with the ability to sort by 'firstName,asc', 'firstName,desc', 'lastName,asc', 'lastName,desc', 'email,asc', 'email,desc', 'totalPoints,asc' ja 'totalPoints,desc'.\"")
+    @Operation(summary = "Get paginated list of inactive students with the ability to sort and search",
+            description = "Gets page of students who are marked as inactive on a specific course with the ability to search and sort by 'firstName,asc', 'firstName,desc', 'lastName,asc', 'lastName,desc', 'email,asc', 'email,desc', 'totalPoints,asc' ja 'totalPoints,desc'.\"")
     @GetMapping("/inactive")
     @ResponseStatus(HttpStatus.OK)
     public Page<StudentDto> getInactiveStudents(
