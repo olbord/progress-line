@@ -135,12 +135,12 @@ class CourseCommentControllerIntegrationTest extends AbstractIntegrationTest {
     }
 
 
-    @Autowired
-    private JdbcTemplate jdbc;
-
     // ----------------------------------------------------------------------
     // Helper: Get user id by email
     // ----------------------------------------------------------------------
+    @Autowired
+    private JdbcTemplate jdbc;
+
     private long getUserId(String email) {
         return jdbc.queryForObject(
                 "SELECT id FROM \"user\" WHERE email = ?",

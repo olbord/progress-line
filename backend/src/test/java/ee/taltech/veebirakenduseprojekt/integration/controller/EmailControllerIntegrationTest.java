@@ -32,22 +32,9 @@ class EmailControllerIntegrationTest extends AbstractIntegrationTest {
     @Autowired
     private MockMvc mvc;
 
-    @Autowired
-    private JdbcTemplate jdbc;
-
     // Mock ONLY CourseService — so that there is no actual email sending
     @MockBean
     private CourseService courseService;
-
-
-    // Helper
-    private long getUserId(String email) {
-        return jdbc.queryForObject(
-                "SELECT id FROM \"user\" WHERE email = ?",
-                Long.class,
-                email
-        );
-    }
 
 
     // ======================================================================
@@ -123,5 +110,20 @@ class EmailControllerIntegrationTest extends AbstractIntegrationTest {
                         "Cross-course test",
                         "kadi.jairus@taltech.ee"
                 );
+    }
+
+
+    // ----------------------------------------------------------------------
+    // Helper method: Lookup user ID by email
+    // ----------------------------------------------------------------------
+    @Autowired
+    private JdbcTemplate jdbc;
+
+    private long getUserId(String email) {
+        return jdbc.queryForObject(
+                "SELECT id FROM \"user\" WHERE email = ?",
+                Long.class,
+                email
+        );
     }
 }

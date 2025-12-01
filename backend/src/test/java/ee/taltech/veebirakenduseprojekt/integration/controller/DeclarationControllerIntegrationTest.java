@@ -26,9 +26,6 @@ class DeclarationControllerIntegrationTest extends AbstractIntegrationTest {
     @Autowired
     private MockMvc mvc;
 
-    @Autowired
-    private JdbcTemplate jdbc;
-
     // ----------------------------------------------------------------------
     // POST /api/courses/{courseId}/declarations/student/{studentId}
     // ----------------------------------------------------------------------
@@ -92,6 +89,9 @@ class DeclarationControllerIntegrationTest extends AbstractIntegrationTest {
     // ----------------------------------------------------------------------
     // Helper method: Lookup user ID by email
     // ----------------------------------------------------------------------
+    @Autowired
+    private JdbcTemplate jdbc;
+
     private long getUserId(String email) {
         return jdbc.queryForObject(
                 "SELECT id FROM \"user\" WHERE email = ?",

@@ -81,12 +81,12 @@ class FeedbackControllerIntegrationTest extends AbstractIntegrationTest {
     }
 
 
-    @Autowired
-    private JdbcTemplate jdbc;
-
     // ----------------------------------------------------------------------
     // Helper method: Lookup user ID by email
     // ----------------------------------------------------------------------
+    @Autowired
+    private JdbcTemplate jdbc;
+
     private long getUserId(String email) {
         return jdbc.queryForObject(
                 "SELECT id FROM \"user\" WHERE email = ?",
