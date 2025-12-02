@@ -8,7 +8,9 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
@@ -24,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @Transactional
 @ActiveProfiles("dev")
-@Deprecated(forRemoval = true)
+@Import(EmailControllerIntegrationTest.MockConfig.class)
 class EmailControllerIntegrationTest extends AbstractIntegrationTestConfig {
 
     private static final long TEST_COURSE_ID = 35065L;
@@ -32,10 +34,20 @@ class EmailControllerIntegrationTest extends AbstractIntegrationTestConfig {
     @Autowired
     private MockMvc mvc;
 
-    // Mock ONLY CourseService — so that there is no actual email sending
-    @MockBean
+    @Autowired
     private CourseService courseService;
 
+    // ===============================================================
+    // Test configuration that REPLACES CourseService bean in context
+    // ===============================================================
+    @TestConfiguration
+    static class MockConfig {
+
+        @Bean
+        public CourseService courseService() {
+            return Mockito.mock(CourseService.class);
+        }
+    }
 
     // ======================================================================
     // 1) Invalid DTO → @Valid fails → MethodArgumentNotValidException → 500
@@ -48,7 +60,7 @@ class EmailControllerIntegrationTest extends AbstractIntegrationTestConfig {
         mvc.perform(post("/api/courses/{courseId}/students/{studentId}/send-email",
                         TEST_COURSE_ID, studentId)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{}"))           // emailBody missing
+                        .content("{}"))
                 .andExpect(status().isInternalServerError());
     }
 
