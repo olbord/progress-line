@@ -22,7 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @Transactional
 @ActiveProfiles("dev")
-class CourseControllerIntegrationTest extends AbstractIntegrationTest {
+class CourseControllerIntegrationTest extends AbstractIntegrationTestConfig {
 
     @Autowired
     private CourseRepository courseRepository;

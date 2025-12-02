@@ -1,6 +1,6 @@
 package ee.taltech.veebirakenduseprojekt.integration.controller;
 
-import ee.taltech.veebirakenduseprojekt.integration.AbstractIntegrationTest;
+import ee.taltech.veebirakenduseprojekt.integration.AbstractIntegrationTestConfig;
 import ee.taltech.veebirakenduseprojekt.service.CourseService;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
@@ -25,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 @ActiveProfiles("dev")
 @Deprecated(forRemoval = true)
-class EmailControllerIntegrationTest extends AbstractIntegrationTest {
+class EmailControllerIntegrationTest extends AbstractIntegrationTestConfig {
 
     private static final long TEST_COURSE_ID = 35065L;
 

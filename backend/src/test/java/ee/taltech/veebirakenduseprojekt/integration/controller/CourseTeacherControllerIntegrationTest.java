@@ -1,6 +1,6 @@
 package ee.taltech.veebirakenduseprojekt.integration.controller;
 
-import ee.taltech.veebirakenduseprojekt.integration.AbstractIntegrationTest;
+import ee.taltech.veebirakenduseprojekt.integration.AbstractIntegrationTestConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -17,7 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("dev")
-class CourseTeacherControllerIntegrationTest extends AbstractIntegrationTest {
+class CourseTeacherControllerIntegrationTest extends AbstractIntegrationTestConfig {
 
     private static final long TEST_COURSE_ID = 35065L;
 

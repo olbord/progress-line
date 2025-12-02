@@ -4,7 +4,7 @@ import org.springframework.test.context.*;
 import org.testcontainers.containers.PostgreSQLContainer;
 
 
-public class AbstractIntegrationTest {
+public class AbstractIntegrationTestConfig {
 
 
     private static final PostgreSQLContainer<?> POSTGRESQL_CONTAINER;

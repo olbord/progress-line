@@ -1,6 +1,6 @@
 package ee.taltech.veebirakenduseprojekt.integration.controller;
 
-import ee.taltech.veebirakenduseprojekt.integration.AbstractIntegrationTest;
+import ee.taltech.veebirakenduseprojekt.integration.AbstractIntegrationTestConfig;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 @AutoConfigureMockMvc
 @Transactional
 @ActiveProfiles("dev")
-class DeclarationControllerIntegrationTest extends AbstractIntegrationTest {
+class DeclarationControllerIntegrationTest extends AbstractIntegrationTestConfig {
 
     private static final long TEST_COURSE_ID = 35065L;
 
