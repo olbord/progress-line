@@ -67,12 +67,7 @@ const router = createRouter({
         courseId: Number(route.params.courseId)
       }),
       meta: { requiresAuth: true }
-    },
-    {
-      path: '/about',
-      name: 'about',
-      component: () => import('../views/AboutView.vue'),
-    },
+    }
   ],
 })
 

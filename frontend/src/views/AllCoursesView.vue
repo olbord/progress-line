@@ -48,15 +48,16 @@ const handleSearch = () => {
   <div>
     <h2>Minu kursused</h2>
 
+    <div class="container container--medium">
     <div>
       <p v-if="userEmail">Sisse logitud meiliga: <strong>{{ userEmail }}</strong></p>
       <input
           type="text"
           class="search-input"
           v-model="searchQuery"
+          @input="handleSearch"
           placeholder="Kursuse nimi või kood"
       />
-      <button class="search-button" @click="handleSearch">Otsi</button>
     </div>
 
     <div v-if="loading">Laadimine...</div>
@@ -70,6 +71,7 @@ const handleSearch = () => {
         />
       </ul>
       <p v-else>Ei leitud sobivaid kursusi.</p>
+    </div>
     </div>
   </div>
 </template>

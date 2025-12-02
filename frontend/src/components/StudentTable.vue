@@ -1,4 +1,5 @@
 <template>
+  <div class="table-wrapper">
   <div class="student-table">
     <h2>{{ title }}</h2>
 
@@ -65,6 +66,7 @@
         :totalPages="totalPages"
     />
   </div>
+  </div>
 </template>
 
 <script setup>
@@ -116,7 +118,7 @@ const sortParam = computed(() => ({
 }[props.type]));
 
 const rawPage = Number(route.query[pageParam.value]);
-const page = ref(!isNaN(rawPage) && rawPage > 0 ? rawPage - 1 : 0);
+const page = ref(!Number.isNaN(rawPage) && rawPage > 0 ? rawPage - 1 : 0);
 
 const initialSort = route.query[sortParam.value];
 const sort = ref(

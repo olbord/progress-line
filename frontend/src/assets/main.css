@@ -17,8 +17,17 @@
     --color-border: #eef2f5;
 }
 
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    overflow: hidden; /* Prevent body scroll */
+}
+
 body {
-    padding-top: 110px;
+    padding-top: 175px; /* Increased from 110px */
     background-color: var(--color-background);
     color: var(--color-text);
     font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
@@ -61,7 +70,6 @@ a:hover {
     color: var(--taltech-white);
 }
 
-/* Button link */
 .btn--link {
     background: #e4067e;
     color: white;
@@ -179,8 +187,7 @@ a:hover {
     border-collapse: collapse;
     width: 100%;
     margin-top: 1rem;
-    table-layout: fixed;
-    min-width: 900px;
+    table-layout: auto;
 }
 
 .data-table th,
@@ -201,6 +208,15 @@ a:hover {
 .data-table .col-medium { width: 27%; }
 .data-table .col-narrow { width: 15%; }
 
+/* Responsive wrapper */
+.table-wrapper {
+    overflow-x: auto;
+    width: 100%;
+    max-width: 100%;
+    -webkit-overflow-scrolling: touch;
+}
+
+
 .container {
     margin: 0 auto;
     padding: 2rem;
@@ -208,15 +224,33 @@ a:hover {
 
 /* Container */
 .container--narrow {
-    max-width: 700px; /* For comments and other narrow stuff */
+    max-width: 700px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 2rem 2rem;
 }
+
 .container--medium {
-    max-width: 900px; /* Wide for tables */
+    max-width: 1000px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 1rem;
+    overflow: auto;
 }
+
 .container--wide {
-    max-width: 100%; /* Very wide */
+    max-width: 100%;
+    width: 100%;
     height: 500px;
     position: relative;
+    -webkit-overflow-scrolling: touch;
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+}
+
+/* For wide content inside container--medium (like tables) */
+.container--medium > * {
+    min-width: fit-content;
 }
 
 /* For horizontal element aligning */
@@ -229,6 +263,7 @@ a:hover {
     margin: 1.5rem 0;
 }
 
+/* Header */
 .header-bar {
     background-color: var(--taltech-dark-blue);
     border-bottom: 1px solid var(--taltech-dark-blue);
@@ -238,15 +273,19 @@ a:hover {
     left: 0;
     right: 0;
     z-index: 1100;
+    grid-area: header-bar;
 }
 
 .header-content {
     max-width: 1200px;
+    width: 100%;
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
-    align-items: baseline;
+    align-items: flex-end; /* Change to flex-end to align all items at the bottom */
     min-height: 0;
+    flex-wrap: wrap;
+    gap: 0.5rem;
 }
 
 .header-content .header-logo-text {
@@ -256,6 +295,8 @@ a:hover {
     font-size: 2.5rem;
     margin-left: -2rem;
     margin-top: 0;
+    margin-bottom: 0; /* Ensure no bottom margin */
+    padding-bottom: 8px; /* Match the total padding of nav links */
 }
 
 .header-bar h1 {
@@ -291,10 +332,9 @@ a:hover {
 }
 
 
-/* minimal overlay layout (no styling beyond essentials) */
 .modal-overlay {
     position: fixed;
-    top: 70px;
+    top: 0;
     left: 0;
     right: 0;
     bottom: 0;
@@ -302,8 +342,14 @@ a:hover {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding-top: 3rem;
     z-index: 1000;
+}
+
+.modal-content-wrapper {
+    position: relative;
+    background: white;
+    border-radius: 8px;
+    margin-top: 175px;
 }
 
 .modal-content {
@@ -312,7 +358,7 @@ a:hover {
     border-radius: 8px;
     overflow-y: auto;
     min-width: 60%;
-    max-height: calc(100vh - 100px);
+    max-height: calc(100vh - 200px);
 }
 
 .modal-close {
@@ -367,8 +413,8 @@ a:hover {
     font-family: 'Proxima Nova Heavy', sans-serif;
     font-size: 1.5rem;
     font-weight: 500;
-    padding: 0.25rem 0.75rem 0.25rem 0.75rem; /* top, right, bottom, left */
-    line-height: 1; /* match nav links */
+    padding: 0.25rem 0.75rem 8px 0.75rem; /* Changed bottom padding to 8px */
+    line-height: 1;
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.2s, color 0.2s;
@@ -386,7 +432,7 @@ a:hover {
 }
 
 .login-btn {
-    background-color: #2F72B7; /* Microsoft blue */
+    background-color: var(--taltech-light-blue);
     color: var(--taltech-white);
     padding: 0.85rem 1.5rem;
     font-size: 1rem;
@@ -399,5 +445,259 @@ a:hover {
 
 .login-btn:hover {
     filter: brightness(115%);
-    background-color: #255aa3; /* Slightly darker on hover */
+    background-color: #255aa3;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-areas:
+        'header-bar'
+        'main-layout';
+    grid-template-rows: auto 1fr;
+    height: calc(100vh - 175px); /* Changed from 110px to 150px */
+}
+
+.main-layout {
+    grid-area: main-layout;
+    display: flex;
+    height: 100%;
+    overflow: hidden;
+}
+
+/* Course tree navigation - Desktop */
+.course-tree-nav {
+    width: 280px;
+    flex-shrink: 0;
+    background: white;
+    border-right: 1px solid var(--color-border);
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 1rem;
+}
+
+.main-content {
+    flex: 1;
+    padding: 1rem;
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 100%;
+}
+
+.mobile-menu-button {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px 8px 8px 8px; /* Match the 8px bottom padding */
+    z-index: 1001;
+    color: inherit;
+}
+
+/* Add a pseudo-element to create baseline alignment */
+.mobile-menu-button::after {
+    content: '';
+    display: inline-block;
+    width: 0;
+    height: 0;
+}
+
+/* Ensure the hamburger icon container doesn't interfere */
+.hamburger-icon {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 24px;
+    vertical-align: baseline; /* Align with text baseline */
+}
+
+.hamburger-icon span {
+    display: block;
+    height: 3px;
+    background: currentColor;
+    border-radius: 2px;
+    transition: transform 0.3s ease;
+}
+
+/* Mobile close button */
+.mobile-close-button {
+    display: none;
+}
+
+/* Mobile overlay */
+.mobile-overlay {
+    display: none;
+}
+
+@media screen and (max-width: 1024px) {
+    .data-table {
+        font-size: 14px;
+    }
+
+    .data-table th,
+    .data-table td {
+        padding: 6px;
+    }
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+    body {
+        overflow: auto;
+    }
+
+    .data-table {
+        font-size: 13px;
+    }
+
+    .data-table th,
+    .data-table td {
+        padding: 5px;
+    }
+
+    .btn--link {
+        padding: 0.3rem 0.6rem;
+        font-size: 13px;
+    }
+
+    .grid-container {
+        height: auto;
+    }
+
+    .main-layout {
+        overflow: visible;
+    }
+
+    .mobile-menu-button {
+        display: block;
+        color: var(--taltech-white);
+        padding-bottom: 8px; /* Match nav link spacing */
+        align-self: flex-end; /* Force to bottom */
+    }
+
+    /* Force header content alignment on mobile */
+    .header-content {
+        flex-direction: row; /* Changed from column to row */
+        align-items: flex-end; /* Keep flex-end alignment */
+        flex-wrap: wrap;
+    }
+
+    .header-content .header-logo-text {
+        display: block; /* Changed from none - keep it visible */
+        font-size: 1.75rem; /* Smaller on mobile */
+        margin-left: 0; /* Remove negative margin on mobile */
+        padding-bottom: 8px; /* Match nav spacing */
+    }
+
+    .mobile-close-button {
+        display: block;
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        background: none;
+        border: none;
+        font-size: 32px;
+        cursor: pointer;
+        padding: 4px;
+        line-height: 1;
+        opacity: 0.6;
+        color: inherit;
+    }
+
+    .mobile-close-button:hover {
+        opacity: 1;
+    }
+
+    .mobile-overlay {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+    }
+
+    .course-tree-nav {
+        position: fixed;
+        top: 175px;
+        left: -100%;
+        height: calc(100vh - 110px);
+        width: 280px;
+        max-width: 80vw;
+        z-index: 1000;
+        transition: left 0.3s ease;
+        overflow-y: auto;
+        box-shadow: 2px 0 8px rgba(0, 0, 0, 0.2);
+        background: white;
+    }
+
+    .course-tree-nav.mobile-open {
+        left: 0;
+    }
+
+    .main-content {
+        height: auto;
+        overflow-y: visible;
+    }
+
+    .header-bar {
+        padding: 1rem 1rem 0.5rem 1rem;
+    }
+
+    .container--narrow,
+    .container--medium {
+        padding: 0 0.75rem;
+    }
+
+    .container--wide {
+        height: 400px;
+    }
+}
+
+@media (max-width: 480px) {
+    .header-bar {
+        padding: 0.75rem 0.5rem 0.5rem 0.5rem;
+    }
+
+    .container--narrow,
+    .container--medium {
+        padding: 0 0.5rem;
+    }
+
+    .data-table {
+        font-size: 12px;
+    }
+
+    .data-table th,
+    .data-table td {
+        padding: 4px;
+    }
+
+    /* Stack columns more efficiently */
+    .data-table .col-wide   { width: 35%; }
+    .data-table .col-medium { width: 32.5%; }
+    .data-table .col-narrow { width: 16.25%; }
+}
+
+@media screen and (max-width: 600px) {
+    .modal-overlay {
+        align-items: flex-start;       /* start from top */
+        padding: 1rem;                 /* padding around modal */
+    }
+
+    .modal-content-wrapper {
+        width: 100%;
+        max-width: 90vw;               /* prevent horizontal overflow */
+        margin-top: 175px;             /* push modal below header height */
+    }
+
+    .modal-content {
+        max-height: calc(100vh - 175px - 20px); /* viewport minus header & margin */
+        overflow-y: auto;               /* scroll if content too tall */
+        box-sizing: border-box;
+        padding: 1rem;
+        max-width: 100%;
+        overflow-wrap: break-word;
+    }
 }
