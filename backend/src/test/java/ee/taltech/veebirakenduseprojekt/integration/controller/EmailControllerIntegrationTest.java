@@ -24,6 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @Transactional
 @ActiveProfiles("dev")
+@Deprecated(forRemoval = true)
 class EmailControllerIntegrationTest extends AbstractIntegrationTest {
 
     private static final long TEST_COURSE_ID = 35065L;

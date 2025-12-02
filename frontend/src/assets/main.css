@@ -359,20 +359,6 @@ a:hover {
     cursor: not-allowed;
 }
 
-/* Navbar logout button with outline */
-.logout-btn {
-    background: transparent;
-    border: 1px solid var(--taltech-white);
-    color: var(--taltech-white);
-    font-family: 'Proxima Nova Heavy', sans-serif;
-    font-size: 1.5rem; /* match nav links */
-    font-weight: 500;
-    padding: 0.25rem 0.75rem;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: color 0.2s, border-color 0.2s, background-color 0.2s;
-}
-
 /* Navbar logout button – aligned with nav links */
 .logout-btn {
     background: transparent;

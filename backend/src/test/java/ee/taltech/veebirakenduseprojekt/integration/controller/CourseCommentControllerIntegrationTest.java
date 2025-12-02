@@ -8,7 +8,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -82,7 +81,7 @@ class CourseCommentControllerIntegrationTest extends AbstractIntegrationTest {
 
     // ======================================================================
     // 4) GET — comments must be sorted by date_time DESC
-    // ======================================================================
+    // ====================F==================================================
     @Test
     void getComments_sortedDescendingByDate() throws Exception {
 

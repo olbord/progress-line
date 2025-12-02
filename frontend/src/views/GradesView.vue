@@ -102,7 +102,6 @@ import CommentForm from '@/components/CommentForm.vue'
 import StudentPersonalDataDisplay from '@/components/StudentPersonalDataDisplay.vue'
 import EmailForm from "@/components/EmailForm.vue";
 import {getToken} from "@/msal/msalInstance.js";
-import {markStudentActive, markStudentInactive} from "@/services/studentService.js";
 
 const router = useRouter()
 
