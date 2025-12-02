@@ -1,16 +1,11 @@
 package ee.taltech.veebirakenduseprojekt.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import ee.taltech.veebirakenduseprojekt.dto.*;
 import io.swagger.v3.oas.annotations.media.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
-import org.springframework.format.annotation.*;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.List;
-import java.util.Objects;
 
 @Data
 @Schema(name = "Student DTO",

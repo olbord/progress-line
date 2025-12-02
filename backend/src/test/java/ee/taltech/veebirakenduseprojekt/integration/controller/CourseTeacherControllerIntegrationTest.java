@@ -1,6 +1,6 @@
 package ee.taltech.veebirakenduseprojekt.integration.controller;
 
-import ee.taltech.veebirakenduseprojekt.integration.AbstractIntegrationTest;
+import ee.taltech.veebirakenduseprojekt.integration.AbstractIntegrationTestConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -10,13 +10,14 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("dev")
-class CourseTeacherControllerIntegrationTest extends AbstractIntegrationTest {
+class CourseTeacherControllerIntegrationTest extends AbstractIntegrationTestConfig {
 
     private static final long TEST_COURSE_ID = 35065L;
 
@@ -56,6 +57,6 @@ class CourseTeacherControllerIntegrationTest extends AbstractIntegrationTest {
                 "SELECT COUNT(*) FROM \"user\" WHERE email = 'kadi.jairus@taltech.ee'",
                 Integer.class
         );
-        assert count == 1;
+        assertEquals(1, count);
     }
 }

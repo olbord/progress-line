@@ -48,7 +48,7 @@ export async function markStudentInactive(courseId, studentId) {
 
 export async function markStudentActive(courseId, studentId) {
     const token = await getToken();
-    const res = await apiClient.delete(
+    await apiClient.delete(
         `/courses/${courseId}/students/${studentId}/active`,
         { headers: { Authorization: `Bearer ${token}` } }
     );

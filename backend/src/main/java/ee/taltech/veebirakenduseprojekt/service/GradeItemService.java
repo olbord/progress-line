@@ -40,8 +40,8 @@ public class GradeItemService {
 
             studentChart.setStudentId(userId);
 
-            studentChart.setFirstName(userGrades.get(0).getStudent().getFirstName());
-            studentChart.setLastName(userGrades.get(0).getStudent().getLastName());
+            studentChart.setFirstName(userGrades.getFirst().getStudent().getFirstName());
+            studentChart.setLastName(userGrades.getFirst().getStudent().getLastName());
 
             List<GradeDataPointDto> dataPoints = new ArrayList<>();
             BigDecimal cumulativeScore = BigDecimal.ZERO;

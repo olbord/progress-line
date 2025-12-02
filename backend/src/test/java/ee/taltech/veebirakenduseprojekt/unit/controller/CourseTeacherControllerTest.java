@@ -40,10 +40,6 @@ class CourseTeacherControllerTest {
         t2.setEmail("john.doe@taltech.ee");
     }
 
-    // ----------------------------------------------------------------------
-    // GET /api/courses/{courseId}/teachers
-    // ----------------------------------------------------------------------
-
     @Test
     void getTeachersByCourse_whenCourseHasTeachers_returnsTeacherList() {
         // Given
@@ -62,10 +58,6 @@ class CourseTeacherControllerTest {
 
         then(courseService).should(times(1)).getTeachers(courseId);
     }
-
-    // ----------------------------------------------------------------------
-    // GET /api/courses/{courseId}/teachers
-    // ----------------------------------------------------------------------
 
     @Test
     void getTeachersByCourse_whenNoTeachers_returnsEmptyList() {

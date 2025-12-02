@@ -4,7 +4,6 @@ import ee.taltech.veebirakenduseprojekt.entity.*;
 import ee.taltech.veebirakenduseprojekt.exception.*;
 import ee.taltech.veebirakenduseprojekt.repository.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Service;
 import java.time.*;
 

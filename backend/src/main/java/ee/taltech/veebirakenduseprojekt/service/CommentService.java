@@ -39,15 +39,6 @@ public class CommentService {
         return commentMapper.mapToResponseDto(savedComment);
     }
 
-    public CommentResponseDto updateComment(Long id, CommentRequestDto dto) {
-        Comment existing = commentRepository.findById(id)
-                .orElseThrow(() -> new ApplicationException("Comment not found with id " + id));
-        // TODO: security: only update the comment when teacherId is actually an id of a user with the role of a teacher
-        commentMapper.updateEntity(dto, existing, studentRepository, studentMapper, courseRepository);
-        Comment updated = commentRepository.save(existing);
-        return commentMapper.mapToResponseDto(updated);
-    }
-
     public List<CommentResponseDto> getCommentsByCourseIdAndStudentId(Long courseId, Long studentId) {
         log.debug("Getting comments of student with id " + studentId);
         if (!studentRepository.existsById(studentId)) {

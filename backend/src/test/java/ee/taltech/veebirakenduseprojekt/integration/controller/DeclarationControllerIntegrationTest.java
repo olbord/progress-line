@@ -1,6 +1,6 @@
 package ee.taltech.veebirakenduseprojekt.integration.controller;
 
-import ee.taltech.veebirakenduseprojekt.integration.AbstractIntegrationTest;
+import ee.taltech.veebirakenduseprojekt.integration.AbstractIntegrationTestConfig;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,19 +19,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 @AutoConfigureMockMvc
 @Transactional
 @ActiveProfiles("dev")
-class DeclarationControllerIntegrationTest extends AbstractIntegrationTest {
+class DeclarationControllerIntegrationTest extends AbstractIntegrationTestConfig {
 
     private static final long TEST_COURSE_ID = 35065L;
 
     @Autowired
     private MockMvc mvc;
 
-    @Autowired
-    private JdbcTemplate jdbc;
-
-    // ----------------------------------------------------------------------
-    // POST /api/courses/{courseId}/declarations/student/{studentId}
-    // ----------------------------------------------------------------------
     @Test
     void addStudentDeclaration_whenStudentHasNoDeclaration_addsDeclaration() throws Exception {
 
@@ -92,6 +86,9 @@ class DeclarationControllerIntegrationTest extends AbstractIntegrationTest {
     // ----------------------------------------------------------------------
     // Helper method: Lookup user ID by email
     // ----------------------------------------------------------------------
+    @Autowired
+    private JdbcTemplate jdbc;
+
     private long getUserId(String email) {
         return jdbc.queryForObject(
                 "SELECT id FROM \"user\" WHERE email = ?",

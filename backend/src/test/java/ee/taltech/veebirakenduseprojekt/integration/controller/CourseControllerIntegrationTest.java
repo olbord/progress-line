@@ -22,16 +22,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @Transactional
 @ActiveProfiles("dev")
-class CourseControllerIntegrationTest extends AbstractIntegrationTest {
+class CourseControllerIntegrationTest extends AbstractIntegrationTestConfig {
 
     @Autowired
     private CourseRepository courseRepository;
     @Autowired
     private MockMvc mvc;
 
-    // ----------------------------------------------------------------------
-    // GET /api/courses/{courseId}
-    // ----------------------------------------------------------------------
     @Test
     void getCourses_whenUserIsTeacher_returnsCoursesArray() throws Exception {
         mvc.perform(get("/api/courses"))
